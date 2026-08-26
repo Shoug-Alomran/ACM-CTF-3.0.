@@ -491,14 +491,37 @@
             const id = new URLSearchParams(location.search).get('team');
             const team = teams.find(item => item.id === id) || teams[0];
             if (!team) { location.href = 'teams.html'; return; }
+            const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[character]));
             document.title = `${team.name} Dossier | ACM CTF 3.0`;
-            document.querySelector('[vid="53"]').textContent = team.members?.[0]?.name || team.name;
-            document.querySelectorAll('[vid="59"],[vid="76"]').forEach(el => el.textContent = team.name);
-            document.querySelector('[vid="65"]').textContent = Number(team.score || 0).toLocaleString();
-            document.querySelector('[vid="56"]').parentElement.lastChild.textContent = ` RANK: #${team.rank || '--'}`;
-            document.querySelector('[vid="61"]').parentElement.lastChild.textContent = ` TOTAL FLAGS: ${team.flags || 0}`;
-            document.querySelector('[vid="77"]').textContent = `STATUS: ${(team.status || 'pending').toUpperCase()}`;
-            document.querySelector('[vid="81"]').textContent = `${team.members?.length || 0} / 3`;
+            const summaryGrid = document.querySelector('main > .grid');
+            const members = team.members || [];
+            summaryGrid.className = 'grid grid-cols-1 gap-6 mb-8';
+            summaryGrid.innerHTML = `<div class="font-mono text-xs text-cyber-cyan flex items-center gap-3"><span>01 // OPERATIVE ROSTER</span><div class="h-px bg-cyber-cyan/20 flex-grow"></div><span class="text-slate-500">${members.length} / 3 MEMBERS</span></div>${members.map((member,index) => `
+                <article class="border border-cyber-cyan/20 bg-cyber-dark/40 p-6 md:p-8 bracket-box overflow-hidden">
+                    <div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+                    <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
+                        <div class="relative shrink-0">
+                            <div class="w-28 h-28 md:w-32 md:h-32 border-2 border-cyber-cyan p-1 bg-cyber-base flex items-center justify-center">
+                                <img src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${encodeURIComponent(member.name || `operator-${index + 1}`)}&amp;backgroundColor=060a13" alt="Avatar for ${escapeHtml(member.name)}" class="w-full h-full object-cover opacity-80 contrast-125 grayscale hover:grayscale-0 transition-all">
+                            </div>
+                            <div class="absolute -bottom-2 -right-2 bg-cyber-green text-black font-mono text-[10px] font-bold px-2 py-0.5">OP ${String(index + 1).padStart(2,'0')}</div>
+                        </div>
+                        <div class="flex-grow text-center md:text-left min-w-0">
+                            <div class="font-mono text-cyber-cyan/60 text-xs mb-1">OPERATIVE IDENTITY //</div>
+                            <h1 class="font-display text-3xl md:text-4xl font-bold text-white uppercase tracking-tight glow-text-cyan mb-3 break-words">${escapeHtml(member.name || `OPERATOR_${index + 1}`)}</h1>
+                            <div class="flex flex-wrap gap-4 justify-center md:justify-start font-mono text-xs text-slate-400">
+                                <div class="flex items-center gap-2"><i class="ph ph-shield-check text-cyber-green"></i> ROLE: <span class="text-white">${escapeHtml(member.role || (index ? 'Member' : 'Captain'))}</span></div>
+                                <div class="flex items-center gap-2"><i class="ph ph-users text-cyber-cyan"></i> TEAM: <span class="text-white">${escapeHtml(team.name)}</span></div>
+                                <div class="flex items-center gap-2"><i class="ph ph-crosshair text-cyber-red"></i> TEAM FLAGS: ${Number(team.flags || 0)}</div>
+                            </div>
+                        </div>
+                        <div class="bg-cyber-cyan/10 border border-cyber-cyan/30 p-3 px-6 text-center min-w-[150px]">
+                            <div class="font-mono text-[10px] text-cyber-cyan/70 uppercase">Team Score</div>
+                            <div class="font-display text-3xl font-bold text-cyber-cyan">${Number(team.score || 0).toLocaleString()}</div>
+                            <div class="font-mono text-[10px] text-slate-500 mt-1">RANK #${team.rank || '--'}</div>
+                        </div>
+                    </div>
+                </article>`).join('')}`;
         });
     </script>
 </body>

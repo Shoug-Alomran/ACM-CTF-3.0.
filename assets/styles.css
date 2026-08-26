@@ -171,6 +171,64 @@ code,
     border-color: white
 }
 
+.contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, .8fr) minmax(320px, 1.2fr);
+    gap: 48px;
+    align-items: start
+}
+
+.contact-email {
+    color: var(--cyan);
+    font: 600 .9rem "JetBrains Mono", monospace;
+    overflow-wrap: anywhere
+}
+
+.contact-form {
+    display: grid;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--line);
+    background: rgba(8, 19, 33, .82)
+}
+
+.contact-form label {
+    display: grid;
+    gap: 7px;
+    color: var(--muted);
+    font: .72rem "JetBrains Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: .06em
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--text);
+    font: .9rem "Space Grotesk", sans-serif;
+    resize: vertical
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: 1px solid var(--cyan);
+    border-color: var(--cyan)
+}
+
+.contact-note {
+    margin: 0;
+    color: var(--muted);
+    font: .68rem "JetBrains Mono", monospace
+}
+
+@media (max-width: 760px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 28px }
+    .contact-form { padding: 18px }
+}
+
 .hero {
     min-height: calc(100vh - 72px);
     display: grid;
