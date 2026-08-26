@@ -1,5 +1,5 @@
 const page = document.body.dataset.page || 'home';
-const links = [['home', 'index.html', 'Home'], ['workshops', 'workshops.html', 'Workshops'], ['challenges', 'challenges.html', 'Challenges'], ['competition', 'competition.html', 'Competition'], ['rules', 'rules.html', 'Rules'], ['faq', 'faq.html', 'FAQ'], ['team', 'team.html', 'Team']];
+const links = [['home', 'index.html', 'Home'], ['workshops', 'workshops.html', 'Workshops'], ['challenges', 'challenges.html', 'Challenges'], ['competition', 'competition.html', 'Competition'], ['scoreboard', 'scoreboard.html', 'Scoreboard'], ['rules', 'rules.html', 'Rules'], ['faq', 'faq.html', 'FAQ'], ['team', 'team.html', 'Team']];
 const nav = `<header class="nav-shell"><nav class="nav wrap"><a class="brand" href="index.html"><i>&lt;/&gt;</i> ACM CTF <small>3.0</small></a><button class="menu" aria-label="Toggle navigation" aria-expanded="false">☰</button><div class="nav-links">${links.map(x => `<a class="${page === x[0] ? 'active' : ''}" href="${x[1]}">${x[2]}</a>`).join('')}</div><a class="btn nav-cta" href="index.html#register">Join CTF →</a></nav></header>`;
 const footer = `<footer class="footer"><div class="wrap"><div class="footer-grid"><div><a class="brand" href="index.html"><i>&lt;/&gt;</i> ACM CTF 3.0</a><p class="lead">A cybersecurity learning and competition experience by the ACM Student Chapter at Prince Sultan University.</p></div><div><b class="mono">EXPLORE</b><a href="workshops.html">Workshops</a><a href="challenges.html">Challenges</a><a href="scoreboard.html">Scoreboard</a></div><div><b class="mono">INFO</b><a href="competition.html">Competition</a><a href="rules.html">Rules</a><a href="faq.html">FAQ</a></div></div><div class="fine">© 2026 ACM PSU · EDUCATION FIRST · PLAY FAIR · HACK RESPONSIBLY</div></div></footer>`;
 const pageHero = (k, t, d) => `<section class="page-hero"><div class="wrap"><div class="crumb">HOME / <b>${k}</b></div><p class="eyebrow">SYSTEM MODULE</p><h1>${t}</h1><p class="lead">${d}</p></div></section>`;
@@ -20,6 +20,5 @@ const views = { home, workshops, challenges, competition, rules, faq, team, scor
 document.querySelector('#site').innerHTML = nav + (views[page] || notFound) + footer + '<div class="toast" role="status"></div>';
 const menu = document.querySelector('.menu'), navLinks = document.querySelector('.nav-links'); menu?.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); menu.setAttribute('aria-expanded', open); menu.textContent = open ? '×' : '☰' });
 document.querySelectorAll('[data-notify]').forEach(b => b.addEventListener('click', () => { const t = document.querySelector('.toast'); t.textContent = b.dataset.notify; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2600) }));
-
 
 

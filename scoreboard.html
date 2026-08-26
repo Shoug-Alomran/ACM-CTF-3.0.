@@ -191,7 +191,7 @@
     <div class="cyber-bg" vid="13"></div>
 
 
-    <div class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-sm border-b border-cyber-cyan/20" vid="14">
+    <div class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-sm border-b border-cyber-cyan/20" vid="14">
         <div class="max-w-[1440px] mx-auto px-6 py-2 flex justify-between items-center font-mono text-[11px] tracking-widest"
             vid="15">
             <div class="flex items-center gap-6" vid="16">
@@ -211,9 +211,30 @@
                 <span vid="27">SERVER_ID: NODE_03_RYD</span>
             </div>
         </div>
+        <nav class="max-w-[1440px] mx-auto px-6 py-3 flex items-center justify-between gap-4 border-t border-cyber-cyan/10 font-mono text-xs tracking-wider"
+            aria-label="Main navigation">
+            <a href="index.html" class="flex items-center gap-2 text-white hover:text-cyber-cyan transition-colors shrink-0">
+                <span class="w-7 h-7 border border-cyber-cyan text-cyber-cyan flex items-center justify-center font-bold">3</span>
+                <span class="hidden sm:inline">ACM CTF</span>
+            </a>
+            <button type="button" data-mobile-menu="#scoreboard-nav"
+                class="md:hidden border border-cyber-cyan/40 px-3 py-1.5 text-cyber-cyan hover:bg-cyber-cyan/10"
+                aria-label="Toggle navigation">MENU</button>
+            <div id="scoreboard-nav"
+                class="hidden absolute top-full left-0 right-0 bg-black/95 border-b border-cyber-cyan/20 p-4 flex-col gap-4 md:static md:bg-transparent md:border-0 md:p-0 md:flex md:flex-row md:items-center md:justify-end md:gap-6">
+                <a href="index.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">HOME</a>
+                <a href="workshops.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">WORKSHOPS</a>
+                <a href="challenges.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">CHALLENGES</a>
+                <a href="competition.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">COMPETITION</a>
+                <a href="scoreboard.html" aria-current="page" class="text-cyber-cyan glow-text-cyan">&gt; SCOREBOARD_</a>
+                <a href="rules.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">RULES</a>
+                <a href="faq.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">FAQ</a>
+                <a href="team.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">TEAM</a>
+            </div>
+        </nav>
     </div>
 
-    <header class="pt-16 pb-8 px-6 border-b border-cyber-cyan/10" vid="28">
+    <header class="pt-28 pb-8 px-6 border-b border-cyber-cyan/10" vid="28">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end gap-6" vid="29">
             <div class="flex flex-col gap-2" vid="30">
                 <div class="font-mono text-cyber-cyan/70 text-xs tracking-widest uppercase" vid="31">

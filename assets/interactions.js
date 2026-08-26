@@ -50,7 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
             control.tabIndex = 0;
             control.setAttribute('role', 'link');
         }
-        control.addEventListener('click', () => {
+        control.addEventListener('click', event => {
+            if (event.target.closest('a, button, input, select, textarea')) return;
             window.location.href = control.dataset.href;
         });
         control.addEventListener('keydown', event => {
@@ -60,6 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    const focusWorkshopFromHash = () => {
+        if (!location.hash.startsWith('#workshop-')) return;
+        const workshop = document.querySelector(location.hash);
+        if (!workshop) return;
+        requestAnimationFrame(() => workshop.focus({ preventScroll: true }));
+    };
+    focusWorkshopFromHash();
+    window.addEventListener('hashchange', focusWorkshopFromHash);
 
     document.querySelectorAll('[data-mobile-menu]').forEach(button => {
         const menu = document.querySelector(button.dataset.mobileMenu);
