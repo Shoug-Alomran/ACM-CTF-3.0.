@@ -86,38 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
     focusWorkshopFromHash();
     window.addEventListener('hashchange', focusWorkshopFromHash);
 
-    const workshopModal = document.createElement('div');
-    workshopModal.className = 'workshop-modal';
-    workshopModal.hidden = true;
-    workshopModal.innerHTML = `<section class="workshop-dialog" role="dialog" aria-modal="true" aria-labelledby="workshop-modal-title"><header class="workshop-modal-head"><div><p class="workshop-modal-kicker">// TRAINING DAY INTEL</p><h2 class="workshop-modal-title" id="workshop-modal-title"></h2></div><button class="workshop-modal-close" type="button" aria-label="Close workshop details">×</button></header><div class="workshop-modal-tags"></div><p class="workshop-modal-description"></p><div class="workshop-modal-grid"></div><div class="workshop-modal-status"></div></section>`;
-    document.body.appendChild(workshopModal);
-    let workshopReturnFocus = null;
-    const closeWorkshopModal = () => { workshopModal.hidden = true; document.body.classList.remove('workshop-modal-open'); workshopReturnFocus?.focus(); };
-    document.querySelectorAll('[data-workshop-modal]').forEach(control => control.addEventListener('click', event => {
-        event.preventDefault();
-        const card = control.closest('[id^="workshop-"]');
-        if (!card) return;
-        const headerSpans = [...card.querySelectorAll('.flex.flex-wrap.justify-between span')];
-        const tags = headerSpans.map(item => item.textContent.trim()).filter(text => text && text !== 'UPCOMING');
-        const fields = {};
-        card.querySelectorAll('.grid > div').forEach(group => {
-            const parts = group.querySelectorAll('span');
-            if (parts.length > 1) fields[parts[0].textContent.replace(':','').trim()] = parts[1].textContent.trim();
-        });
-        workshopModal.querySelector('.workshop-modal-title').textContent = card.querySelector('h3')?.textContent.replace(/^TBD:\s*/,'') || 'Workshop details';
-        workshopModal.querySelector('.workshop-modal-tags').innerHTML = tags.slice(0,2).map(tag => `<span class="workshop-modal-tag">${tag}</span>`).join('');
-        workshopModal.querySelector('.workshop-modal-description').textContent = card.querySelector('h3 + p')?.textContent.trim() || '';
-        workshopModal.querySelector('.workshop-modal-grid').innerHTML = ['DATE','TIME','LOCATION','INSTRUCTOR'].map(label => `<div class="workshop-modal-field"><span>${label}</span><strong>${fields[label] || 'TBD'}</strong></div>`).join('');
-        workshopModal.querySelector('.workshop-modal-status').textContent = card.textContent.includes('training_material_locked') ? '> TRAINING MATERIAL: LOCKED UNTIL THIS SESSION IS PUBLISHED' : '> TRAINING MATERIAL: AVAILABLE';
-        workshopReturnFocus = control;
-        workshopModal.hidden = false;
-        document.body.classList.add('workshop-modal-open');
-        requestAnimationFrame(() => workshopModal.querySelector('.workshop-modal-close').focus());
-    }));
-    workshopModal.querySelector('.workshop-modal-close').addEventListener('click', closeWorkshopModal);
-    workshopModal.addEventListener('click', event => { if (event.target === workshopModal) closeWorkshopModal(); });
-    document.addEventListener('keydown', event => { if (event.key === 'Escape' && !workshopModal.hidden) closeWorkshopModal(); });
-
     document.querySelectorAll('[data-mobile-menu]').forEach(button => {
         const menu = document.querySelector(button.dataset.mobileMenu);
         if (!menu) return;
@@ -205,11 +173,11 @@ document.addEventListener('DOMContentLoaded', () => {
         member3Name.setCustomValidity(member3Email.value && !member3Name.value ? 'Enter the third member’s name.' : '');
         member3Email.setCustomValidity(member3Name.value && !member3Email.value ? 'Enter the third member’s PSU email.' : '');
         if (!form.reportValidity()) return;
-        const teams = JSON.parse(localStorage.getItem('acm-ctf-teams-v1') || '[]');
+        const teams = JSON.parse(localStorage.getItem('acm-ctf-teams-v2') || '[]');
         const name = form.elements.teamName.value.trim();
         const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         const record = {id,name,status:'pending',experience:form.elements.experience.value,score:0,rank:0,flags:0,members:[{name:form.elements.captainName.value,role:'Captain',studentId:form.elements.captainId.value,email:form.elements.captainEmail.value},{name:form.elements.member2Name.value,role:'Member',email:form.elements.member2Email.value},...(member3Name.value?[{name:member3Name.value,role:'Member',email:member3Email.value}]:[])]};
-        localStorage.setItem('acm-ctf-teams-v1', JSON.stringify(teams.filter(team=>team.id!==id).concat(record)));
+        localStorage.setItem('acm-ctf-teams-v2', JSON.stringify(teams.filter(team=>team.id!==id).concat(record)));
         result.textContent = 'REGISTRATION SAVED // STATUS: PENDING ADMIN REVIEW.';
         result.hidden = false;
         result.scrollIntoView({block:'nearest'});

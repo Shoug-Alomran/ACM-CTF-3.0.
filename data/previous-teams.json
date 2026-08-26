@@ -1,0 +1,18 @@
+{
+  "event": "CTF 2.0 Final Archive",
+  "teamCount": 11,
+  "source": "PSU CTF Competition Reports",
+  "teams": [
+    {"id":"ctf2-hz","name":"HZ","rank":1,"score":3800},
+    {"id":"ctf2-thevault","name":"TheVault","rank":2,"score":2800},
+    {"id":"ctf2-zero-day","name":"ZERO DAY","rank":3,"score":2100},
+    {"id":"ctf2-gotcha-flag","name":"Gotcha_flag","rank":4,"score":2000},
+    {"id":"ctf2-asm","name":"ASM","rank":5,"score":1900},
+    {"id":"ctf2-checkmate","name":"checkmate","rank":6,"score":1900},
+    {"id":"ctf2-aha","name":"Aha","rank":7,"score":1300},
+    {"id":"ctf2-cybercrackers","name":"Cybercrackers","rank":8,"score":1300},
+    {"id":"ctf2-404","name":"404","rank":9,"score":1000},
+    {"id":"ctf2-mam","name":"MAM","rank":10,"score":900},
+    {"id":"ctf2-red-team","name":"Red Team","rank":11,"score":800}
+  ]
+}

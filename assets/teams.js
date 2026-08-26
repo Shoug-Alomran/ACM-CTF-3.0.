@@ -1,4 +1,4 @@
-const TEAM_KEY = 'acm-ctf-teams-v1';
+const TEAM_KEY = 'acm-ctf-teams-v2';
 async function loadTeams(){
   const local=localStorage.getItem(TEAM_KEY);
   if(local){try{return JSON.parse(local)}catch{}}
