@@ -1,1 +1,28 @@
-(async()=>{try{const c=await fetch('data/ctfd.json').then(r=>r.json());if(!c.enabled||!c.baseUrl)return;const r=await fetch(`${c.baseUrl.replace(/\/$/,'')}/api/v1/scoreboard`,{headers:{Accept:'application/json'}});if(!r.ok)throw Error(`HTTP ${r.status}`);const p=await r.json(),rows=Array.isArray(p.data)?p.data:[],body=document.querySelector('main table tbody');if(!body||!rows.length)return;body.innerHTML=rows.map(x=>`<tr class="hover:bg-cyber-cyan/5"><td class="px-6 py-5 text-xl font-mono">${String(x.pos??'--').padStart(2,'0')}</td><td class="px-6 py-5"><a class="text-white font-bold hover:text-cyber-cyan" href="team.html?ctfd=${encodeURIComponent(x.account_id)}">${x.account_name}</a><div class="text-[10px] text-slate-500 font-mono">CTFd // VERIFIED</div></td><td class="px-6 py-5"><span class="text-cyber-green border border-cyber-green/30 px-2 py-1 font-mono text-xs">LIVE</span></td><td class="px-6 py-5 text-right text-cyber-green text-xl font-mono font-bold">${Number(x.score||0).toLocaleString()}</td></tr>`).join('')}catch(e){console.warn('CTFd sync unavailable; archived scoreboard retained.',e)}})();
+(async () => {
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[character]);
+
+  try {
+    const config = await fetch('data/ctfd.json').then(response => response.json());
+    if (!config.enabled || !config.baseUrl) return;
+
+    const response = await fetch(`${config.baseUrl.replace(/\/$/, '')}/api/v1/scoreboard`, {
+      headers: { Accept: 'application/json' }
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const payload = await response.json();
+    const rows = Array.isArray(payload.data) ? payload.data : [];
+    const body = document.querySelector('main table tbody');
+    if (!body || !rows.length) return;
+
+    body.innerHTML = rows.map(entry => {
+      const rank = Number(entry.pos);
+      const publicName = rank <= 3 ? escapeHtml(entry.account_name) : 'PRIVATE TEAM';
+      return `<tr class="hover:bg-cyber-cyan/5"><td class="px-6 py-5 text-xl font-mono">${String(entry.pos ?? '--').padStart(2, '0')}</td><td class="px-6 py-5"><span class="text-white font-bold">${publicName}</span><div class="text-[10px] text-slate-500 font-mono">CTFd // ${rank <= 3 ? 'VERIFIED' : 'IDENTITY WITHHELD'}</div></td><td class="px-6 py-5"><span class="text-cyber-green border border-cyber-green/30 px-2 py-1 font-mono text-xs">LIVE</span></td><td class="px-6 py-5 text-right text-cyber-green text-xl font-mono font-bold">${Number(entry.score || 0).toLocaleString()}</td></tr>`;
+    }).join('');
+  } catch (error) {
+    console.warn('CTFd sync unavailable; archived scoreboard retained.', error);
+  }
+})();

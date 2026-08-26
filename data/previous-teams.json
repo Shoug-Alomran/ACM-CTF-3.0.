@@ -1,18 +1,13 @@
 {
   "event": "CTF 2.0 Final Archive",
-  "teamCount": 11,
-  "source": "PSU CTF Competition Reports",
+  "teamCount": 16,
+  "publicTeamCount": 3,
+  "withheldTeamCount": 13,
+  "submissionCount": 17,
+  "source": "PSU CTF Competition Reports and Team Registration Responses",
   "teams": [
     {"id":"ctf2-hz","name":"HZ","rank":1,"score":3800,"members":[{"name":"Hasan Belal Farhat","role":"Captain"},{"name":"Hazim Khalid Alhatim","role":"Member"}]},
     {"id":"ctf2-thevault","name":"TheVault","rank":2,"score":2800,"members":[{"name":"الجوهره الجبير","role":"Captain"},{"name":"الشيماء بابعير","role":"Member"},{"name":"جودي وسيم آل حسان","role":"Member"}]},
-    {"id":"ctf2-zero-day","name":"ZERO DAY","rank":3,"score":2100,"members":[{"name":"Omar Fahad Alkhalifah","role":"Captain"},{"name":"Abdullah Alanazi","role":"Member"}]},
-    {"id":"ctf2-gotcha-flag","name":"Gotcha_flag","rank":4,"score":2000,"members":[{"name":"Meshal Raed alhuwairini","role":"Captain"},{"name":"Ziyad Saleh Alsalamah","role":"Member"}]},
-    {"id":"ctf2-asm","name":"ASM","rank":5,"score":1900,"members":[{"name":"Ammar Akhdar","role":"Captain"},{"name":"Saud Almarshad","role":"Member"},{"name":"Mohammed Alsalem","role":"Member"}]},
-    {"id":"ctf2-checkmate","name":"checkmate","rank":6,"score":1900,"members":[{"name":"Mansour bader albader","role":"Captain"},{"name":"Mohammed almgren","role":"Member"}]},
-    {"id":"ctf2-aha","name":"Aha","rank":7,"score":1300,"members":[]},
-    {"id":"ctf2-cybercrackers","name":"Cybercrackers","rank":8,"score":1300,"members":[]},
-    {"id":"ctf2-404","name":"404","rank":9,"score":1000,"members":[]},
-    {"id":"ctf2-mam","name":"MAM","rank":10,"score":900,"members":[]},
-    {"id":"ctf2-red-team","name":"Red Team","rank":11,"score":800,"members":[{"name":"Layan Naif Alzahrani","role":"Captain"},{"name":"Ibrahim Alnasser","role":"Member"},{"name":"Alanoud Almufayrij","role":"Member"}]}
+    {"id":"ctf2-zero-day","name":"ZERO DAY","rank":3,"score":2100,"members":[{"name":"Omar Fahad Alkhalifah","role":"Captain"},{"name":"Abdullah Alanazi","role":"Member"}]}
   ]
 }
