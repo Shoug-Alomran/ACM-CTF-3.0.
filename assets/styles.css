@@ -218,12 +218,6 @@ code,
     border-color: var(--cyan)
 }
 
-.contact-note {
-    margin: 0;
-    color: var(--muted);
-    font: .68rem "JetBrains Mono", monospace
-}
-
 @media (max-width: 760px) {
     .contact-grid { grid-template-columns: 1fr; gap: 28px }
     .contact-form { padding: 18px }
