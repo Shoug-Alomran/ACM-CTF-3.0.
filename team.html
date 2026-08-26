@@ -484,7 +484,23 @@
         </div>
     </footer>
 
+    <script src="assets/teams.js"></script>
     <script src="assets/interactions.js"></script>
+    <script>
+        TeamStore.loadTeams().then(teams => {
+            const id = new URLSearchParams(location.search).get('team');
+            const team = teams.find(item => item.id === id) || teams[0];
+            if (!team) { location.href = 'teams.html'; return; }
+            document.title = `${team.name} Dossier | ACM CTF 3.0`;
+            document.querySelector('[vid="53"]').textContent = team.members?.[0]?.name || team.name;
+            document.querySelectorAll('[vid="59"],[vid="76"]').forEach(el => el.textContent = team.name);
+            document.querySelector('[vid="65"]').textContent = Number(team.score || 0).toLocaleString();
+            document.querySelector('[vid="56"]').parentElement.lastChild.textContent = ` RANK: #${team.rank || '--'}`;
+            document.querySelector('[vid="61"]').parentElement.lastChild.textContent = ` TOTAL FLAGS: ${team.flags || 0}`;
+            document.querySelector('[vid="77"]').textContent = `STATUS: ${(team.status || 'pending').toUpperCase()}`;
+            document.querySelector('[vid="81"]').textContent = `${team.members?.length || 0} / 3`;
+        });
+    </script>
 </body>
 
 </html>

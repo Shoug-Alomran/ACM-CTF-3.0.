@@ -1,0 +1,14 @@
+.site-shell-active { padding-top: 74px !important; }
+.site-header { position: fixed; inset: 0 0 auto; z-index: 1000; height: 74px; background: rgba(3,8,20,.96); border-top: 1px solid rgba(0,240,255,.2); border-bottom: 1px solid rgba(0,240,255,.22); backdrop-filter: blur(16px); font-family: "JetBrains Mono", monospace; }
+.site-header__inner { width: min(1360px,calc(100% - 40px)); height: 100%; margin: auto; display:flex; align-items:center; gap:28px; }
+.site-header__brand { display:flex; align-items:center; gap:12px; margin-right:auto; color:#f8fafc; text-decoration:none; font:700 20px "Space Grotesk",sans-serif; white-space:nowrap; }
+.site-header__brand svg { width:34px; height:40px; }
+.site-header__brand em { color:#00f0ff; font-style:normal; }
+.site-header__nav { display:flex; align-items:center; gap:28px; }
+.site-header__nav a { color:#8190a8; text-decoration:none; font-size:13px; letter-spacing:.04em; white-space:nowrap; transition:.2s; }
+.site-header__nav a:hover,.site-header__nav a[aria-current="page"] { color:#00f0ff; }
+.site-header__nav a[aria-current="page"]::before { content:"> "; }
+.site-header__cta { border:1px solid #00f0ff; color:#00f0ff!important; padding:9px 16px; }
+.site-header__toggle { display:none; color:#00f0ff; border:1px solid rgba(0,240,255,.45); background:transparent; padding:8px 12px; font:700 12px "JetBrains Mono",monospace; }
+@media(max-width:1050px){.site-header__toggle{display:block}.site-header__nav{display:none;position:absolute;top:73px;left:0;right:0;padding:20px;background:rgba(3,8,20,.98);border-bottom:1px solid rgba(0,240,255,.25);flex-direction:column;align-items:stretch;gap:16px}.site-header__nav.is-open{display:flex}.site-header__nav a{font-size:14px}.site-header__brand{font-size:17px}}
+@media(max-width:420px){.site-header__inner{width:calc(100% - 24px)}.site-header__brand span{display:none}}

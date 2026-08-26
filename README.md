@@ -17,3 +17,10 @@ Pushes to `main` deploy automatically through `.github/workflows/pages.yml`. The
 ## Before launch
 
 Replace provisional dates, registration links, team names, and official rule details once confirmed. The current scoreboard and team dashboard are front-end previews and need a competition backend for live data and authentication.
+
+## Team administration and CTFd
+
+- `teams.html` lists all non-rejected teams; `team.html?team=TEAM_ID` opens one team dossier.
+- `admin.html` manages the browser's local team workspace. Export `teams.json` and commit it to `data/teams.json` to publish changes.
+- GitHub Pages cannot securely protect an admin password or write registrations to the repository. Use CTFd or a server-side endpoint for production registration.
+- Enable the future leaderboard in `data/ctfd.json`. It reads CTFd's `/api/v1/scoreboard`; never put a CTFd token in public JavaScript. Challenge flags are not a leaderboard data source.

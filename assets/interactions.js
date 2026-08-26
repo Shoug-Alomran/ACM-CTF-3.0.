@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+    if (!document.querySelector('link[href="assets/site-shell.css"]')) {
+        const shellStyles = document.createElement('link'); shellStyles.rel = 'stylesheet'; shellStyles.href = 'assets/site-shell.css'; document.head.appendChild(shellStyles);
+    }
+    const pageName = location.pathname.split('/').pop() || 'index.html';
+    document.body.classList.add('site-shell-active');
+    [...document.body.children].forEach(el => {
+        if ((el.tagName === 'HEADER' && el.querySelector('nav')) || el.tagName === 'NAV' || (el.matches('div.fixed.top-0.w-full') && el.querySelector('nav'))) el.hidden = true;
+    });
+    const siteHeader = document.createElement('header');
+    siteHeader.className = 'site-header';
+    const navItems = [['index.html','HOME'],['workshops.html','Workshops'],['challenges.html','Challenges'],['competition.html','Competition'],['scoreboard.html','Scoreboard'],['rules.html','Rules'],['faq.html','FAQ'],['teams.html','Teams']];
+    siteHeader.innerHTML = `<div class="site-header__inner"><a class="site-header__brand" href="index.html"><svg viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="none" stroke="#00f0ff" stroke-width="3"/><path d="M24 17v30M24 19l22 7-22 7z" fill="none" stroke="#00f0ff" stroke-width="3"/></svg><span>ACM CTF <em>3.0</em></span></a><button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-header-nav">MENU</button><nav id="site-header-nav" class="site-header__nav" aria-label="Main navigation">${navItems.map(([href,label])=>`<a href="${href}"${pageName===href?' aria-current="page"':''}>${label}${pageName===href?'_':''}</a>`).join('')}<a class="site-header__cta" href="index.html#register">[ REGISTER ]</a></nav></div>`;
+    document.body.prepend(siteHeader);
+    const shellToggle=siteHeader.querySelector('.site-header__toggle'),shellNav=siteHeader.querySelector('nav');
+    shellToggle.addEventListener('click',()=>{const open=shellNav.classList.toggle('is-open');shellToggle.setAttribute('aria-expanded',String(open))});
     if (!document.querySelector('link[href="assets/registration.css"]')) {
         const styles = document.createElement('link');
         styles.rel = 'stylesheet';
@@ -158,7 +173,12 @@ document.addEventListener('DOMContentLoaded', () => {
         member3Name.setCustomValidity(member3Email.value && !member3Name.value ? 'Enter the third member’s name.' : '');
         member3Email.setCustomValidity(member3Name.value && !member3Email.value ? 'Enter the third member’s PSU email.' : '');
         if (!form.reportValidity()) return;
-        result.textContent = 'FORM VALIDATED // TEAM REGISTRATION READY. No data has been transmitted yet.';
+        const teams = JSON.parse(localStorage.getItem('acm-ctf-teams-v1') || '[]');
+        const name = form.elements.teamName.value.trim();
+        const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const record = {id,name,status:'pending',experience:form.elements.experience.value,score:0,rank:0,flags:0,members:[{name:form.elements.captainName.value,role:'Captain',studentId:form.elements.captainId.value,email:form.elements.captainEmail.value},{name:form.elements.member2Name.value,role:'Member',email:form.elements.member2Email.value},...(member3Name.value?[{name:member3Name.value,role:'Member',email:member3Email.value}]:[])]};
+        localStorage.setItem('acm-ctf-teams-v1', JSON.stringify(teams.filter(team=>team.id!==id).concat(record)));
+        result.textContent = 'REGISTRATION SAVED // STATUS: PENDING ADMIN REVIEW.';
         result.hidden = false;
         result.scrollIntoView({block:'nearest'});
     });

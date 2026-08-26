@@ -1,0 +1,4 @@
+[
+  {"id":"void-walkers","name":"VOID_WALKERS","status":"approved","experience":"Advanced","score":12450,"rank":14,"flags":154,"members":[{"name":"Neuro_Mancer","role":"Captain"},{"name":"Cipher","role":"Member"},{"name":"Ghost","role":"Member"}]},
+  {"id":"zero-day","name":"ZERO DAY","status":"approved","experience":"Intermediate","score":2100,"rank":3,"flags":12,"members":[{"name":"Operator 01","role":"Captain"},{"name":"Operator 02","role":"Member"}]}
+]
