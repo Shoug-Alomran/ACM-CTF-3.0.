@@ -12,7 +12,7 @@ Open `http://localhost:8000`.
 
 ## Deployment
 
-Pushes to `main` deploy automatically through `.github/workflows/pages.yml`. In the GitHub repository settings, set **Pages → Source** to **GitHub Actions**. The custom domain is declared in `CNAME` as `ctf-psu.shoug-tech.com`.
+Pushes to `main` deploy automatically through `.github/workflows/pages.yml`. The workflow also includes `workflow_dispatch`, so the **Actions → Deploy static site to GitHub Pages → Run workflow** button works for manual deployments. In the GitHub repository settings, set **Pages → Source** to **GitHub Actions**. The custom domain is declared in `CNAME` as `ctf-psu.shoug-tech.com`.
 
 ## Before launch
 
