@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="en" class="scroll-smooth" vid="0">
 
 <head vid="1">
@@ -6,6 +7,33 @@
     <title vid="4">ACM CTF 3.0 | Cyber Operations Center</title>
 
 
+    <!-- social / brand meta -->
+    <meta name="description" content="ACM CTF 3.0 at Prince Sultan University. Capture The Flag on Nov 7, 2026, 10:00 AM - 1:00 PM, Auditorium B105. Workshops, challenges and live scoreboard.">
+    <meta name="theme-color" content="#060a13">
+    <link rel="canonical" href="https://ctf-psu.shoug-tech.com/">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/assets/brand/icon.svg">
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ACM CTF 3.0">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="ACM CTF 3.0 — Capture The Flag at PSU">
+    <meta property="og:description" content="ACM CTF 3.0 at Prince Sultan University. Capture The Flag on Nov 7, 2026, 10:00 AM - 1:00 PM, Auditorium B105. Workshops, challenges and live scoreboard.">
+    <meta property="og:url" content="https://ctf-psu.shoug-tech.com/">
+    <meta property="og:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="ACM CTF 3.0 - Capture The Flag, Nov 7 2026, Prince Sultan University">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ACM CTF 3.0 — Capture The Flag at PSU">
+    <meta name="twitter:description" content="ACM CTF 3.0 at Prince Sultan University. Capture The Flag on Nov 7, 2026, 10:00 AM - 1:00 PM, Auditorium B105. Workshops, challenges and live scoreboard.">
+    <meta name="twitter:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta name="twitter:image:alt" content="ACM CTF 3.0 - Capture The Flag, Nov 7 2026, Prince Sultan University">
+    <!-- /social / brand meta -->
     <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
     <link
@@ -324,12 +352,21 @@
 
         <nav class="sticky top-0 w-full bg-cyber-bg/90 backdrop-blur-md border-b border-cyber-border py-4 px-6 md:px-12 flex justify-between items-center transition-all duration-300"
             id="main-nav" vid="27">
-            <a href="#" class="font-sans font-bold text-xl tracking-tight flex items-center gap-2 group" vid="28">
-                <svg class="w-6 h-6 text-cyber-cyan group-hover:animate-spin" style="animation-duration: 3s;"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="29">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
-                        vid="30"></path>
+            <a href="index.html" class="font-sans font-bold text-xl tracking-tight flex items-center gap-2 group" vid="28">
+                <svg class="w-7 h-7 shrink-0" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="navMarkGrad" x1="24" y1="19" x2="46" y2="32.5"
+                            gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#00f0ff" />
+                            <stop offset="1" stop-color="#0055ff" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="32,4 56.25,18 56.25,46 32,60 7.75,46 7.75,18" fill="none" stroke="#00f0ff"
+                        stroke-width="3.5" stroke-linejoin="round"
+                        class="transition-opacity group-hover:opacity-70" />
+                    <path d="M24,17 V47" stroke="#00f0ff" stroke-width="3.5" stroke-linecap="round" />
+                    <path d="M24,19 L46,25.75 L24,32.5 Z" fill="url(#navMarkGrad)" />
+                    <circle cx="24" cy="47" r="2.9" fill="#00ff41" class="animate-pulse-fast" />
                 </svg>
                 <span class="text-white" vid="31">ACM CTF <span class="text-cyber-cyan" vid="32">3.0</span></span>
             </a>
@@ -338,7 +375,7 @@
             <div id="nav-menu"
                 class="hidden lg:flex flex-col lg:flex-row absolute lg:static top-full left-0 w-full lg:w-auto bg-cyber-panel lg:bg-transparent p-6 lg:p-0 border-b border-cyber-border lg:border-none items-start lg:items-center gap-6 font-mono text-sm z-50 shadow-2xl lg:shadow-none"
                 vid="33">
-                <a href="#" class="text-cyber-cyan font-bold block" vid="34">&gt; HOME_</a>
+                <a href="index.html" class="text-cyber-cyan font-bold block" vid="34">&gt; HOME_</a>
                 <a href="#workshops" class="text-cyber-gray hover:text-white transition-colors block"
                     vid="35">Workshops</a>
                 <a href="#challenges" class="text-cyber-gray hover:text-white transition-colors block"
@@ -587,7 +624,7 @@
                         </div>
                         <h2 class="font-sans font-bold text-4xl text-white uppercase" vid="157">Choose Your Target</h2>
                     </div>
-                    <a href="#"
+                    <a href="challenges.html"
                         class="font-mono text-sm text-cyber-gray hover:text-cyber-cyan flex items-center gap-2 transition-colors group"
                         vid="158">
                         [ EXPLORE CHALLENGES ]
@@ -601,7 +638,8 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" vid="161">
 
-                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer" vid="162">
+                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer"
+                        data-href="challenges.html" vid="162">
                         <div class="w-12 h-12 bg-cyber-bg border border-cyber-border flex items-center justify-center mb-6 group-hover:border-cyber-cyan group-hover:text-cyber-cyan transition-colors text-cyber-gray"
                             vid="163">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="164">
@@ -621,7 +659,8 @@
                     </div>
 
 
-                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer" vid="170">
+                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer"
+                        data-href="challenges.html" vid="170">
                         <div class="w-12 h-12 bg-cyber-bg border border-cyber-border flex items-center justify-center mb-6 group-hover:border-cyber-cyan group-hover:text-cyber-cyan transition-colors text-cyber-gray"
                             vid="171">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="172">
@@ -641,7 +680,8 @@
                     </div>
 
 
-                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer" vid="178">
+                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer"
+                        data-href="challenges.html" vid="178">
                         <div class="w-12 h-12 bg-cyber-bg border border-cyber-border flex items-center justify-center mb-6 group-hover:border-cyber-cyan group-hover:text-cyber-cyan transition-colors text-cyber-gray"
                             vid="179">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="180">
@@ -661,7 +701,8 @@
                     </div>
 
 
-                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer" vid="186">
+                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer"
+                        data-href="challenges.html" vid="186">
                         <div class="w-12 h-12 bg-cyber-bg border border-cyber-border flex items-center justify-center mb-6 group-hover:border-cyber-cyan group-hover:text-cyber-cyan transition-colors text-cyber-gray"
                             vid="187">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="188">
@@ -840,7 +881,7 @@
                                     </div>
                                 </div>
 
-                                <a href="#"
+                                <a href="competition.html"
                                     class="w-full block border border-cyber-gray hover:border-cyber-cyan text-cyber-gray hover:text-cyber-cyan text-center py-3 font-mono text-sm transition-colors uppercase tracking-widest"
                                     vid="270">
                                     [ View Competition Details ]
@@ -866,7 +907,7 @@
                         <h2 class="font-sans font-bold text-4xl text-white uppercase" vid="278">Prepare For The Breach
                         </h2>
                     </div>
-                    <a href="#"
+                    <a href="workshops.html"
                         class="font-mono text-sm text-cyber-gray hover:text-white flex items-center gap-2 transition-colors border border-cyber-border px-4 py-2 hover:bg-cyber-panel"
                         vid="279">
                         [ VIEW ALL WORKSHOPS ]
@@ -1035,7 +1076,7 @@
                 </div>
                 <h2 class="font-sans font-bold text-4xl text-white uppercase mb-12" vid="338">Scoreboard</h2>
 
-                <div class="bracket-box p-12 md:p-24 flex flex-col items-center justify-center bg-cyber-bg relative overflow-hidden group cursor-not-allowed"
+                <div class="bracket-box p-12 md:p-24 flex flex-col items-center justify-center bg-cyber-bg relative overflow-hidden group"
                     vid="339">
 
                     <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')]"
@@ -1050,15 +1091,19 @@
 
                     <h3 class="font-mono font-bold text-2xl text-white mb-2 relative z-10 uppercase tracking-widest"
                         vid="343">
-                        🔒 SCOREBOARD LOCKED
+                        🔒 CTF 3.0 SCOREBOARD LOCKED
                     </h3>
                     <p class="font-mono text-cyber-cyan text-sm relative z-10" vid="344">
-                        ACCESS WILL BE GRANTED ON 07.11.2026
+                        LIVE ACCESS WILL BE GRANTED ON 07.11.2026
                     </p>
                     <div class="mt-8 font-mono text-xs text-cyber-gray relative z-10 flex items-center gap-2" vid="345">
-                        <span class="w-2 h-2 bg-cyber-red rounded-full animate-pulse" vid="346"></span>
-                        AWAITING COMPETITION START
+                        <span class="w-2 h-2 bg-cyber-green rounded-full" vid="346"></span>
+                        CTF 2.0 ARCHIVE: 11 TEAMS // 89 SOLVES // 852 SUBMISSIONS
                     </div>
+                    <a href="scoreboard.html"
+                        class="mt-8 relative z-10 border border-cyber-cyan px-6 py-3 font-mono text-sm text-cyber-cyan hover:bg-cyber-cyan hover:text-black transition-colors">
+                        [ VIEW PREVIOUS RESULTS ]
+                    </a>
                 </div>
             </div>
         </section>
@@ -1082,11 +1127,13 @@
 
                 <div class="flex flex-col sm:flex-row gap-6 justify-center items-center" vid="354">
                     <button
+                        data-toast="Registration form is not connected yet. Official registration details will be published here."
                         class="bracket-box interactive-box px-8 py-5 bg-cyber-cyan/10 text-cyber-cyan font-mono font-bold text-lg w-full sm:w-auto text-center hover:bg-cyber-cyan hover:text-black transition-all group"
                         vid="355">
                         [ INITIATE REGISTRATION ]
                     </button>
                     <button
+                        data-href="rules.html"
                         class="border border-cyber-gray/50 px-8 py-5 text-cyber-gray hover:text-white hover:border-white font-mono transition-all w-full sm:w-auto text-center uppercase tracking-widest"
                         vid="356">
                         [ READ THE RULES ]
@@ -1102,7 +1149,7 @@
 
 
             <div class="col-span-1 md:col-span-2" vid="359">
-                <a href="#" class="font-sans font-bold text-2xl tracking-tight flex items-center gap-2 mb-4" vid="360">
+                <a href="index.html" class="font-sans font-bold text-2xl tracking-tight flex items-center gap-2 mb-4" vid="360">
                     <span class="text-white" vid="361">ACM CTF <span class="text-cyber-cyan" vid="362">3.0</span></span>
                 </a>
                 <p class="font-sans text-cyber-gray text-sm mb-2 max-w-sm" vid="363">
@@ -1274,6 +1321,7 @@
         });
     </script>
 
+    <script src="assets/interactions.js"></script>
 </body>
 
 </html>

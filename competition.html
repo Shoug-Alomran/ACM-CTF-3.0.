@@ -1,9 +1,37 @@
+<!doctype html>
 <html lang="en" class="scroll-smooth" vid="0">
 
 <head vid="1">
     <meta charset="UTF-8" vid="2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
     <title vid="4">Competition | ACM CTF 3.0</title>
+    <!-- social / brand meta -->
+    <meta name="description" content="Format, scoring and schedule for the ACM CTF 3.0 competition on Nov 7, 2026 at Prince Sultan University.">
+    <meta name="theme-color" content="#060a13">
+    <link rel="canonical" href="https://ctf-psu.shoug-tech.com/competition.html">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/assets/brand/icon.svg">
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ACM CTF 3.0">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="Competition — ACM CTF 3.0">
+    <meta property="og:description" content="Format, scoring and schedule for the ACM CTF 3.0 competition on Nov 7, 2026 at Prince Sultan University.">
+    <meta property="og:url" content="https://ctf-psu.shoug-tech.com/competition.html">
+    <meta property="og:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="ACM CTF 3.0 - Capture The Flag, Nov 7 2026, Prince Sultan University">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Competition — ACM CTF 3.0">
+    <meta name="twitter:description" content="Format, scoring and schedule for the ACM CTF 3.0 competition on Nov 7, 2026 at Prince Sultan University.">
+    <meta name="twitter:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta name="twitter:image:alt" content="ACM CTF 3.0 - Capture The Flag, Nov 7 2026, Prince Sultan University">
+    <!-- /social / brand meta -->
     <script src="https://cdn.tailwindcss.com/3.4.17" vid="5"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@100;400;700&amp;display=swap"
@@ -237,7 +265,7 @@
                 </div>
 
 
-                <div class="hidden lg:block" vid="27">
+                <div id="competition-mobile-nav" class="hidden lg:block" vid="27">
                     <div class="flex items-baseline space-x-6 font-mono text-sm" vid="28">
                         <a href="index.html"
                             class="text-cyber-blue_gray hover:text-cyber-cyan transition-colors px-3 py-2 uppercase tracking-wide"
@@ -248,7 +276,7 @@
                         <a href="challenges.html"
                             class="text-cyber-blue_gray hover:text-cyber-cyan transition-colors px-3 py-2 uppercase tracking-wide"
                             vid="31">Challenges</a>
-                        <a href="#"
+                        <a href="competition.html"
                             class="text-cyber-cyan text-glow px-3 py-2 relative flex items-center uppercase tracking-wide"
                             vid="32">
                             <span class="mr-1 opacity-70" vid="33">&gt;</span> COMPETITION<span class="animate-blink"
@@ -274,14 +302,17 @@
 
 
                 <div class="hidden lg:block" vid="41">
-                    <button class="btn-cyber-primary px-6 py-2 text-sm font-bold tracking-widest" vid="42">
+                    <button class="btn-cyber-primary px-6 py-2 text-sm font-bold tracking-widest"
+                        data-toast="Registration form is not connected yet. Official registration details will be published on the home page."
+                        vid="42">
                         REGISTER
                     </button>
                 </div>
 
 
                 <div class="lg:hidden flex items-center" vid="43">
-                    <button class="text-cyber-cyan hover:text-white p-2" vid="44">
+                    <button class="text-cyber-cyan hover:text-white p-2" data-mobile-menu="#competition-mobile-nav"
+                        aria-label="Toggle navigation" vid="44">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="45">
                             <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" vid="46"></path>
@@ -380,7 +411,9 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" vid="85">
                 <div class="lg:col-span-4 space-y-6 text-cyber-blue_gray leading-relaxed text-lg" vid="86">
-                    <p vid="87">Participants compete by solving cybersecurity challenges across various domains.</p>
+                    <p vid="87">Participants compete by solving cybersecurity challenges across various domains. The
+                        previous edition brought together 11 teams across 16+ challenges and recorded 852 flag
+                        submissions.</p>
                     <div class="flex flex-wrap gap-2 font-mono text-xs" vid="88">
                         <span class="px-3 py-1 border border-cyber-cyan/30 text-cyber-cyan bg-cyber-cyan/5"
                             vid="89">CRYPTOGRAPHY</span>
@@ -995,6 +1028,7 @@
 
                     <div class="shrink-0 w-full md:w-auto mt-4 md:mt-0" vid="367">
                         <button
+                            data-href="rules.html"
                             class="w-full md:w-auto px-8 py-4 border border-cyber-red text-cyber-red font-mono text-sm hover:bg-cyber-red hover:text-white transition-all uppercase tracking-widest bg-cyber-bg font-bold shadow-[0_0_10px_rgba(255,0,60,0.2)] hover:shadow-[0_0_20px_rgba(255,0,60,0.5)]"
                             vid="368">
                             [ READ COMPETITION RULES ]
@@ -1022,11 +1056,13 @@
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-6" vid="375">
                 <button
+                    data-toast="Registration form is not connected yet. Official registration details will be published on the home page."
                     class="btn-cyber-primary px-10 py-5 text-lg font-bold tracking-widest w-full sm:w-auto shadow-[0_0_15px_rgba(0,240,255,0.4)]"
                     vid="376">
                     [ INITIATE REGISTRATION ]
                 </button>
                 <button class="btn-cyber px-10 py-5 text-lg font-bold tracking-widest w-full sm:w-auto bg-cyber-bg"
+                    data-href="challenges.html"
                     vid="377">
                     [ VIEW CHALLENGES ]
                 </button>
@@ -1105,6 +1141,7 @@
         </div>
     </footer>
 
+    <script src="assets/interactions.js"></script>
 </body>
 
 </html>

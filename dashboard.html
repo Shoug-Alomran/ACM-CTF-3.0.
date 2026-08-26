@@ -1,10 +1,38 @@
-<html vid="0">
+<!doctype html>
+<html lang="en" vid="0">
 
 <head vid="1">
     <meta charset="UTF-8" vid="2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
     <title vid="4">Squad Management | ACM CTF 3.0</title>
 
+    <!-- social / brand meta -->
+    <meta name="description" content="Manage your squad for ACM CTF 3.0 at Prince Sultan University.">
+    <meta name="theme-color" content="#060a13">
+    <link rel="canonical" href="https://ctf-psu.shoug-tech.com/dashboard.html">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/assets/brand/icon.svg">
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ACM CTF 3.0">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="Squad Management — ACM CTF 3.0">
+    <meta property="og:description" content="Manage your squad for ACM CTF 3.0 at Prince Sultan University.">
+    <meta property="og:url" content="https://ctf-psu.shoug-tech.com/dashboard.html">
+    <meta property="og:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="ACM CTF 3.0 - Capture The Flag, Nov 7 2026, Prince Sultan University">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Squad Management — ACM CTF 3.0">
+    <meta name="twitter:description" content="Manage your squad for ACM CTF 3.0 at Prince Sultan University.">
+    <meta name="twitter:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta name="twitter:image:alt" content="ACM CTF 3.0 - Capture The Flag, Nov 7 2026, Prince Sultan University">
+    <!-- /social / brand meta -->
     <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
     <link
@@ -183,7 +211,7 @@
                     <a href="index.html" class="text-slate-400 hover:text-white transition-colors" vid="31">Home</a>
                     <a href="workshops.html" class="text-slate-400 hover:text-white transition-colors"
                         vid="32">Workshops</a>
-                    <a href="#" class="text-cyber-cyan font-bold glow-text-cyan flex items-center gap-1" vid="33">
+                    <a href="dashboard.html" class="text-cyber-cyan font-bold glow-text-cyan flex items-center gap-1" vid="33">
                         <span class="text-cyber-cyan/70" vid="34">&gt;</span> SQUAD_PORTAL<span class="animate-blink"
                             vid="35">_</span>
                     </a>
@@ -193,6 +221,7 @@
                 </div>
                 <div vid="38">
                     <button
+                        data-href="index.html"
                         class="font-mono text-xs border border-cyber-red/50 text-cyber-red px-4 py-2 bg-cyber-red/5 hover:bg-cyber-red hover:text-white transition-all"
                         vid="39">
                         [ DISCONNECT ]
@@ -280,11 +309,13 @@
                         </p>
 
                         <div class="bg-black/80 border border-slate-800 p-3 mb-4 font-mono text-[10px] text-cyber-cyan break-all"
+                            data-token-output
                             vid="87">
                             ACM3-SQ-9X2-K9L-RR42-P00X
                         </div>
 
                         <button
+                            data-generate-token
                             class="w-full font-mono text-xs border border-cyber-cyan text-cyber-cyan py-3 hover:bg-cyber-cyan hover:text-black transition-all group"
                             vid="88">
                             [ GENERATE NEW TOKEN ]
@@ -437,6 +468,7 @@
 
 
                         <div class="border border-dashed border-slate-800 bg-slate-900/10 p-6 flex flex-col items-center justify-center text-center group hover:bg-cyber-cyan/5 hover:border-cyber-cyan/30 transition-all cursor-pointer"
+                            data-toast="Recruitment invitations require the future competition backend."
                             vid="165">
                             <i class="ph ph-user-plus text-4xl text-slate-700 group-hover:text-cyber-cyan mb-3"
                                 vid="166"></i>
@@ -469,6 +501,7 @@
         </div>
     </footer>
 
+    <script src="assets/interactions.js"></script>
 </body>
 
 </html>

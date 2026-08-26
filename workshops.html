@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="en" class="scroll-smooth" vid="0">
 
 <head vid="1">
@@ -6,6 +7,33 @@
     <title vid="4">Workshops | ACM CTF 3.0</title>
 
 
+    <!-- social / brand meta -->
+    <meta name="description" content="Hands-on security workshops leading up to ACM CTF 3.0 at Prince Sultan University.">
+    <meta name="theme-color" content="#060a13">
+    <link rel="canonical" href="https://ctf-psu.shoug-tech.com/workshops.html">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/assets/brand/icon.svg">
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ACM CTF 3.0">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="Workshops — ACM CTF 3.0">
+    <meta property="og:description" content="Hands-on security workshops leading up to ACM CTF 3.0 at Prince Sultan University.">
+    <meta property="og:url" content="https://ctf-psu.shoug-tech.com/workshops.html">
+    <meta property="og:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="ACM CTF 3.0 - Capture The Flag, Nov 7 2026, Prince Sultan University">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Workshops — ACM CTF 3.0">
+    <meta name="twitter:description" content="Hands-on security workshops leading up to ACM CTF 3.0 at Prince Sultan University.">
+    <meta name="twitter:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta name="twitter:image:alt" content="ACM CTF 3.0 - Capture The Flag, Nov 7 2026, Prince Sultan University">
+    <!-- /social / brand meta -->
     <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
     <link
@@ -209,9 +237,9 @@
                 </div>
 
 
-                <div class="hidden lg:flex items-center gap-8 font-mono text-sm tracking-wide" vid="30">
+                <div id="workshops-mobile-nav" class="hidden lg:flex items-center gap-8 font-mono text-sm tracking-wide" vid="30">
                     <a href="index.html" class="text-slate-400 hover:text-white transition-colors" vid="31">Home</a>
-                    <a href="#" class="text-cyber-cyan font-bold glow-text-cyan flex items-center gap-1" vid="32">
+                    <a href="workshops.html" class="text-cyber-cyan font-bold glow-text-cyan flex items-center gap-1" vid="32">
                         <span class="text-cyber-cyan/70" vid="33">&gt;</span> WORKSHOPS<span class="animate-blink"
                             vid="34">_</span>
                     </a>
@@ -227,6 +255,7 @@
 
                 <div class="hidden md:block" vid="40">
                     <button
+                        data-toast="Registration form is not connected yet. Official registration details will be published on the home page."
                         class="font-mono text-sm border border-cyber-cyan text-cyber-cyan px-6 py-2 bg-cyber-cyan/5 hover:bg-cyber-cyan hover:text-black transition-all duration-300 relative group overflow-hidden"
                         vid="41">
                         <span class="relative z-10" vid="42">[ REGISTER ]</span>
@@ -236,7 +265,8 @@
                 </div>
 
 
-                <button class="lg:hidden text-cyber-cyan font-mono text-xl" vid="44">
+                <button class="lg:hidden text-cyber-cyan font-mono text-xl" data-mobile-menu="#workshops-mobile-nav"
+                    aria-label="Toggle navigation" vid="44">
                     [≡]
                 </button>
             </div>
@@ -780,11 +810,13 @@
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center" vid="284">
                 <button
+                    data-toast="Registration form is not connected yet. Official registration details will be published on the home page."
                     class="w-full sm:w-auto font-mono text-sm border border-cyber-cyan bg-cyber-cyan text-black px-8 py-3 hover:bg-transparent hover:text-cyber-cyan transition-all duration-300 font-bold shadow-[0_0_15px_rgba(0,240,255,0.4)]"
                     vid="285">
                     [ REGISTER FOR CTF 3.0 ]
                 </button>
                 <button
+                    data-href="challenges.html"
                     class="w-full sm:w-auto font-mono text-sm border border-slate-600 text-slate-300 px-8 py-3 hover:border-white hover:text-white transition-colors bg-slate-900/50"
                     vid="286">
                     [ EXPLORE CHALLENGES ]
@@ -809,21 +841,21 @@
                         Prince Sultan University, Riyadh.
                     </p>
                     <div class="flex gap-4" vid="296">
-                        <a href="#"
-                            class="w-8 h-8 rounded border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors"
+                        <span aria-label="Twitter link coming soon" title="Twitter link coming soon"
+                            class="w-8 h-8 rounded border border-slate-700 flex items-center justify-center text-slate-600"
                             vid="297">
                             <i class="ph ph-twitter-logo" vid="298"></i>
-                        </a>
-                        <a href="#"
-                            class="w-8 h-8 rounded border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors"
+                        </span>
+                        <span aria-label="Discord link coming soon" title="Discord link coming soon"
+                            class="w-8 h-8 rounded border border-slate-700 flex items-center justify-center text-slate-600"
                             vid="299">
                             <i class="ph ph-discord-logo" vid="300"></i>
-                        </a>
-                        <a href="#"
-                            class="w-8 h-8 rounded border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors"
+                        </span>
+                        <span aria-label="GitHub link coming soon" title="GitHub link coming soon"
+                            class="w-8 h-8 rounded border border-slate-700 flex items-center justify-center text-slate-600"
                             vid="301">
                             <i class="ph ph-github-logo" vid="302"></i>
-                        </a>
+                        </span>
                     </div>
                 </div>
 
@@ -852,7 +884,7 @@
                                 FAQ</a></li>
                         <li vid="321"><a href="team.html" class="hover:text-cyber-cyan transition-colors" vid="322">&gt;
                                 Organizing Team</a></li>
-                        <li vid="323"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="324">&gt; Contact
+                        <li vid="323"><a href="faq.html" class="hover:text-cyber-cyan transition-colors" vid="324">&gt; Contact
                                 Us</a></li>
                     </ul>
                 </div>
@@ -879,6 +911,7 @@
     </footer>
 
 
+    <script src="assets/interactions.js"></script>
 </body>
 
 </html>
