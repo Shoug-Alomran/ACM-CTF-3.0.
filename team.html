@@ -487,16 +487,19 @@
     <script src="assets/teams.js"></script>
     <script src="assets/interactions.js"></script>
     <script>
-        TeamStore.loadTeams().then(teams => {
-            const id = new URLSearchParams(location.search).get('team');
-            const team = teams.find(item => item.id === id) || teams[0];
+        Promise.all([TeamStore.loadTeams(), fetch('data/previous-teams.json').then(response => response.json())]).then(([teams, archive]) => {
+            const params = new URLSearchParams(location.search);
+            const currentId = params.get('team');
+            const archiveId = params.get('archive');
+            const isArchive = Boolean(archiveId);
+            const team = isArchive ? archive.teams.find(item => item.id === archiveId) : (teams.find(item => item.id === currentId) || teams[0]);
             if (!team) { location.href = 'teams.html'; return; }
             const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[character]));
             document.title = `${team.name} Dossier | ACM CTF 3.0`;
             const summaryGrid = document.querySelector('main > .grid');
             const members = team.members || [];
             summaryGrid.className = 'grid grid-cols-1 gap-6 mb-8';
-            summaryGrid.innerHTML = `<div class="font-mono text-xs text-cyber-cyan flex items-center gap-3"><span>01 // OPERATIVE ROSTER</span><div class="h-px bg-cyber-cyan/20 flex-grow"></div><span class="text-slate-500">${members.length} / 3 MEMBERS</span></div>${members.map((member,index) => `
+            summaryGrid.innerHTML = `<div class="font-mono text-xs text-cyber-cyan flex items-center gap-3"><span>01 // OPERATIVE ROSTER${isArchive ? ' // CTF 2.0 ARCHIVE' : ''}</span><div class="h-px bg-cyber-cyan/20 flex-grow"></div><span class="text-slate-500">${members.length} / 3 MEMBERS</span></div>${members.map((member,index) => `
                 <article class="border border-cyber-cyan/20 bg-cyber-dark/40 p-6 md:p-8 bracket-box overflow-hidden">
                     <div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
                     <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
@@ -512,7 +515,7 @@
                             <div class="flex flex-wrap gap-4 justify-center md:justify-start font-mono text-xs text-slate-400">
                                 <div class="flex items-center gap-2"><i class="ph ph-shield-check text-cyber-green"></i> ROLE: <span class="text-white">${escapeHtml(member.role || (index ? 'Member' : 'Captain'))}</span></div>
                                 <div class="flex items-center gap-2"><i class="ph ph-users text-cyber-cyan"></i> TEAM: <span class="text-white">${escapeHtml(team.name)}</span></div>
-                                <div class="flex items-center gap-2"><i class="ph ph-crosshair text-cyber-red"></i> TEAM FLAGS: ${Number(team.flags || 0)}</div>
+                                <div class="flex items-center gap-2"><i class="ph ph-crosshair text-cyber-red"></i> TEAM FLAGS: ${team.flags == null ? 'NOT RECORDED' : Number(team.flags)}</div>
                             </div>
                         </div>
                         <div class="bg-cyber-cyan/10 border border-cyber-cyan/30 p-3 px-6 text-center min-w-[150px]">

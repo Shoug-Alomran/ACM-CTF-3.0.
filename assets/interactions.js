@@ -14,6 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.prepend(siteHeader);
     const shellToggle=siteHeader.querySelector('.site-header__toggle'),shellNav=siteHeader.querySelector('nav');
     shellToggle.addEventListener('click',()=>{const open=shellNav.classList.toggle('is-open');shellToggle.setAttribute('aria-expanded',String(open))});
+
+    let siteFooter = document.querySelector('footer');
+    if (!siteFooter) {
+        siteFooter = document.createElement('footer');
+        siteFooter.className = 'site-credit-footer';
+        document.body.appendChild(siteFooter);
+    }
+    if (!siteFooter.querySelector('.site-blueprint-credit')) {
+        const credit = document.createElement('div');
+        credit.className = 'site-blueprint-credit';
+        credit.innerHTML = `Made by <a href="https://blueprint.shoug-tech.com/" target="_blank" rel="noopener noreferrer">Blueprint</a>`;
+        siteFooter.appendChild(credit);
+    }
     if (!document.querySelector('link[href="assets/registration.css"]')) {
         const styles = document.createElement('link');
         styles.rel = 'stylesheet';
