@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     const siteHeader = document.createElement('header');
     siteHeader.className = 'site-header';
-    const navItems = [['index.html','HOME'],['workshops.html','Workshops'],['challenges.html','Challenges'],['competition.html','Competition'],['scoreboard.html','Scoreboard'],['rules.html','Rules'],['faq.html','FAQ'],['teams.html','Teams']];
-    siteHeader.innerHTML = `<div class="site-header__inner"><a class="site-header__brand" href="index.html"><svg viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="none" stroke="#00f0ff" stroke-width="3"/><path d="M24 17v30M24 19l22 7-22 7z" fill="none" stroke="#00f0ff" stroke-width="3"/></svg><span>ACM CTF <em>3.0</em></span></a><button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-header-nav">MENU</button><nav id="site-header-nav" class="site-header__nav" aria-label="Main navigation">${navItems.map(([href,label])=>`<a href="${href}"${pageName===href?' aria-current="page"':''}>${label}${pageName===href?'_':''}</a>`).join('')}<a class="site-header__cta" href="index.html#register">[ REGISTER ]</a></nav></div>`;
+    const navItems = [['index.html','HOME'],['workshops.html','Workshops'],['challenges.html','Challenges'],['competition.html','Competition'],['scoreboard.html','Scoreboard'],['rules.html','Rules'],['faq.html','FAQ'],['teams.html','Teams'],['organizers.html','Organizers']];
+    siteHeader.innerHTML = `<div class="site-header__inner"><a class="site-header__brand" href="index.html"><svg viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="none" stroke="#00f0ff" stroke-width="3"/><path d="M24 17v30M24 19l22 7-22 7z" fill="none" stroke="#00f0ff" stroke-width="3"/></svg><span>ACM/CyberTech CTF <em>3.0</em></span></a><button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-header-nav">MENU</button><nav id="site-header-nav" class="site-header__nav" aria-label="Main navigation">${navItems.map(([href,label])=>`<a href="${href}"${pageName===href?' aria-current="page"':''}>${label}${pageName===href?'_':''}</a>`).join('')}<button class="site-header__language" type="button" data-language-toggle aria-label="Switch to Arabic">AR</button><a class="site-header__cta" href="index.html#register">[ REGISTER ]</a></nav></div>`;
     document.body.prepend(siteHeader);
     const shellToggle=siteHeader.querySelector('.site-header__toggle'),shellNav=siteHeader.querySelector('nav');
     shellToggle.addEventListener('click',()=>{const open=shellNav.classList.toggle('is-open');shellToggle.setAttribute('aria-expanded',String(open))});
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.innerHTML = `
         <section class="registration-dialog" role="dialog" aria-modal="true" aria-labelledby="registration-title">
             <header class="registration-head">
-                <div><p class="registration-kicker">// OPERATOR ENROLLMENT</p><h2 id="registration-title">Register for ACM CTF 3.0</h2></div>
+                <div><p class="registration-kicker">// OPERATOR ENROLLMENT</p><h2 id="registration-title">Register for ACM/CyberTech CTF 3.0</h2></div>
                 <button class="registration-close" type="button" aria-label="Close registration form">×</button>
             </header>
             <form class="registration-form">
@@ -199,4 +199,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (location.hash === '#register' || new URLSearchParams(location.search).has('register')) {
         openRegistration(null);
     }
+    import('./i18n.js').then(module => module.initI18n());
 });

@@ -7,7 +7,7 @@
   "source": "PSU CTF Competition Reports and Team Registration Responses",
   "teams": [
     {"id":"ctf2-hz","name":"HZ","rank":1,"score":3800,"members":[{"name":"Hasan Belal Farhat","role":"Captain"},{"name":"Hazim Khalid Alhatim","role":"Member"}]},
-    {"id":"ctf2-thevault","name":"TheVault","rank":2,"score":2800,"members":[{"name":"الجوهره الجبير","role":"Captain"},{"name":"الشيماء بابعير","role":"Member"},{"name":"جودي وسيم آل حسان","role":"Member"}]},
+    {"id":"ctf2-thevault","name":"TheVault","rank":2,"score":2800,"members":[{"name":"Aljawhara Aljubair","nameEn":"Aljawhara Aljubair","nameAr":"الجوهره الجبير","role":"Captain"},{"name":"Alshaimaa Babaeer","nameEn":"Alshaimaa Babaeer","nameAr":"الشيماء بابعير","role":"Member"},{"name":"Judy Waseem Al Hassan","nameEn":"Judy Waseem Al Hassan","nameAr":"جودي وسيم آل حسان","role":"Member"}]},
     {"id":"ctf2-zero-day","name":"ZERO DAY","rank":3,"score":2100,"members":[{"name":"Omar Fahad Alkhalifah","role":"Captain"},{"name":"Abdullah Alanazi","role":"Member"}]}
   ]
 }

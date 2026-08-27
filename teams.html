@@ -1,61 +1,136 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Teams | ACM CTF 3.0</title>
+  <title>Teams | ACM/CyberTech CTF 3.0</title>
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/registration.css">
   <style>
-    .team-section + .team-section { margin-top: 72px; }
-    .team-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 18px; }
-    .team-card { display: block; border: 1px solid #18324a; background: #081321; padding: 22px; text-decoration: none; color: #effaff; transition: .2s; }
-    .team-card[href]:hover { border-color: #00f0ff; transform: translateY(-3px); }
-    .team-card h3 { margin: .5rem 0; }
-    .team-meta { display: flex; justify-content: space-between; gap: 12px; color: #8da2b8; font: 12px "JetBrains Mono"; }
-    .team-members { margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid #18324a; list-style: none; color: #b7c5d5; font: 12px/1.8 "JetBrains Mono"; }
-    .team-members li::before { content: "> "; color: #00f0ff; }
-    .status { color: #44ff9a; }
-    .archive-status { color: #00f0ff; }
-    .empty { grid-column: 1/-1; border: 1px dashed #18324a; padding: 40px; text-align: center; color: #8da2b8; }
-    .source-note { margin-top: 18px; color: #8da2b8; font: 11px "JetBrains Mono"; }
-    .privacy-card { border-style: dashed; }
+    .team-section+.team-section {
+      margin-top: 72px;
+    }
+
+    .team-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .team-card {
+      display: block;
+      border: 1px solid #18324a;
+      background: #081321;
+      padding: 22px;
+      text-decoration: none;
+      color: #effaff;
+      transition: .2s;
+    }
+
+    .team-card[href]:hover {
+      border-color: #00f0ff;
+      transform: translateY(-3px);
+    }
+
+    .team-card h3 {
+      margin: .5rem 0;
+    }
+
+    .team-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: #8da2b8;
+      font: 12px "JetBrains Mono";
+    }
+
+    .team-members {
+      margin: 16px 0 0;
+      padding: 14px 0 0;
+      border-top: 1px solid #18324a;
+      list-style: none;
+      color: #b7c5d5;
+      font: 12px/1.8 "JetBrains Mono";
+    }
+
+    .team-members li::before {
+      content: "> ";
+      color: #00f0ff;
+    }
+
+    .status {
+      color: #44ff9a;
+    }
+
+    .archive-status {
+      color: #00f0ff;
+    }
+
+    .empty {
+      grid-column: 1/-1;
+      border: 1px dashed #18324a;
+      padding: 40px;
+      text-align: center;
+      color: #8da2b8;
+    }
+
+    .source-note {
+      margin-top: 18px;
+      color: #8da2b8;
+      font: 11px "JetBrains Mono";
+    }
+
+    .privacy-card {
+      border-style: dashed;
+    }
   </style>
 </head>
+
 <body>
   <main class="section">
     <div class="wrap">
       <p class="eyebrow">TEAM REGISTRY</p>
       <section class="team-section">
         <div class="section-head">
-          <div><h2>New teams</h2><p class="lead">Current ACM CTF 3.0 registrations. Select a team to open its member dossier.</p></div>
+          <div>
+            <h2>New teams</h2>
+            <p class="lead">Current ACM/CyberTech CTF 3.0 registrations. Select a team to open its member dossier.</p>
+          </div>
           <a class="btn" href="index.html#register">Register team</a>
         </div>
         <div id="current-team-list" class="team-list"></div>
       </section>
       <section class="team-section">
         <div class="section-head">
-          <div><h2>Previous teams</h2><p class="lead">Verified winners and registration totals from the previous PSU CTF edition.</p></div>
+          <div>
+            <h2>Previous teams</h2>
+            <p class="lead">Verified winners and registration totals from the previous PSU CTF edition.</p>
+          </div>
           <a class="btn ghost" href="scoreboard.html">Full archive</a>
         </div>
         <div id="previous-team-list" class="team-list"></div>
-        <p class="source-note">SOURCE // PSU CTF competition reports and team registration responses. The sheet contains 17 submissions representing 16 unique teams; Zero Day submitted twice. Student IDs and email addresses are excluded. Only the top three team identities and rosters are public.</p>
       </section>
     </div>
   </main>
   <script src="assets/teams.js"></script>
   <script src="assets/interactions.js"></script>
   <script>
-    const esc = value => String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
+    const esc = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
     Promise.all([TeamStore.loadTeams(), fetch('data/previous-teams.json').then(response => response.json())]).then(([current, archive]) => {
       const visible = current.filter(team => team.status !== 'rejected');
       const currentRoot = document.querySelector('#current-team-list');
       const previousRoot = document.querySelector('#previous-team-list');
       currentRoot.innerHTML = visible.length ? visible.map(team => `<a class="team-card" href="team.html?team=${encodeURIComponent(team.id)}"><div class="team-meta"><span>CTF 3.0 // CURRENT</span><span class="status">${esc((team.status || 'pending').toUpperCase())}</span></div><h3>${esc(team.name)}</h3><div class="team-meta"><span>${team.members?.length || 0} MEMBERS</span><span>${Number(team.score || 0).toLocaleString()} PTS</span></div></a>`).join('') : '<div class="empty">NO NEW TEAMS HAVE BEEN PUBLISHED YET</div>';
-      const winners = archive.teams.map(team => `<a class="team-card" href="team.html?archive=${encodeURIComponent(team.id)}"><div class="team-meta"><span>FINAL RANK // #${String(team.rank).padStart(2,'0')}</span><span class="archive-status">VERIFIED</span></div><h3>${esc(team.name)}</h3><div class="team-meta"><span>CTF 2.0</span><span>${Number(team.score).toLocaleString()} PTS</span></div><ul class="team-members">${team.members.map(member => `<li>${esc(member.name)}</li>`).join('')}</ul></a>`).join('');
-      const privateTeams = `<article class="team-card privacy-card"><div class="team-meta"><span>REGISTERED TEAMS</span><span class="archive-status">PRIVACY PROTECTED</span></div><h3>${Number(archive.withheldTeamCount)} ADDITIONAL TEAMS</h3><div class="team-meta"><span>${Number(archive.teamCount)} UNIQUE TEAMS TOTAL</span><span>IDENTITIES WITHHELD</span></div></article>`;
-      previousRoot.innerHTML = winners + privateTeams;
+      const renderPrevious = (language = document.documentElement.lang) => {
+        const winners = archive.teams.map(team => `<a class="team-card" href="team.html?archive=${encodeURIComponent(team.id)}"><div class="team-meta"><span>FINAL RANK // #${String(team.rank).padStart(2, '0')}</span><span class="archive-status">VERIFIED</span></div><h3>${esc(team.name)}</h3><div class="team-meta"><span>CTF 2.0</span><span>${Number(team.score).toLocaleString()} PTS</span></div><ul class="team-members">${team.members.map(member => `<li>${esc(language === 'ar' ? (member.nameAr || member.name) : (member.nameEn || member.name))}</li>`).join('')}</ul></a>`).join('');
+        const privateTeams = `<article class="team-card privacy-card"><div class="team-meta"><span>REGISTERED TEAMS</span><span class="archive-status">PRIVACY PROTECTED</span></div><h3>${Number(archive.withheldTeamCount)} ADDITIONAL TEAMS</h3><div class="team-meta"><span>${Number(archive.teamCount)} UNIQUE TEAMS TOTAL</span><span>IDENTITIES WITHHELD</span></div></article>`;
+        previousRoot.innerHTML = winners + privateTeams;
+      };
+      renderPrevious();
+      window.addEventListener('site-language-change', event => renderPrevious(event.detail.language));
     });
   </script>
 </body>
+
 </html>

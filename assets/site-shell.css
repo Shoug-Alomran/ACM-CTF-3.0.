@@ -1,15 +1,53 @@
 .site-shell-active { padding-top: 74px !important; }
 .site-header { position: fixed; inset: 0 0 auto; z-index: 1000; height: 74px; background: rgba(3,8,20,.96); border-top: 1px solid rgba(0,240,255,.2); border-bottom: 1px solid rgba(0,240,255,.22); backdrop-filter: blur(16px); font-family: "JetBrains Mono", monospace; }
 .site-header__inner { width: min(1360px,calc(100% - 40px)); height: 100%; margin: auto; display:flex; align-items:center; gap:28px; }
-.site-header__brand { display:flex; align-items:center; gap:12px; margin-right:auto; color:#f8fafc; text-decoration:none; font:700 20px "Space Grotesk",sans-serif; white-space:nowrap; }
+.site-header__brand { display:flex; align-items:center; gap:12px; margin-right:auto; color:#f8fafc; text-decoration:none; font:700 18px "Space Grotesk",sans-serif; white-space:nowrap; }
 .site-header__brand svg { width:34px; height:40px; }
 .site-header__brand em { color:#00f0ff; font-style:normal; }
-.site-header__nav { display:flex; align-items:center; gap:28px; }
-.site-header__nav a { color:#8190a8; text-decoration:none; font-size:13px; letter-spacing:.04em; white-space:nowrap; transition:.2s; }
+.site-header__nav { display:flex; align-items:center; gap:22px; }
+.site-header__nav a { color:#94a3b8; text-decoration:none; font-size:13.5px; letter-spacing:.04em; white-space:nowrap; transition:.2s; }
 .site-header__nav a:hover,.site-header__nav a[aria-current="page"] { color:#00f0ff; }
 .site-header__nav a[aria-current="page"]::before { content:"> "; }
 .site-header__cta { border:1px solid #00f0ff; color:#00f0ff!important; padding:9px 16px; }
-.site-header__toggle { display:none; color:#00f0ff; border:1px solid rgba(0,240,255,.45); background:transparent; padding:8px 12px; font:700 12px "JetBrains Mono",monospace; }
-@media(max-width:1050px){.site-header__toggle{display:block}.site-header__nav{display:none;position:absolute;top:73px;left:0;right:0;padding:20px;background:rgba(3,8,20,.98);border-bottom:1px solid rgba(0,240,255,.25);flex-direction:column;align-items:stretch;gap:16px}.site-header__nav.is-open{display:flex}.site-header__nav a{font-size:14px}.site-header__brand{font-size:17px}}
+.site-header__language { border:1px solid rgba(0,240,255,.45); background:transparent; color:#00f0ff; padding:8px 12px; min-height:44px; font:700 12px "JetBrains Mono",monospace; cursor:pointer; }
+.site-header__language:hover { background:rgba(0,240,255,.1); }
+.site-header__toggle { display:none; color:#00f0ff; border:1px solid rgba(0,240,255,.45); background:transparent; padding:8px 14px; min-height:44px; min-width:44px; font:700 12px "JetBrains Mono",monospace; }
+@media(max-width:1420px){.site-header__inner{gap:20px}.site-header__nav{gap:16px}.site-header__nav a{font-size:13px}.site-header__cta{padding:9px 13px}}
+@media(max-width:1249px){.site-header__toggle{display:block}.site-header__nav{display:none;position:absolute;top:73px;left:0;right:0;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:rgba(3,8,20,.98);border-bottom:1px solid rgba(0,240,255,.25);flex-direction:column;align-items:stretch;gap:2px;max-height:calc(100vh - 74px);max-height:calc(100dvh - 74px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}.site-header__nav.is-open{display:flex}.site-header__nav a{font-size:14px;display:flex;align-items:center;min-height:44px}.site-header__nav .site-header__cta{justify-content:center;margin-top:8px}.site-header__nav .site-header__language{min-height:44px;margin-top:8px}.site-header__brand{font-size:17px}}
 @media(max-width:420px){.site-header__inner{width:calc(100% - 24px)}.site-header__brand span{display:none}}
 .site-credit-footer{margin-top:auto;border-top:1px solid rgba(0,240,255,.14);background:#030814}.site-blueprint-credit{width:min(1360px,calc(100% - 40px));margin:auto;padding:14px 0;text-align:center;color:#6f8199;font:11px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase}.site-blueprint-credit a{color:#00f0ff;text-decoration:none;font-weight:700}.site-blueprint-credit a:hover{text-shadow:0 0 12px rgba(0,240,255,.65);text-decoration:underline}
+html[dir="rtl"] body,html[dir="rtl"] .site-header { font-family:"Noto Sans Arabic",Tahoma,sans-serif; }
+html[dir="rtl"] .site-header__inner { direction:rtl; }
+html[dir="rtl"] .site-header__brand { margin-right:0; margin-left:auto; }
+html[dir="rtl"] .site-header__nav a[aria-current="page"]::before { content:"< "; }
+html[dir="rtl"] .font-mono,html[dir="rtl"] [class*="font-mono"] { font-family:"Noto Sans Arabic",Tahoma,sans-serif!important; }
+html[dir="rtl"] input[type="email"],html[dir="rtl"] input[inputmode="numeric"],html[dir="rtl"] code,html[dir="rtl"] pre { direction:ltr; text-align:left; }
+
+/* --- official attribution logo strip (organizers.html + index.html) --- */
+.logo-strip { width: min(1360px, calc(100% - 40px)); margin-inline: auto; }
+.logo-strip__label { display:flex; align-items:center; gap:14px; margin-bottom:22px; color:#6f8199; font:11px "JetBrains Mono",monospace; letter-spacing:.18em; text-transform:uppercase; }
+.logo-strip__label::after { content:""; flex:1; height:1px; background:rgba(0,240,255,.16); }
+.logo-strip__grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; align-items:stretch; }
+.logo-strip__item { display:flex; align-items:center; justify-content:center; min-height:104px; padding:20px 22px; border:1px solid rgba(0,240,255,.14); background:rgba(10,17,34,.45); text-decoration:none; transition:border-color .2s, background .2s, transform .2s; }
+a.logo-strip__item:hover { border-color:rgba(0,240,255,.45); background:rgba(10,17,34,.75); transform:translateY(-2px); }
+.logo-strip__item img { max-width:100%; max-height:56px; width:auto; height:auto; object-fit:contain; opacity:.92; transition:opacity .25s; }
+.logo-strip__item:hover img, .logo-strip__item:focus-within img { opacity:1; }
+.logo-strip__item--compact img { max-height:88px; }
+.logo-strip__item--plate { background:#f4f7fb; border-color:rgba(0,240,255,.22); }
+a.logo-strip__item--plate:hover { background:#ffffff; }
+.logo-strip__item--plate img { opacity:1; }
+.logo-strip__item--pending { border-style:dashed; border-color:rgba(0,240,255,.2); background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(0,240,255,.025) 8px,rgba(0,240,255,.025) 16px); flex-direction:column; gap:8px; text-align:center; }
+.logo-strip__pending-tag { color:#00f0ff; font:700 10px "JetBrains Mono",monospace; letter-spacing:.16em; border:1px solid rgba(0,240,255,.35); padding:4px 9px; }
+.logo-strip__pending-name { color:#6f8199; font:10px "JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; }
+@media(max-width:900px){ .logo-strip__grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media(max-width:420px){ .logo-strip__grid{grid-template-columns:1fr} .logo-strip__item{min-height:88px} }
+html[dir="rtl"] .logo-strip__label::after { background:rgba(0,240,255,.16); }
+
+/* --- CRT scanline overlays disabled ---
+   The 4px stripe overlays caused eye strain, most visibly banding across the
+   attribution logos. Every page spells the same effect differently, so all four
+   variants are switched off here. Delete this block to bring them back. */
+.scanlines::before,
+.scanline-overlay,
+.scanlines-overlay { display: none !important; }
+div.scanlines { display: none !important; }

@@ -1,0 +1,117 @@
+{
+  "organizers": [
+    {
+      "id": "shoug-alomran",
+      "nameEn": "Shoug Alomran",
+      "nameAr": "شوق العمران",
+      "club": "ACM Club",
+      "clubId": "acm-club",
+      "position": "Vice President",
+      "ctfRole": "CTF Organizer & Website Developer",
+      "description": "Vice President of the ACM Club and organizer of ACM/CyberTech CTF 3.0. Leads event planning and coordination while developing the competition website and supporting the technical preparation of the event.",
+      "avatarSeed": "shoug-alomran",
+      "links": {
+        "linkedin": "https://www.linkedin.com/in/shoug-alomran/",
+        "github": "https://github.com/Shoug-Alomran",
+        "extra": null
+      },
+      "clubAr": "نادي ACM",
+      "positionAr": "نائبة الرئيس",
+      "ctfRoleAr": "منظِّمة المسابقة ومطوّرة الموقع",
+      "descriptionAr": "نائبة رئيس نادي ACM ومنظِّمة مسابقة ACM/CyberTech CTF 3.0. تقود تخطيط الحدث والتنسيق له، وتطوّر موقع المسابقة وتدعم التحضير التقني للفعالية."
+    },
+    {
+      "id": "yawar-hayat",
+      "nameEn": "Yawar Hayat",
+      "nameAr": null,
+      "club": "ACM Club",
+      "clubAr": "نادي ACM",
+      "clubId": "acm-club",
+      "position": "ACM President",
+      "positionAr": "رئيس نادي ACM",
+      "ctfRole": "CTF Organizer",
+      "ctfRoleAr": "منظِّم المسابقة",
+      "description": "President of the ACM Club and an organizer of ACM/CyberTech CTF 3.0. Further responsibilities in the competition are being confirmed and will be added here.",
+      "descriptionAr": "رئيس نادي ACM وأحد منظِّمي مسابقة ACM/CyberTech CTF 3.0. يجري تأكيد مهامه الإضافية في المسابقة وستُضاف هنا.",
+      "avatarSeed": "yawar-h",
+      "links": {
+        "linkedin": null,
+        "github": null,
+        "extra": null
+      },
+      "additionalRolePending": true
+    }
+  ],
+  "clubs": [
+    {
+      "id": "acm-club",
+      "name": "ACM Club",
+      "org": "CCIS · Prince Sultan University",
+      "icon": "ph-terminal-window",
+      "role": "Lead organizing club",
+      "contribution": "Owns event planning and coordination, builds and runs the competition website, and drives the technical preparation of the CTF environment.",
+      "pending": false,
+      "nameAr": "نادي ACM",
+      "orgAr": "كلية علوم الحاسب والمعلومات · جامعة الأمير سلطان",
+      "roleAr": "النادي المنظِّم الرئيسي",
+      "contributionAr": "يتولّى تخطيط الحدث والتنسيق له، ويبني موقع المسابقة ويشغّله، ويقود التحضير التقني لبيئة المسابقة."
+    },
+    {
+      "id": "cybertech-club",
+      "name": "CyberTech Club",
+      "org": "CCIS · Prince Sultan University",
+      "icon": "ph-shield-check",
+      "role": "Partner organizing club",
+      "contribution": null,
+      "pending": true,
+      "nameAr": "نادي CyberTech",
+      "orgAr": "كلية علوم الحاسب والمعلومات · جامعة الأمير سلطان",
+      "roleAr": "النادي المنظِّم الشريك",
+      "contributionAr": null
+    }
+  ],
+  "collaboration": {
+    "headline": "ACM/CyberTech CTF 3.0 is organized jointly by two student clubs.",
+    "body": "The two clubs run the event as a single organizing body: shared planning meetings, one combined task board covering challenge authoring, infrastructure, logistics and outreach, and one joint decision on scope, schedule and rules. Each club leads the areas that match its strengths, and both sign off on the final competition format.",
+    "headlineAr": "تُنظَّم مسابقة ACM/CyberTech CTF 3.0 بالتعاون بين ناديين طلابيين.",
+    "bodyAr": "يدير الناديان الحدث كجهة تنظيمية واحدة: اجتماعات تخطيط مشتركة، ولوحة مهام موحّدة تغطي إعداد التحديات والبنية التقنية والخدمات اللوجستية والتواصل، وقرار مشترك حول النطاق والجدول والقواعد. يقود كل نادٍ المجالات التي تناسب قدراته، ويعتمد كلاهما الصيغة النهائية للمسابقة."
+  },
+  "logos": [
+    {
+      "id": "psu",
+      "label": "Prince Sultan University",
+      "src": "assets/brand/logos/prince-sultan-university-logo.png",
+      "href": null,
+      "plate": true,
+      "pending": false
+    },
+    {
+      "id": "ccis",
+      "label": "CCIS — College of Computer & Information Sciences",
+      "src": "assets/brand/logos/ccis-college-of-computer-and-information-sciences-logo.png",
+      "href": null,
+      "plate": true,
+      "pending": false
+    },
+    {
+      "id": "acm-club",
+      "label": "ACM Club",
+      "src": "assets/brand/logos/acm-ctf-club-logo.png",
+      "href": null,
+      "plate": true,
+      "pending": false
+    },
+    {
+      "id": "cybertech-club",
+      "label": "CyberTech Club",
+      "src": "assets/brand/logos/cybertech-club-logo.png",
+      "href": null,
+      "plate": true,
+      "pending": false
+    }
+  ],
+  "intro": "The people and clubs running ACM/CyberTech CTF 3.0 — club position, CTF responsibility, and how the two organizing clubs coordinate the competition.",
+  "introAr": "الأشخاص والنوادي التي تدير مسابقة ACM/CyberTech CTF 3.0 — المنصب داخل النادي، والمسؤولية في المسابقة، وكيفية تنسيق النادييْن المنظِّميْن للحدث.",
+  "pendingNote": "Remaining organizer profiles publish as their details are confirmed.",
+  "pendingNoteAr": "تُنشر بقية ملفات المنظّمين فور تأكيد بياناتهم."
+}

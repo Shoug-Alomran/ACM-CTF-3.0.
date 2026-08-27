@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizers | ACM/CyberTech CTF 3.0</title>
+    <!-- social / brand meta -->
+    <meta name="description" content="The organizers behind ACM/CyberTech CTF 3.0 — club roles, CTF responsibilities and the two-club collaboration running the event.">
+    <meta name="theme-color" content="#060a13">
+    <link rel="canonical" href="https://ctf-psu.shoug-tech.com/organizers.html">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ACM/CyberTech CTF 3.0">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="Organizers — ACM/CyberTech CTF 3.0">
+    <meta property="og:description" content="The organizers behind ACM/CyberTech CTF 3.0 — club roles, CTF responsibilities and the two-club collaboration running the event.">
+    <meta property="og:url" content="https://ctf-psu.shoug-tech.com/organizers.html">
+    <meta property="og:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="ACM/CyberTech CTF 3.0 - Capture The Flag, Prince Sultan University">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Organizers — ACM/CyberTech CTF 3.0">
+    <meta name="twitter:description" content="The organizers behind ACM/CyberTech CTF 3.0 — club roles, CTF responsibilities and the two-club collaboration running the event.">
+    <meta name="twitter:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
+    <meta name="twitter:image:alt" content="ACM/CyberTech CTF 3.0 - Capture The Flag, Prince Sultan University">
+    <!-- /social / brand meta -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            base: '#060a13',
+                            cyan: '#00f0ff',
+                            green: '#00ff41',
+                            red: '#ff003c',
+                            blue: '#1a2b4c',
+                            dark: '#0a1122',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'blink': 'blink 1s step-end infinite',
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #060a13;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            z-index: -1;
+        }
+
+        .glow-text-cyan {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+        }
+
+        .bracket-box {
+            position: relative;
+        }
+
+        .bracket-tl {
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid #00f0ff;
+            border-left: 2px solid #00f0ff;
+        }
+
+        .bracket-tr {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid #00f0ff;
+            border-right: 2px solid #00f0ff;
+        }
+
+        .bracket-bl {
+            position: absolute;
+            bottom: -1px;
+            left: -1px;
+            width: 8px;
+            height: 8px;
+            border-bottom: 2px solid #00f0ff;
+            border-left: 2px solid #00f0ff;
+        }
+
+        .bracket-br {
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 8px;
+            height: 8px;
+            border-bottom: 2px solid #00f0ff;
+            border-right: 2px solid #00f0ff;
+        }
+
+        .hex-badge {
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body class="font-display antialiased scanlines min-h-screen flex flex-col selection:bg-cyber-cyan selection:text-black">
+    <div class="cyber-bg"></div>
+
+    <main class="flex-grow pt-32 pb-24 px-6 max-w-7xl mx-auto w-full">
+
+        <!-- 00 // PAGE HEADER -->
+        <section class="border border-cyber-cyan/20 bg-cyber-dark/40 p-6 md:p-8 bracket-box mb-10">
+            <div class="bracket-tl"></div>
+            <div class="bracket-tr"></div>
+            <div class="bracket-bl"></div>
+            <div class="bracket-br"></div>
+            <div class="font-mono text-cyber-cyan/60 text-xs mb-2">ORGANIZING UNIT //</div>
+            <h1 class="font-display text-4xl md:text-5xl font-bold text-white uppercase tracking-tight glow-text-cyan mb-4">
+                Organizers
+            </h1>
+            <p class="font-display text-[16px] leading-relaxed text-slate-300 max-w-3xl" data-page-intro></p>
+            <div class="flex flex-wrap gap-x-6 gap-y-2 font-mono text-[13px] text-slate-300 mt-6">
+                <div class="flex items-center gap-2"><i class="ph ph-users-three text-cyber-cyan"></i> <span>ORGANIZERS LISTED:</span> <span class="text-white" data-organizer-count>--</span></div>
+                <div class="flex items-center gap-2"><i class="ph ph-handshake text-cyber-green"></i> <span>ORGANIZING CLUBS:</span> <span class="text-white">2</span></div>
+                <div class="flex items-center gap-2"><i class="ph ph-buildings text-cyber-red"></i> <span>CCIS · PRINCE SULTAN UNIVERSITY</span></div>
+            </div>
+        </section>
+
+        <!-- 01 // ORGANIZER ROSTER -->
+        <section class="mb-12">
+            <div class="font-mono text-xs text-cyber-cyan mb-4 flex items-center gap-3">
+                <span>01 // ORGANIZER ROSTER</span>
+                <div class="h-px bg-cyber-cyan/20 flex-grow"></div>
+                <span class="text-slate-500"><span data-organizer-count>--</span> PROFILES</span>
+            </div>
+            <div class="grid grid-cols-1 gap-6" data-organizer-roster></div>
+            <p class="font-mono text-[11px] text-slate-500 mt-4 uppercase tracking-widest" data-pending-note></p>
+        </section>
+
+        <!-- 02 // CLUB COLLABORATION -->
+        <section class="mb-12">
+            <div class="font-mono text-xs text-cyber-cyan mb-4 flex items-center gap-3">
+                <span>02 // CLUB COLLABORATION</span>
+                <div class="h-px bg-cyber-cyan/20 flex-grow"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6" data-club-grid></div>
+            <div class="border border-slate-800 bg-cyber-base p-6 md:p-8 bracket-box">
+                <div class="bracket-tl border-slate-700"></div>
+                <div class="bracket-tr border-slate-700"></div>
+                <div class="bracket-bl border-slate-700"></div>
+                <div class="bracket-br border-slate-700"></div>
+                <div class="font-mono text-[11px] text-cyber-green uppercase tracking-widest mb-4">// Joint operation
+                </div>
+                <div data-collaboration-note></div>
+            </div>
+        </section>
+
+        <!-- 03 // OFFICIAL ATTRIBUTION -->
+        <section>
+            <div class="font-mono text-xs text-cyber-cyan mb-4 flex items-center gap-3">
+                <span>03 // OFFICIAL ATTRIBUTION</span>
+                <div class="h-px bg-cyber-cyan/20 flex-grow"></div>
+            </div>
+            <div data-logo-strip="Organized in collaboration with"></div>
+        </section>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-cyber-base mt-auto">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="font-mono text-[10px] text-slate-500 uppercase tracking-widest">
+                ACM/CyberTech CTF 3.0 // <span class="text-cyber-cyan">ORGANIZING COMMITTEE</span>
+            </div>
+            <div class="flex gap-6 font-mono text-[10px] text-slate-500 uppercase">
+                <a href="rules.html" class="hover:text-cyber-cyan transition-colors">Rules</a>
+                <a href="teams.html" class="hover:text-cyber-cyan transition-colors">Teams</a>
+                <a href="faq.html" class="hover:text-cyber-cyan transition-colors">Support</a>
+            </div>
+            <div class="bg-cyber-green/10 border border-cyber-green/30 px-3 py-1 text-cyber-green font-mono text-[10px]">
+                CON_SECURE: AES_CTR_MODE
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/organizers.js"></script>
+    <script src="assets/interactions.js"></script>
+</body>
+
+</html>

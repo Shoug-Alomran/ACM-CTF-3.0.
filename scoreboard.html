@@ -4,31 +4,32 @@
 <head vid="1">
     <meta charset="UTF-8" vid="2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
-    <title vid="4">CTF 2.0 Final Results | ACM CTF 3.0</title>
+    <title vid="4">CTF 2.0 Final Results | ACM/CyberTech CTF 3.0</title>
     <!-- social / brand meta -->
-    <meta name="description" content="Live scoreboard and past results for ACM CTF at Prince Sultan University.">
+    <meta name="description" content="Live scoreboard and past results for ACM/CyberTech CTF at Prince Sultan University.">
     <meta name="theme-color" content="#060a13">
     <link rel="canonical" href="https://ctf-psu.shoug-tech.com/scoreboard.html">
 
     <link rel="icon" href="/favicon.ico" sizes="any">
 
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="ACM CTF 3.0">
+    <meta property="og:site_name" content="ACM/CyberTech CTF 3.0">
     <meta property="og:locale" content="en_US">
-    <meta property="og:title" content="Scoreboard — ACM CTF 3.0">
-    <meta property="og:description" content="Live scoreboard and past results for ACM CTF at Prince Sultan University.">
+    <meta property="og:title" content="Scoreboard — ACM/CyberTech CTF 3.0">
+    <meta property="og:description" content="Live scoreboard and past results for ACM/CyberTech CTF at Prince Sultan University.">
     <meta property="og:url" content="https://ctf-psu.shoug-tech.com/scoreboard.html">
     <meta property="og:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="ACM CTF 3.0 - Capture The Flag, Prince Sultan University">
+    <meta property="og:image:alt" content="ACM/CyberTech CTF 3.0 - Capture The Flag, Prince Sultan University">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Scoreboard — ACM CTF 3.0">
-    <meta name="twitter:description" content="Live scoreboard and past results for ACM CTF at Prince Sultan University.">
+    <meta name="twitter:title" content="Scoreboard — ACM/CyberTech CTF 3.0">
+    <meta name="twitter:description"
+        content="Live scoreboard and past results for ACM/CyberTech CTF at Prince Sultan University.">
     <meta name="twitter:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
-    <meta name="twitter:image:alt" content="ACM CTF 3.0 - Capture The Flag, Prince Sultan University">
+    <meta name="twitter:image:alt" content="ACM/CyberTech CTF 3.0 - Capture The Flag, Prince Sultan University">
     <!-- /social / brand meta -->
     <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
@@ -213,9 +214,11 @@
         </div>
         <nav class="max-w-[1440px] mx-auto px-6 py-3 flex items-center justify-between gap-4 border-t border-cyber-cyan/10 font-mono text-xs tracking-wider"
             aria-label="Main navigation">
-            <a href="index.html" class="flex items-center gap-2 text-white hover:text-cyber-cyan transition-colors shrink-0">
-                <span class="w-7 h-7 border border-cyber-cyan text-cyber-cyan flex items-center justify-center font-bold">3</span>
-                <span class="hidden sm:inline">ACM CTF</span>
+            <a href="index.html"
+                class="flex items-center gap-2 text-white hover:text-cyber-cyan transition-colors shrink-0">
+                <span
+                    class="w-7 h-7 border border-cyber-cyan text-cyber-cyan flex items-center justify-center font-bold">3</span>
+                <span class="hidden sm:inline">ACM/CyberTech CTF</span>
             </a>
             <button type="button" data-mobile-menu="#scoreboard-nav"
                 class="md:hidden border border-cyber-cyan/40 px-3 py-1.5 text-cyber-cyan hover:bg-cyber-cyan/10"
@@ -225,8 +228,10 @@
                 <a href="index.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">HOME</a>
                 <a href="workshops.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">WORKSHOPS</a>
                 <a href="challenges.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">CHALLENGES</a>
-                <a href="competition.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">COMPETITION</a>
-                <a href="scoreboard.html" aria-current="page" class="text-cyber-cyan glow-text-cyan">&gt; SCOREBOARD_</a>
+                <a href="competition.html"
+                    class="text-slate-400 hover:text-cyber-cyan transition-colors">COMPETITION</a>
+                <a href="scoreboard.html" aria-current="page" class="text-cyber-cyan glow-text-cyan">&gt;
+                    SCOREBOARD_</a>
                 <a href="rules.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">RULES</a>
                 <a href="faq.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">FAQ</a>
                 <a href="team.html" class="text-slate-400 hover:text-cyber-cyan transition-colors">TEAM</a>
@@ -269,153 +274,181 @@
                 <div class="bracket-bl" vid="46"></div>
                 <div class="bracket-br" vid="47"></div>
 
-                <table class="w-full text-left font-mono text-sm" vid="48">
+                <div class="overflow-x-auto">
+<table class="w-full text-left font-mono text-sm" vid="48">
                     <thead vid="49">
                         <tr class="border-b border-slate-800 bg-slate-900/50 text-slate-500 uppercase text-[10px] tracking-widest"
                             vid="50">
-                            <th class="py-4 px-6 w-16 text-center" vid="51">Rank</th>
-                            <th class="py-4 px-6" vid="52">Operative / Team</th>
-                            <th class="py-4 px-6" vid="53">Status</th>
-                            <th class="py-4 px-6 text-right" vid="54">Points</th>
+                            <th class="py-4 px-3 sm:px-6 w-16 text-center" vid="51">Rank</th>
+                            <th class="py-4 px-3 sm:px-6" vid="52">Operative / Team</th>
+                            <th class="py-4 px-3 sm:px-6" vid="53">Status</th>
+                            <th class="py-4 px-3 sm:px-6 text-right" vid="54">Points</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-800/50">
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-cyber-cyan text-lg">01</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-cyber-cyan text-lg">01</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
-                                    <span class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors">HZ</span>
+                                    <span
+                                        class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors">HZ</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg glow-text-green">3,800</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg glow-text-green">3,800
+                            </td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">02</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">02</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
-                                    <span class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors">TheVault</span>
+                                    <span
+                                        class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors">TheVault</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">2,800</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">2,800</td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">03</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">03</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
-                                    <span class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors">ZERO DAY</span>
+                                    <span
+                                        class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors">ZERO
+                                        DAY</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">2,100</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">2,100</td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">04</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">04</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
                                     <span class="text-white font-bold tracking-tight">PRIVATE TEAM</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">2,000</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">2,000</td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">05</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">05</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
                                     <span class="text-white font-bold tracking-tight">PRIVATE TEAM</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">1,900</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">1,900</td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">06</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">06</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
                                     <span class="text-white font-bold tracking-tight">PRIVATE TEAM</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">1,900</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">1,900</td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">07</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">07</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
                                     <span class="text-white font-bold tracking-tight">PRIVATE TEAM</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">1,300</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">1,300</td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">08</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">08</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
                                     <span class="text-white font-bold tracking-tight">PRIVATE TEAM</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">1,300</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">1,300</td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">09</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">09</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
                                     <span class="text-white font-bold tracking-tight">PRIVATE TEAM</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">1,000</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">1,000</td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">10</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">10</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
                                     <span class="text-white font-bold tracking-tight">PRIVATE TEAM</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">900</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">900</td>
                         </tr>
 
                         <tr class="hover:bg-cyber-cyan/5 transition-colors group">
-                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg">11</td>
-                            <td class="py-5 px-6">
+                            <td class="py-5 px-3 sm:px-6 text-center font-bold text-slate-300 text-lg">11</td>
+                            <td class="py-5 px-3 sm:px-6">
                                 <div class="flex flex-col">
                                     <span class="text-white font-bold tracking-tight">PRIVATE TEAM</span>
                                     <span class="text-[10px] text-slate-500 uppercase">CTF 2.0 // VERIFIED</span>
                                 </div>
                             </td>
-                            <td class="py-5 px-6"><span class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span></td>
-                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg ">800</td>
+                            <td class="py-5 px-3 sm:px-6"><span
+                                    class="text-[10px] text-cyber-green border border-cyber-green/30 px-2 py-1">FINAL</span>
+                            </td>
+                            <td class="py-5 px-3 sm:px-6 text-right text-cyber-green font-bold text-lg ">800</td>
                         </tr>
                     </tbody>
                 </table>
+</div>
                 <div class="bg-slate-900/30 p-4 border-t border-slate-800 flex justify-center" vid="130">
-                    <span class="font-mono text-xs text-cyber-cyan border border-cyber-cyan/30 px-4 py-2"
-                        vid="131">
+                    <span class="font-mono text-xs text-cyber-cyan border border-cyber-cyan/30 px-4 py-2" vid="131">
                         [ 11 VERIFIED ENTRIES ]
                     </span>
                 </div>
@@ -440,8 +473,8 @@
 
                     <div class="border-l-2 border-cyber-green pl-3 py-1" vid="142">
                         <div class="text-slate-500 mb-1" vid="143">FINAL RESULT // RANK #1</div>
-                        <div class="text-white uppercase" vid="144"><span class="text-cyber-cyan"
-                                vid="145">HZ</span> won CTF 2.0 with the highest verified score</div>
+                        <div class="text-white uppercase" vid="144"><span class="text-cyber-cyan" vid="145">HZ</span>
+                            won CTF 2.0 with the highest verified score</div>
                         <div class="text-cyber-green" vid="146">3,800 PTS</div>
                     </div>
 
@@ -454,13 +487,14 @@
 
                     <div class="border-l-2 border-cyber-cyan pl-3 py-1" vid="152">
                         <div class="text-slate-500 mb-1" vid="153">FINAL RESULT // RANK #3</div>
-                        <div class="text-white uppercase" vid="154">User <span class="text-cyber-cyan"
-                                vid="155">ZERO DAY</span> secured final rank #3</div>
+                        <div class="text-white uppercase" vid="154">User <span class="text-cyber-cyan" vid="155">ZERO
+                                DAY</span> secured final rank #3</div>
                     </div>
 
                     <div class="border-l-2 border-slate-700 pl-3 py-1" vid="156">
                         <div class="text-slate-500 mb-1" vid="157">FINAL ARCHIVE // PRIVACY MODE</div>
-                        <div class="text-slate-300 uppercase" vid="158">Team identities below rank #3 are withheld.</div>
+                        <div class="text-slate-300 uppercase" vid="158">Team identities below rank #3 are withheld.
+                        </div>
                     </div>
                 </div>
 
@@ -474,7 +508,8 @@
 
 
             <div class="border border-slate-800 bg-cyber-dark/40 p-6 flex flex-col gap-4" vid="173">
-                <h4 class="font-mono text-xs text-slate-500 uppercase tracking-widest" vid="174">Verified Archive Metrics</h4>
+                <h4 class="font-mono text-xs text-slate-500 uppercase tracking-widest" vid="174">Verified Archive
+                    Metrics</h4>
                 <div class="space-y-3" vid="175">
                     <div vid="176">
                         <div class="flex justify-between font-mono text-[10px] mb-1" vid="177">
@@ -527,4 +562,5 @@
     <script src="assets/interactions.js"></script>
     <script src="assets/ctfd-scoreboard.js"></script>
 </body>
+
 </html>

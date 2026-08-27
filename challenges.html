@@ -4,33 +4,36 @@
 <head vid="1">
     <meta charset="UTF-8" vid="2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
-    <title vid="4">Challenges - ACM CTF 3.0</title>
+    <title vid="4">Challenges - ACM/CyberTech CTF 3.0</title>
 
 
     <!-- social / brand meta -->
-    <meta name="description" content="Challenge categories for ACM CTF 3.0: web, crypto, forensics, reversing, OSINT and more.">
+    <meta name="description"
+        content="Challenge categories for ACM/CyberTech CTF 3.0: web, crypto, forensics, reversing, OSINT and more.">
     <meta name="theme-color" content="#060a13">
     <link rel="canonical" href="https://ctf-psu.shoug-tech.com/challenges.html">
 
     <link rel="icon" href="/favicon.ico" sizes="any">
 
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="ACM CTF 3.0">
+    <meta property="og:site_name" content="ACM/CyberTech CTF 3.0">
     <meta property="og:locale" content="en_US">
-    <meta property="og:title" content="Challenges — ACM CTF 3.0">
-    <meta property="og:description" content="Challenge categories for ACM CTF 3.0: web, crypto, forensics, reversing, OSINT and more.">
+    <meta property="og:title" content="Challenges — ACM/CyberTech CTF 3.0">
+    <meta property="og:description"
+        content="Challenge categories for ACM/CyberTech CTF 3.0: web, crypto, forensics, reversing, OSINT and more.">
     <meta property="og:url" content="https://ctf-psu.shoug-tech.com/challenges.html">
     <meta property="og:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="ACM CTF 3.0 - Capture The Flag, Prince Sultan University">
+    <meta property="og:image:alt" content="ACM/CyberTech CTF 3.0 - Capture The Flag, Prince Sultan University">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Challenges — ACM CTF 3.0">
-    <meta name="twitter:description" content="Challenge categories for ACM CTF 3.0: web, crypto, forensics, reversing, OSINT and more.">
+    <meta name="twitter:title" content="Challenges — ACM/CyberTech CTF 3.0">
+    <meta name="twitter:description"
+        content="Challenge categories for ACM/CyberTech CTF 3.0: web, crypto, forensics, reversing, OSINT and more.">
     <meta name="twitter:image" content="https://ctf-psu.shoug-tech.com/assets/brand/og-banner.png">
-    <meta name="twitter:image:alt" content="ACM CTF 3.0 - Capture The Flag, Prince Sultan University">
+    <meta name="twitter:image:alt" content="ACM/CyberTech CTF 3.0 - Capture The Flag, Prince Sultan University">
     <!-- /social / brand meta -->
     <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
@@ -82,6 +85,7 @@
             .bracket-tl {
                 position: relative;
             }
+
             .bracket-tl::before {
                 content: '';
                 position: absolute;
@@ -93,9 +97,11 @@
                 border-left: 2px solid #00f0ff;
                 pointer-events: none;
             }
+
             .bracket-tr {
                 position: relative;
             }
+
             .bracket-tr::after {
                 content: '';
                 position: absolute;
@@ -107,9 +113,11 @@
                 border-right: 2px solid #00f0ff;
                 pointer-events: none;
             }
+
             .bracket-bl {
                 position: relative;
             }
+
             .bracket-bl::before {
                 content: '';
                 position: absolute;
@@ -121,9 +129,11 @@
                 border-left: 2px solid #00f0ff;
                 pointer-events: none;
             }
+
             .bracket-br {
                 position: relative;
             }
+
             .bracket-br::after {
                 content: '';
                 position: absolute;
@@ -135,7 +145,7 @@
                 border-bottom: 2px solid #00f0ff;
                 pointer-events: none;
             }
-            
+
             .tech-border {
                 position: relative;
                 border: 1px solid rgba(0, 240, 255, 0.2);
@@ -143,29 +153,43 @@
                 backdrop-filter: blur(4px);
                 -webkit-backdrop-filter: blur(4px);
             }
-            
+
             .text-glow {
                 text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
             }
-            
+
             .alert-glow {
                 text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
             }
         }
 
-        
+
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
+
         .cursor-blink {
             animation: blink 1s step-end infinite;
         }
 
         @keyframes scan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
         }
+
         .scanner-line {
             position: absolute;
             top: 0;
@@ -183,19 +207,22 @@
             color: #f8fafc;
         }
 
-        
+
         .scanlines-overlay {
             position: fixed;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1));
             background-size: 100% 4px;
             z-index: 9999;
             pointer-events: none;
             opacity: 0.6;
         }
-        
+
         @media (prefers-reduced-motion: reduce) {
-            .cursor-blink, .scanner-line, * {
+
+            .cursor-blink,
+            .scanner-line,
+            * {
                 animation: none !important;
                 transition: none !important;
             }
@@ -215,7 +242,7 @@
             vid="15">
             <div class="flex items-center gap-2" vid="16">
                 <span class="w-1.5 h-1.5 bg-terminal rounded-full animate-pulse" vid="17"></span>
-                <span vid="18">SYSTEM STATUS: REGISTRATION OPEN // ACM CTF 3.0 // 07 NOV 2026</span>
+                <span vid="18">SYSTEM STATUS: REGISTRATION OPEN // ACM/CyberTech CTF 3.0 // 24 OCT 2026</span>
             </div>
             <div class="hidden sm:block" vid="19">
                 <span vid="20">COORD: 24.7136° N, 46.6753° E</span>
@@ -229,7 +256,7 @@
                     vid="23">
                     3
                 </div>
-                <span class="font-bold tracking-widest text-lg hidden sm:block" vid="24">ACM CTF</span>
+                <span class="font-bold tracking-widest text-lg hidden sm:block" vid="24">ACM/CyberTech CTF</span>
             </div>
 
             <nav class="hidden lg:flex items-center gap-8 font-mono text-sm" vid="25">
@@ -748,10 +775,11 @@
                             vid="253">
                             3
                         </div>
-                        <span class="font-bold tracking-widest text-2xl text-white" vid="254">ACM CTF 3.0</span>
+                        <span class="font-bold tracking-widest text-2xl text-white" vid="254">ACM/CyberTech CTF
+                            3.0</span>
                     </div>
                     <p class="text-slate-400 mb-4 max-w-sm" vid="255">
-                        The premier cybersecurity competition hosted by the ACM Club at Prince Sultan University. Test
+                        The premier cybersecurity competition hosted by the ACM Club &amp; CyberTech Club at Prince Sultan University. Test
                         your skills, capture the flags.
                     </p>
                     <div class="font-mono text-sm text-cyan" vid="256">
@@ -796,11 +824,11 @@
             <div class="border-t border-cyan/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-xs text-slate-500"
                 vid="279">
                 <div vid="280">
-                    © 2026 ACM Club · CCIS · Prince Sultan University. All rights reserved.
+                    © 2026 ACM Club &amp; CyberTech Club · CCIS · Prince Sultan University. All rights reserved.
                 </div>
                 <div class="flex items-center gap-2 text-terminal" vid="281">
                     <span class="w-2 h-2 bg-terminal rounded-full" vid="282"></span>
-                    <span vid="283">SYSTEM // ACM CTF 3.0 // CONNECTION SECURE</span>
+                    <span vid="283">SYSTEM // ACM/CyberTech CTF 3.0 // CONNECTION SECURE</span>
                 </div>
             </div>
         </div>

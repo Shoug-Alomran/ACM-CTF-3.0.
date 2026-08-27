@@ -1,6 +1,6 @@
-# ACM CTF 3.0
+# ACM/CyberTech CTF 3.0
 
-Official static website for ACM CTF 3.0 at Prince Sultan University — workshops, competition information, challenges, rules, FAQ, team, and scoreboard.
+Official static website for ACM/CyberTech CTF 3.0 at Prince Sultan University — workshops, competition information, challenges, rules, FAQ, team, and scoreboard.
 
 ## Local preview
 
