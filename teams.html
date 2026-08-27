@@ -80,10 +80,6 @@
       color: #8da2b8;
       font: 11px "JetBrains Mono";
     }
-
-    .privacy-card {
-      border-style: dashed;
-    }
   </style>
 </head>
 
@@ -105,7 +101,7 @@
         <div class="section-head">
           <div>
             <h2>Previous teams</h2>
-            <p class="lead">Verified winners and registration totals from the previous PSU CTF edition.</p>
+            <p class="lead">Final standings from the previous PSU CTF edition. Member rosters are published for the top three teams.</p>
           </div>
           <a class="btn ghost" href="scoreboard.html">Full archive</a>
         </div>
@@ -123,9 +119,12 @@
       const previousRoot = document.querySelector('#previous-team-list');
       currentRoot.innerHTML = visible.length ? visible.map(team => `<a class="team-card" href="team.html?team=${encodeURIComponent(team.id)}"><div class="team-meta"><span>CTF 3.0 // CURRENT</span><span class="status">${esc((team.status || 'pending').toUpperCase())}</span></div><h3>${esc(team.name)}</h3><div class="team-meta"><span>${team.members?.length || 0} MEMBERS</span><span>${Number(team.score || 0).toLocaleString()} PTS</span></div></a>`).join('') : '<div class="empty">NO NEW TEAMS HAVE BEEN PUBLISHED YET</div>';
       const renderPrevious = (language = document.documentElement.lang) => {
-        const winners = archive.teams.map(team => `<a class="team-card" href="team.html?archive=${encodeURIComponent(team.id)}"><div class="team-meta"><span>FINAL RANK // #${String(team.rank).padStart(2, '0')}</span><span class="archive-status">VERIFIED</span></div><h3>${esc(team.name)}</h3><div class="team-meta"><span>CTF 2.0</span><span>${Number(team.score).toLocaleString()} PTS</span></div><ul class="team-members">${team.members.map(member => `<li>${esc(language === 'ar' ? (member.nameAr || member.name) : (member.nameEn || member.name))}</li>`).join('')}</ul></a>`).join('');
-        const privateTeams = `<article class="team-card privacy-card"><div class="team-meta"><span>REGISTERED TEAMS</span><span class="archive-status">PRIVACY PROTECTED</span></div><h3>${Number(archive.withheldTeamCount)} ADDITIONAL TEAMS</h3><div class="team-meta"><span>${Number(archive.teamCount)} UNIQUE TEAMS TOTAL</span><span>IDENTITIES WITHHELD</span></div></article>`;
-        previousRoot.innerHTML = winners + privateTeams;
+        previousRoot.innerHTML = archive.teams.map(team => {
+          const head = `<div class="team-meta"><span>FINAL RANK // #${String(team.rank).padStart(2, '0')}</span><span class="archive-status">VERIFIED</span></div><h3>${esc(team.name)}</h3><div class="team-meta"><span>CTF 2.0</span><span>${Number(team.score).toLocaleString()} PTS</span></div>`;
+          const roster = team.members || [];
+          if (!roster.length) return `<article class="team-card">${head}</article>`;
+          return `<a class="team-card" href="team.html?archive=${encodeURIComponent(team.id)}">${head}<ul class="team-members">${roster.map(member => `<li>${esc(language === 'ar' ? (member.nameAr || member.name) : (member.nameEn || member.name))}</li>`).join('')}</ul></a>`;
+        }).join('');
       };
       renderPrevious();
       window.addEventListener('site-language-change', event => renderPrevious(event.detail.language));
