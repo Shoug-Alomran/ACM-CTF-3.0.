@@ -22,24 +22,43 @@
     },
     {
       "id": "yawar-hayat",
-      "nameEn": "Yawar Hayat",
+      "nameEn": "Muhammad Yawar Hayat",
       "nameAr": null,
-      "club": "ACM Club",
-      "clubAr": "نادي ACM",
+      "club": "ACM Student Chapter PSU",
+      "clubAr": "شعبة ACM الطلابية بجامعة الأمير سلطان",
       "clubId": "acm-club",
-      "position": "ACM President",
-      "positionAr": "رئيس نادي ACM",
-      "ctfRole": "CTF Organizer",
-      "ctfRoleAr": "منظِّم المسابقة",
-      "description": "President of the ACM Club and an organizer of ACM/CyberTech CTF 3.0. Further responsibilities in the competition are being confirmed and will be added here.",
-      "descriptionAr": "رئيس نادي ACM وأحد منظِّمي مسابقة ACM/CyberTech CTF 3.0. يجري تأكيد مهامه الإضافية في المسابقة وستُضاف هنا.",
+      "position": "President",
+      "positionAr": "الرئيس",
+      "ctfRole": "CTF Organizer, Challenge Developer, Workshop Instructor & Technical Support",
+      "ctfRoleAr": "منظِّم المسابقة، ومطوّر التحديات، ومدرّب الورشة، والدعم التقني",
+      "description": "Handled CTF 3.0 end-to-end: event planning and sponsor outreach, challenge design and development across multiple categories, infrastructure deployment and maintenance, delivering the participant workshop, and live technical support throughout the competition.",
+      "descriptionAr": "أدار مسابقة CTF 3.0 من البداية إلى النهاية: تخطيط الفعالية والتواصل مع الرعاة، وتصميم التحديات وتطويرها في عدة فئات، ونشر البنية التقنية وصيانتها، وتقديم ورشة المشاركين، والدعم التقني المباشر طوال المسابقة.",
       "avatarSeed": "yawar-h",
       "links": {
         "linkedin": null,
         "github": null,
         "extra": null
-      },
-      "additionalRolePending": true
+      }
+    },
+    {
+      "id": "sultan-alharbi",
+      "nameEn": "Sultan Alharbi",
+      "nameAr": null,
+      "club": "Cyber-Tech Club",
+      "clubAr": "نادي Cyber-Tech",
+      "clubId": "cybertech-club",
+      "position": "Cyber Tech President",
+      "positionAr": "رئيس نادي Cyber Tech",
+      "ctfRole": null,
+      "ctfRoleAr": null,
+      "description": null,
+      "descriptionAr": null,
+      "avatarSeed": "sultan-alharbi",
+      "links": {
+        "linkedin": null,
+        "github": null,
+        "extra": null
+      }
     }
   ],
   "clubs": [
