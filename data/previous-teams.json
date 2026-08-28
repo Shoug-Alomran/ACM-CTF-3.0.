@@ -7,16 +7,223 @@
   "solveCount": 89,
   "source": "PSU CTF 2.0 Competition Report — final leaderboard",
   "teams": [
-    {"id": "ctf2-hz", "name": "HZ", "rank": 1, "score": 3800, "members": [{"name": "Hasan Belal Farhat", "role": "Captain"}, {"name": "Hazim Khalid Alhatim", "role": "Member"}]},
-    {"id": "ctf2-thevault", "name": "TheVault", "rank": 2, "score": 2800, "members": [{"name": "Aljawhara Aljubair", "nameEn": "Aljawhara Aljubair", "nameAr": "الجوهره الجبير", "role": "Captain"}, {"name": "Alshaimaa Babaeer", "nameEn": "Alshaimaa Babaeer", "nameAr": "الشيماء بابعير", "role": "Member"}, {"name": "Judy Waseem Al Hassan", "nameEn": "Judy Waseem Al Hassan", "nameAr": "جودي وسيم آل حسان", "role": "Member"}]},
-    {"id": "ctf2-zero-day", "name": "ZERO DAY", "rank": 3, "score": 2100, "members": [{"name": "Omar Fahad Alkhalifah", "role": "Captain"}, {"name": "Abdullah Alanazi", "role": "Member"}]},
-    {"id": "ctf2-gotcha-flag", "name": "Gotcha_flag", "rank": 4, "score": 2000},
-    {"id": "ctf2-asm", "name": "ASM", "rank": 5, "score": 1900},
-    {"id": "ctf2-checkmate", "name": "checkmate", "rank": 6, "score": 1900},
-    {"id": "ctf2-aha", "name": "Aha", "rank": 7, "score": 1300},
-    {"id": "ctf2-cybercrackers", "name": "Cybercrackers", "rank": 8, "score": 1300},
-    {"id": "ctf2-404", "name": "404", "rank": 9, "score": 1000},
-    {"id": "ctf2-mam", "name": "MAM", "rank": 10, "score": 900},
-    {"id": "ctf2-red-team", "name": "Red Team", "rank": 11, "score": 800}
-  ]
+    {
+      "id": "ctf2-hz",
+      "name": "HZ",
+      "rank": 1,
+      "score": 3800,
+      "members": [
+        {
+          "name": "Hasan Belal Farhat",
+          "role": "Captain"
+        },
+        {
+          "name": "Hazim Khalid Alhatim",
+          "role": "Member"
+        }
+      ],
+      "solves": []
+    },
+    {
+      "id": "ctf2-thevault",
+      "name": "TheVault",
+      "rank": 2,
+      "score": 2800,
+      "members": [
+        {
+          "name": "Aljawhara Aljubair",
+          "nameEn": "Aljawhara Aljubair",
+          "nameAr": "الجوهره الجبير",
+          "role": "Captain"
+        },
+        {
+          "name": "Alshaimaa Babaeer",
+          "nameEn": "Alshaimaa Babaeer",
+          "nameAr": "الشيماء بابعير",
+          "role": "Member"
+        },
+        {
+          "name": "Judy Waseem Al Hassan",
+          "nameEn": "Judy Waseem Al Hassan",
+          "nameAr": "جودي وسيم آل حسان",
+          "role": "Member"
+        }
+      ],
+      "solves": []
+    },
+    {
+      "id": "ctf2-zero-day",
+      "name": "ZERO DAY",
+      "rank": 3,
+      "score": 2100,
+      "members": [
+        {
+          "name": "Omar Fahad Alkhalifah",
+          "role": "Captain"
+        },
+        {
+          "name": "Abdullah Alanazi",
+          "role": "Member"
+        }
+      ],
+      "solves": []
+    },
+    {
+      "id": "ctf2-gotcha-flag",
+      "name": "Gotcha_flag",
+      "rank": 4,
+      "score": 2000,
+      "solves": []
+    },
+    {
+      "id": "ctf2-asm",
+      "name": "ASM",
+      "rank": 5,
+      "score": 1900,
+      "solves": []
+    },
+    {
+      "id": "ctf2-checkmate",
+      "name": "checkmate",
+      "rank": 6,
+      "score": 1900,
+      "solves": []
+    },
+    {
+      "id": "ctf2-aha",
+      "name": "Aha",
+      "rank": 7,
+      "score": 1300,
+      "solves": []
+    },
+    {
+      "id": "ctf2-cybercrackers",
+      "name": "Cybercrackers",
+      "rank": 8,
+      "score": 1300,
+      "solves": []
+    },
+    {
+      "id": "ctf2-404",
+      "name": "404",
+      "rank": 9,
+      "score": 1000,
+      "solves": []
+    },
+    {
+      "id": "ctf2-mam",
+      "name": "MAM",
+      "rank": 10,
+      "score": 900,
+      "solves": []
+    },
+    {
+      "id": "ctf2-red-team",
+      "name": "Red Team",
+      "rank": 11,
+      "score": 800,
+      "solves": []
+    }
+  ],
+  "solvesPublished": false,
+  "challenges": [
+    {
+      "name": "Rusty Archive",
+      "solves": 11,
+      "solveRate": 100.0,
+      "nameConfirmed": true
+    },
+    {
+      "name": "Job Portal",
+      "solves": 11,
+      "solveRate": 100.0,
+      "nameConfirmed": true
+    },
+    {
+      "name": "…awol find him",
+      "solves": 10,
+      "solveRate": 90.9,
+      "nameConfirmed": false
+    },
+    {
+      "name": "Custom Welcome",
+      "solves": 10,
+      "solveRate": 90.9,
+      "nameConfirmed": true
+    },
+    {
+      "name": "Role Enroll",
+      "solves": 10,
+      "solveRate": 90.9,
+      "nameConfirmed": true
+    },
+    {
+      "name": "Clear Picture",
+      "solves": 8,
+      "solveRate": 72.7,
+      "nameConfirmed": true
+    },
+    {
+      "name": "…you figured it out",
+      "solves": 8,
+      "solveRate": 72.7,
+      "nameConfirmed": false
+    },
+    {
+      "name": "Signature Forge",
+      "solves": 7,
+      "solveRate": 63.6,
+      "nameConfirmed": true
+    },
+    {
+      "name": "Fragile Flask",
+      "solves": 5,
+      "solveRate": 45.5,
+      "nameConfirmed": true
+    },
+    {
+      "name": "CyberTech University",
+      "solves": 5,
+      "solveRate": 45.5,
+      "nameConfirmed": true
+    },
+    {
+      "name": "Blind Trust",
+      "solves": 2,
+      "solveRate": 18.2,
+      "nameConfirmed": true
+    },
+    {
+      "name": "…archivist is it now",
+      "solves": 1,
+      "solveRate": 9.1,
+      "nameConfirmed": false
+    },
+    {
+      "name": "…pretty arent they",
+      "solves": 1,
+      "solveRate": 9.1,
+      "nameConfirmed": false
+    },
+    {
+      "name": "…made progress",
+      "solves": 0,
+      "solveRate": 0.0,
+      "nameConfirmed": false
+    },
+    {
+      "name": "News Letter",
+      "solves": 0,
+      "solveRate": 0.0,
+      "nameConfirmed": true
+    },
+    {
+      "name": "is this the end",
+      "solves": 0,
+      "solveRate": 0.0,
+      "nameConfirmed": true
+    }
+  ],
+  "challengeCount": 16,
+  "challengeSource": "PSU CTF 2.0 Competition Report — sections 2.3 / 2.4"
 }

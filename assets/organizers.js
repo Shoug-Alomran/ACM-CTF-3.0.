@@ -53,7 +53,7 @@
                         ${metaRow('ph-buildings', 'text-cyber-cyan', 'CLUB', club)}
                         ${metaRow('ph-shield-check', 'text-cyber-green', 'POSITION', position)}
                     </div>
-                    <p class="font-display text-[15px] leading-relaxed text-slate-300 max-w-2xl mx-auto md:mx-0 mb-6" data-no-translate>${description ? escapeHtml(description) : pendingText}</p>
+                    <p class="font-display text-[15px] leading-relaxed text-slate-300 max-w-3xl mx-auto md:mx-0 mb-6" data-no-translate>${description ? escapeHtml(description) : pendingText}</p>
                     <div class="flex flex-wrap gap-3 justify-center md:justify-start items-center">
                         ${links.linkedin || links.github || links.extra ? `
                         ${primaryLink(links.linkedin, 'ph-linkedin-logo', 'LinkedIn')}
@@ -61,9 +61,9 @@
                         ${secondaryLink(links.extra)}` : `<span class="font-mono text-[11px] text-slate-600 uppercase tracking-widest border border-dashed border-slate-700 px-3 py-2">Links pending</span>`}
                     </div>
                 </div>
-                <div class="${ctfRole ? 'bg-cyber-cyan/10 border border-cyber-cyan/30' : 'border border-dashed border-slate-700'} p-4 px-6 text-center md:text-left min-w-[190px] shrink-0">
+                <div class="${ctfRole ? 'bg-cyber-cyan/10 border border-cyber-cyan/30' : 'border border-dashed border-slate-700'} p-4 px-6 text-center md:text-left w-full md:w-[210px] shrink-0 self-start">
                     <div class="font-mono text-[11px] ${ctfRole ? 'text-cyber-cyan/70' : 'text-slate-500'} uppercase tracking-widest mb-2">CTF Role</div>
-                    <div class="font-display text-[17px] font-bold ${ctfRole ? 'text-cyber-cyan' : 'text-slate-500'} leading-snug" data-no-translate>${ctfRole ? escapeHtml(ctfRole) : (language === 'ar' ? 'قيد التأكيد' : 'To be confirmed')}</div>
+                    <div class="font-display text-[16px] font-bold ${ctfRole ? 'text-cyber-cyan' : 'text-slate-500'} leading-snug" data-no-translate>${ctfRole ? escapeHtml(ctfRole) : (language === 'ar' ? 'قيد التأكيد' : 'To be confirmed')}</div>
                     ${person.additionalRolePending ? `<div class="font-mono text-[11px] text-cyber-cyan/60 mt-2 leading-relaxed" data-no-translate>${language === 'ar' ? '+ مهام إضافية قيد التأكيد' : '+ further duties to be confirmed'}</div>` : ''}
                     <div class="font-mono text-[11px] text-slate-500 mt-3 uppercase">Clearance: Organizer</div>
                 </div>
