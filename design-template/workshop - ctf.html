@@ -1,0 +1,704 @@
+<html lang="en" class="scroll-smooth" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Workshops | ACM CTF 3.0</title>
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet" vid="7">
+    
+    
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="8"></script>
+    
+    
+    <script src="https://unpkg.com/@phosphor-icons/web" vid="9"></script>
+
+    <script vid="10">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            base: '#060a13',
+                            cyan: '#00f0ff',
+                            green: '#00ff41',
+                            red: '#ff003c',
+                            blue: '#1a2b4c',
+                            dark: '#0a1122',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    backgroundImage: {
+                        'cyber-grid': 'linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px)',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                        'blink': 'blink 1s step-end infinite',
+                    },
+                    keyframes: {
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100vh)' }
+                        },
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style vid="11">
+        body {
+            background-color: #060a13;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            z-index: -1;
+        }
+
+        
+        .glow-text-cyan {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+        }
+        .glow-border-cyan:hover {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3) inset, 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+
+        
+        .bracket-box {
+            position: relative;
+        }
+        .bracket-tl { position: absolute; top: -1px; left: -1px; width: 8px; height: 8px; border-top: 2px solid #00f0ff; border-left: 2px solid #00f0ff; }
+        .bracket-tr { position: absolute; top: -1px; right: -1px; width: 8px; height: 8px; border-top: 2px solid #00f0ff; border-right: 2px solid #00f0ff; }
+        .bracket-bl { position: absolute; bottom: -1px; left: -1px; width: 8px; height: 8px; border-bottom: 2px solid #00f0ff; border-left: 2px solid #00f0ff; }
+        .bracket-br { position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; border-bottom: 2px solid #00f0ff; border-right: 2px solid #00f0ff; }
+
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #060a13; border-left: 1px solid rgba(0,240,255,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.3); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,240,255,0.6); }
+    </style>
+</head>
+<body class="font-display antialiased scanlines relative selection:bg-cyber-cyan selection:text-black min-h-screen flex flex-col" vid="12">
+
+    
+    <div class="cyber-bg" vid="13"></div>
+
+    
+    <header class="fixed top-0 w-full z-40 flex flex-col" vid="14">
+        
+        <div class="bg-cyber-green/10 border-b border-cyber-green/30 px-4 py-1 flex justify-between items-center font-mono text-[10px] sm:text-xs text-cyber-green" vid="15">
+            <div class="flex items-center gap-2" vid="16">
+                <span class="animate-pulse" vid="17">●</span>
+                <span vid="18">SYSTEM STATUS: REGISTRATION OPEN</span>
+            </div>
+            <div class="hidden sm:flex gap-4 opacity-80" vid="19">
+                <span vid="20">ACM CTF 3.0</span>
+                <span vid="21">//</span>
+                <span vid="22">07 NOV 2026</span>
+            </div>
+        </div>
+
+        
+        <nav class="bg-cyber-base/90 backdrop-blur-md border-b border-cyber-cyan/20 px-6 py-4" vid="23">
+            <div class="max-w-7xl mx-auto flex justify-between items-center" vid="24">
+                
+                <div class="flex items-center gap-3" vid="25">
+                    <div class="w-8 h-8 border border-cyber-cyan flex items-center justify-center bg-cyber-cyan/10" vid="26">
+                        <span class="font-mono font-bold text-cyber-cyan" vid="27">_</span>
+                    </div>
+                    <div class="font-display font-bold text-xl tracking-widest text-white" vid="28">
+                        ACM<span class="text-cyber-cyan text-sm align-top ml-1" vid="29">CTF</span>
+                    </div>
+                </div>
+
+                
+                <div class="hidden lg:flex items-center gap-8 font-mono text-sm tracking-wide" vid="30">
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="31">Home</a>
+                    <a href="#" class="text-cyber-cyan font-bold glow-text-cyan flex items-center gap-1" vid="32">
+                        <span class="text-cyber-cyan/70" vid="33">&gt;</span> WORKSHOPS<span class="animate-blink" vid="34">_</span>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="35">Challenges</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="36">Competition</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="37">Rules</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="38">FAQ</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="39">Team</a>
+                </div>
+
+                
+                <div class="hidden md:block" vid="40">
+                    <button class="font-mono text-sm border border-cyber-cyan text-cyber-cyan px-6 py-2 bg-cyber-cyan/5 hover:bg-cyber-cyan hover:text-black transition-all duration-300 relative group overflow-hidden" vid="41">
+                        <span class="relative z-10" vid="42">[ REGISTER ]</span>
+                        <div class="absolute inset-0 bg-cyber-cyan translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-0" vid="43"></div>
+                    </button>
+                </div>
+
+                
+                <button class="lg:hidden text-cyber-cyan font-mono text-xl" vid="44">
+                    [≡]
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    
+    <main class="flex-grow pt-32 pb-24 px-6 relative z-10" vid="45">
+        
+        
+        <section class="max-w-7xl mx-auto mb-32 pt-12" vid="46">
+            <div class="flex flex-col gap-4 items-start" vid="47">
+                <div class="font-mono text-cyber-cyan/70 text-xs tracking-widest" vid="48">
+                    ACM SECURITY NETWORK // TRAINING DIVISION
+                </div>
+                
+                <div class="font-mono text-slate-500 text-sm mb-4" vid="49">
+                    <span class="text-cyber-cyan mr-2" vid="50">&gt;</span>loading training_protocol...
+                </div>
+                
+                <div class="border border-cyber-cyan/40 bg-cyber-cyan/5 text-cyber-cyan px-3 py-1 text-xs font-mono tracking-widest mb-2" vid="51">
+                    TRAINING PROTOCOL // WORKSHOPS
+                </div>
+                
+                <h1 class="font-display text-5xl md:text-7xl font-bold uppercase text-white tracking-tighter glow-text-cyan leading-none" vid="52">
+                    Prepare For<br vid="53">The Breach
+                </h1>
+                
+                <p class="text-slate-400 text-lg md:text-xl max-w-2xl mt-4 font-light leading-relaxed" vid="54">
+                    Build the skills you need before entering the cyber range. The ACM CTF workshops are designed to prepare participants for the specific techniques, analytical tools, and challenge categories they will encounter during CTF 3.0.
+                </p>
+
+                
+                <div class="mt-12 border border-cyber-green/30 bg-cyber-green/5 p-4 flex flex-col md:flex-row gap-4 md:gap-12 font-mono text-xs md:text-sm text-cyber-green w-full md:w-auto bracket-box" vid="55">
+                    <div class="bracket-tl border-cyber-green" vid="56"></div><div class="bracket-tr border-cyber-green" vid="57"></div><div class="bracket-bl border-cyber-green" vid="58"></div><div class="bracket-br border-cyber-green" vid="59"></div>
+                    <div class="flex flex-col gap-1" vid="60">
+                        <span class="opacity-50" vid="61">STATUS:</span>
+                        <span vid="62">TRAINING MODULES: AVAILABLE</span>
+                    </div>
+                    <div class="hidden md:block w-px bg-cyber-green/30" vid="63"></div>
+                    <div class="flex flex-col gap-1" vid="64">
+                        <span class="opacity-50" vid="65">ACCESS LEVEL:</span>
+                        <span vid="66">CLEARANCE: PUBLIC</span>
+                    </div>
+                    <div class="hidden md:block w-px bg-cyber-green/30" vid="67"></div>
+                    <div class="flex flex-col gap-1" vid="68">
+                        <span class="opacity-50" vid="69">OBJECTIVE:</span>
+                        <span vid="70">TARGET: CTF 3.0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="max-w-7xl mx-auto mb-32 relative" vid="71">
+            
+            <div class="mb-12 flex flex-col gap-2" vid="72">
+                <div class="font-mono text-cyber-cyan text-sm tracking-widest flex items-center gap-4" vid="73">
+                    <span vid="74">01 // TRAINING SCHEDULE</span>
+                    <div class="h-px bg-cyber-cyan/30 flex-grow" vid="75"></div>
+                </div>
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-white uppercase tracking-tight" vid="76">Upcoming Workshops</h2>
+            </div>
+
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" vid="77">
+                
+                
+                <div class="border border-slate-800 bg-cyber-dark/80 p-6 bracket-box hover:border-cyber-cyan/50 transition-all duration-300 group flex flex-col h-full" vid="78">
+                    <div class="bracket-tl" vid="79"></div><div class="bracket-tr" vid="80"></div><div class="bracket-bl" vid="81"></div><div class="bracket-br" vid="82"></div>
+                    
+                    
+                    <div class="flex flex-wrap justify-between items-start gap-4 mb-6 border-b border-slate-800 pb-4 group-hover:border-cyber-cyan/30 transition-colors" vid="83">
+                        <div class="flex gap-2 items-center" vid="84">
+                            <span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 px-2 py-0.5 text-xs font-mono" vid="85">WEB</span>
+                            <span class="text-slate-500 text-xs font-mono px-2 py-0.5 border border-slate-700 bg-slate-800/50" vid="86">BEGINNER</span>
+                        </div>
+                        <span class="text-cyber-green text-xs font-mono flex items-center gap-2" vid="87">
+                            <span class="w-1.5 h-1.5 bg-cyber-green rounded-full animate-pulse" vid="88"></span>
+                            UPCOMING
+                        </span>
+                    </div>
+
+                    
+                    <div class="flex-grow" vid="89">
+                        <h3 class="text-2xl font-bold text-white mb-2 font-display group-hover:text-cyber-cyan transition-colors" vid="90">TBD: Web Exploitation Fundamentals</h3>
+                        <p class="text-slate-400 text-sm mb-8 leading-relaxed" vid="91">
+                            Details regarding specific topics, prerequisites, and preparation steps will be announced shortly. Stay tuned to the ACM channels.
+                        </p>
+
+                        
+                        <div class="grid grid-cols-2 gap-y-4 gap-x-6 font-mono text-xs mb-8" vid="92">
+                            <div vid="93">
+                                <span class="text-slate-500 block mb-1" vid="94">DATE:</span>
+                                <span class="text-slate-300" vid="95">TBD</span>
+                            </div>
+                            <div vid="96">
+                                <span class="text-slate-500 block mb-1" vid="97">TIME:</span>
+                                <span class="text-slate-300" vid="98">TBD</span>
+                            </div>
+                            <div vid="99">
+                                <span class="text-slate-500 block mb-1" vid="100">LOCATION:</span>
+                                <span class="text-slate-300" vid="101">TBD</span>
+                            </div>
+                            <div vid="102">
+                                <span class="text-slate-500 block mb-1" vid="103">INSTRUCTOR:</span>
+                                <span class="text-slate-300" vid="104">TBD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="mt-auto pt-4 border-t border-slate-800 flex items-center justify-between" vid="105">
+                        <div class="text-cyber-red/70 font-mono text-xs flex items-center gap-2" vid="106">
+                            <span vid="107">&gt;</span> training_material_locked
+                        </div>
+                        <button class="text-xs font-mono text-slate-400 border border-slate-700 px-4 py-2 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors" disabled="" vid="108">
+                            [ VIEW WORKSHOP ]
+                        </button>
+                    </div>
+                </div>
+
+                
+                <div class="border border-slate-800 bg-cyber-dark/80 p-6 bracket-box hover:border-cyber-cyan/50 transition-all duration-300 group flex flex-col h-full" vid="109">
+                    <div class="bracket-tl" vid="110"></div><div class="bracket-tr" vid="111"></div><div class="bracket-bl" vid="112"></div><div class="bracket-br" vid="113"></div>
+                    
+                    <div class="flex flex-wrap justify-between items-start gap-4 mb-6 border-b border-slate-800 pb-4 group-hover:border-cyber-cyan/30 transition-colors" vid="114">
+                        <div class="flex gap-2 items-center" vid="115">
+                            <span class="bg-purple-500/10 text-purple-400 border border-purple-500/30 px-2 py-0.5 text-xs font-mono" vid="116">CRYPTOGRAPHY</span>
+                            <span class="text-slate-500 text-xs font-mono px-2 py-0.5 border border-slate-700 bg-slate-800/50" vid="117">INTERMEDIATE</span>
+                        </div>
+                        <span class="text-cyber-green text-xs font-mono flex items-center gap-2" vid="118">
+                            <span class="w-1.5 h-1.5 bg-cyber-green rounded-full animate-pulse" vid="119"></span>
+                            UPCOMING
+                        </span>
+                    </div>
+
+                    <div class="flex-grow" vid="120">
+                        <h3 class="text-2xl font-bold text-white mb-2 font-display group-hover:text-cyber-cyan transition-colors" vid="121">TBD: Applied Cryptography</h3>
+                        <p class="text-slate-400 text-sm mb-8 leading-relaxed" vid="122">
+                            Details regarding specific topics, prerequisites, and preparation steps will be announced shortly. Stay tuned to the ACM channels.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-y-4 gap-x-6 font-mono text-xs mb-8" vid="123">
+                            <div vid="124">
+                                <span class="text-slate-500 block mb-1" vid="125">DATE:</span>
+                                <span class="text-slate-300" vid="126">TBD</span>
+                            </div>
+                            <div vid="127">
+                                <span class="text-slate-500 block mb-1" vid="128">TIME:</span>
+                                <span class="text-slate-300" vid="129">TBD</span>
+                            </div>
+                            <div vid="130">
+                                <span class="text-slate-500 block mb-1" vid="131">LOCATION:</span>
+                                <span class="text-slate-300" vid="132">TBD</span>
+                            </div>
+                            <div vid="133">
+                                <span class="text-slate-500 block mb-1" vid="134">INSTRUCTOR:</span>
+                                <span class="text-slate-300" vid="135">TBD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-slate-800 flex items-center justify-between" vid="136">
+                        <div class="text-cyber-red/70 font-mono text-xs flex items-center gap-2" vid="137">
+                            <span vid="138">&gt;</span> training_material_locked
+                        </div>
+                        <button class="text-xs font-mono text-slate-400 border border-slate-700 px-4 py-2 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors" disabled="" vid="139">
+                            [ VIEW WORKSHOP ]
+                        </button>
+                    </div>
+                </div>
+
+                
+                <div class="border border-slate-800 bg-cyber-dark/80 p-6 bracket-box hover:border-cyber-cyan/50 transition-all duration-300 group flex flex-col h-full" vid="140">
+                    <div class="bracket-tl" vid="141"></div><div class="bracket-tr" vid="142"></div><div class="bracket-bl" vid="143"></div><div class="bracket-br" vid="144"></div>
+                    
+                    <div class="flex flex-wrap justify-between items-start gap-4 mb-6 border-b border-slate-800 pb-4 group-hover:border-cyber-cyan/30 transition-colors" vid="145">
+                        <div class="flex gap-2 items-center" vid="146">
+                            <span class="bg-orange-500/10 text-orange-400 border border-orange-500/30 px-2 py-0.5 text-xs font-mono" vid="147">FORENSICS</span>
+                            <span class="text-slate-500 text-xs font-mono px-2 py-0.5 border border-slate-700 bg-slate-800/50" vid="148">BEGINNER</span>
+                        </div>
+                        <span class="text-cyber-green text-xs font-mono flex items-center gap-2" vid="149">
+                            <span class="w-1.5 h-1.5 bg-cyber-green rounded-full animate-pulse" vid="150"></span>
+                            UPCOMING
+                        </span>
+                    </div>
+
+                    <div class="flex-grow" vid="151">
+                        <h3 class="text-2xl font-bold text-white mb-2 font-display group-hover:text-cyber-cyan transition-colors" vid="152">TBD: Digital Artifacts</h3>
+                        <p class="text-slate-400 text-sm mb-8 leading-relaxed" vid="153">
+                            Details regarding specific topics, prerequisites, and preparation steps will be announced shortly. Stay tuned to the ACM channels.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-y-4 gap-x-6 font-mono text-xs mb-8" vid="154">
+                            <div vid="155">
+                                <span class="text-slate-500 block mb-1" vid="156">DATE:</span>
+                                <span class="text-slate-300" vid="157">TBD</span>
+                            </div>
+                            <div vid="158">
+                                <span class="text-slate-500 block mb-1" vid="159">TIME:</span>
+                                <span class="text-slate-300" vid="160">TBD</span>
+                            </div>
+                            <div vid="161">
+                                <span class="text-slate-500 block mb-1" vid="162">LOCATION:</span>
+                                <span class="text-slate-300" vid="163">TBD</span>
+                            </div>
+                            <div vid="164">
+                                <span class="text-slate-500 block mb-1" vid="165">INSTRUCTOR:</span>
+                                <span class="text-slate-300" vid="166">TBD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-slate-800 flex items-center justify-between" vid="167">
+                        <div class="text-cyber-red/70 font-mono text-xs flex items-center gap-2" vid="168">
+                            <span vid="169">&gt;</span> training_material_locked
+                        </div>
+                        <button class="text-xs font-mono text-slate-400 border border-slate-700 px-4 py-2 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors" disabled="" vid="170">
+                            [ VIEW WORKSHOP ]
+                        </button>
+                    </div>
+                </div>
+
+                
+                <div class="border border-slate-800 bg-cyber-dark/80 p-6 bracket-box hover:border-cyber-cyan/50 transition-all duration-300 group flex flex-col h-full" vid="171">
+                    <div class="bracket-tl" vid="172"></div><div class="bracket-tr" vid="173"></div><div class="bracket-bl" vid="174"></div><div class="bracket-br" vid="175"></div>
+                    
+                    <div class="flex flex-wrap justify-between items-start gap-4 mb-6 border-b border-slate-800 pb-4 group-hover:border-cyber-cyan/30 transition-colors" vid="176">
+                        <div class="flex gap-2 items-center" vid="177">
+                            <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 text-xs font-mono" vid="178">OSINT</span>
+                            <span class="text-slate-500 text-xs font-mono px-2 py-0.5 border border-slate-700 bg-slate-800/50" vid="179">INTERMEDIATE</span>
+                        </div>
+                        <span class="text-cyber-green text-xs font-mono flex items-center gap-2" vid="180">
+                            <span class="w-1.5 h-1.5 bg-cyber-green rounded-full animate-pulse" vid="181"></span>
+                            UPCOMING
+                        </span>
+                    </div>
+
+                    <div class="flex-grow" vid="182">
+                        <h3 class="text-2xl font-bold text-white mb-2 font-display group-hover:text-cyber-cyan transition-colors" vid="183">TBD: Intelligence Gathering</h3>
+                        <p class="text-slate-400 text-sm mb-8 leading-relaxed" vid="184">
+                            Details regarding specific topics, prerequisites, and preparation steps will be announced shortly. Stay tuned to the ACM channels.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-y-4 gap-x-6 font-mono text-xs mb-8" vid="185">
+                            <div vid="186">
+                                <span class="text-slate-500 block mb-1" vid="187">DATE:</span>
+                                <span class="text-slate-300" vid="188">TBD</span>
+                            </div>
+                            <div vid="189">
+                                <span class="text-slate-500 block mb-1" vid="190">TIME:</span>
+                                <span class="text-slate-300" vid="191">TBD</span>
+                            </div>
+                            <div vid="192">
+                                <span class="text-slate-500 block mb-1" vid="193">LOCATION:</span>
+                                <span class="text-slate-300" vid="194">TBD</span>
+                            </div>
+                            <div vid="195">
+                                <span class="text-slate-500 block mb-1" vid="196">INSTRUCTOR:</span>
+                                <span class="text-slate-300" vid="197">TBD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-slate-800 flex items-center justify-between" vid="198">
+                        <div class="text-cyber-red/70 font-mono text-xs flex items-center gap-2" vid="199">
+                            <span vid="200">&gt;</span> training_material_locked
+                        </div>
+                        <button class="text-xs font-mono text-slate-400 border border-slate-700 px-4 py-2 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors" disabled="" vid="201">
+                            [ VIEW WORKSHOP ]
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        
+        <section class="max-w-7xl mx-auto mb-32 relative" vid="202">
+            <div class="mb-12 flex flex-col gap-2" vid="203">
+                <div class="font-mono text-cyber-cyan text-sm tracking-widest flex items-center gap-4" vid="204">
+                    <span vid="205">02 // TRAINING MODULES</span>
+                    <div class="h-px bg-cyber-cyan/30 flex-grow" vid="206"></div>
+                </div>
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-white uppercase tracking-tight" vid="207">Choose Your Specialization</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6" vid="208">
+                
+                <div class="border border-slate-800 bg-cyber-base p-6 hover:bg-slate-900/50 hover:border-cyber-cyan/40 transition-all duration-300 group relative overflow-hidden" vid="209">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-blue-500/5 rounded-bl-full transform translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-500" vid="210"></div>
+                    <div class="font-mono text-4xl text-slate-700 group-hover:text-blue-400 mb-6 transition-colors" vid="211">
+                        <w vid="212">
+                    </w></div>
+                    <h3 class="font-display text-xl font-bold text-white mb-3" vid="213">WEB</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" vid="214">
+                        Learn how web applications work, how vulnerabilities are discovered, and how to investigate insecure behavior in modern web architectures.
+                    </p>
+                </div>
+
+                
+                <div class="border border-slate-800 bg-cyber-base p-6 hover:bg-slate-900/50 hover:border-cyber-cyan/40 transition-all duration-300 group relative overflow-hidden" vid="215">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-purple-500/5 rounded-bl-full transform translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-500" vid="216"></div>
+                    <div class="font-mono text-4xl text-slate-700 group-hover:text-purple-400 mb-6 transition-colors" vid="217">
+                        {C}
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-white mb-3" vid="218">CRYPTOGRAPHY</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" vid="219">
+                        Practice recognizing, analyzing, and breaking different forms of encoded and encrypted information used to secure data.
+                    </p>
+                </div>
+
+                
+                <div class="border border-slate-800 bg-cyber-base p-6 hover:bg-slate-900/50 hover:border-cyber-cyan/40 transition-all duration-300 group relative overflow-hidden" vid="220">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-orange-500/5 rounded-bl-full transform translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-500" vid="221"></div>
+                    <div class="font-mono text-4xl text-slate-700 group-hover:text-orange-400 mb-6 transition-colors" vid="222">
+                        0xFA
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-white mb-3" vid="223">FORENSICS</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" vid="224">
+                        Learn how to inspect files, hidden metadata, network packets, digital artifacts, and other evidence left behind on systems.
+                    </p>
+                </div>
+
+                
+                <div class="border border-slate-800 bg-cyber-base p-6 hover:bg-slate-900/50 hover:border-cyber-cyan/40 transition-all duration-300 group relative overflow-hidden" vid="225">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-500/5 rounded-bl-full transform translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-500" vid="226"></div>
+                    <div class="font-mono text-4xl text-slate-700 group-hover:text-emerald-400 mb-6 transition-colors" vid="227">
+                        [*_]
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-white mb-3" vid="228">OSINT</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" vid="229">
+                        Learn techniques for gathering, analyzing, and connecting publicly available information to profile targets and uncover secrets.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        
+        <div class="max-w-7xl mx-auto mb-32 grid grid-cols-1 lg:grid-cols-2 gap-12" vid="230">
+            
+            
+            <section vid="231">
+                <div class="mb-8 flex flex-col gap-2" vid="232">
+                    <div class="font-mono text-cyber-cyan text-sm tracking-widest flex items-center gap-4" vid="233">
+                        <span vid="234">03 // OPERATOR REQUIREMENTS</span>
+                    </div>
+                    <h2 class="font-display text-2xl md:text-3xl font-bold text-white uppercase tracking-tight" vid="235">Prepare Your System</h2>
+                </div>
+
+                <div class="bg-black border border-cyber-cyan/30 p-6 font-mono text-sm shadow-[0_0_20px_rgba(0,240,255,0.05)] relative bracket-box" vid="236">
+                    <div class="bracket-tl" vid="237"></div><div class="bracket-tr" vid="238"></div><div class="bracket-bl" vid="239"></div><div class="bracket-br" vid="240"></div>
+                    
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4" vid="241">
+                        <span class="text-slate-500" vid="242">root@training-division:~#</span>
+                        <span class="text-cyber-green animate-pulse" vid="243">DEVICE STATUS: REQUIRED</span>
+                    </div>
+
+                    <div class="text-slate-300 space-y-3 mb-6" vid="244">
+                        <div class="flex items-start gap-3" vid="245">
+                            <span class="text-cyber-cyan mt-0.5" vid="246">[+]</span>
+                            <span vid="247">A personal laptop capable of running modern web browsers and virtualization software (if required).</span>
+                        </div>
+                        <div class="flex items-start gap-3" vid="248">
+                            <span class="text-cyber-cyan mt-0.5" vid="249">[+]</span>
+                            <span vid="250">Power adapter / Charger (power outlets will be provided).</span>
+                        </div>
+                        <div class="flex items-start gap-3" vid="251">
+                            <span class="text-cyber-cyan mt-0.5" vid="252">[+]</span>
+                            <span vid="253">An updated, modern Web Browser (Firefox or Chrome recommended).</span>
+                        </div>
+                        <div class="flex items-start gap-3" vid="254">
+                            <span class="text-slate-500 mt-0.5" vid="255">[*]</span>
+                            <span class="text-slate-400 italic" vid="256">Any workshop-specific software or VMs will be announced beforehand on the individual workshop cards.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-cyber-cyan/50 text-xs" vid="257">
+                        &gt; readiness_check complete.
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="flex flex-col justify-center" vid="258">
+                <div class="bg-slate-900/30 border-l-2 border-cyber-cyan p-6 md:p-8" vid="259">
+                    <h3 class="font-display text-xl font-bold text-white mb-4" vid="260">Connection to ACM CTF 3.0</h3>
+                    <p class="text-slate-400 text-sm md:text-base leading-relaxed mb-6" vid="261">
+                        The workshops hosted by the ACM training division are explicitly designed to build foundational skills for the four main challenge categories of the upcoming CTF 3.0: Cryptography, Web Exploitation, Forensics, and OSINT.
+                    </p>
+                    <p class="text-slate-400 text-sm md:text-base leading-relaxed mb-6" vid="262">
+                        Please note: Workshop materials, examples, and practice exercises are for educational preparation only. They will <strong vid="263">not</strong> reveal actual competition challenges, infrastructure, or flags.
+                    </p>
+                    
+                    <div class="bg-black/50 border border-slate-800 p-3 font-mono text-xs text-cyber-cyan flex items-center gap-3" vid="264">
+                        <i class="ph ph-warning text-lg" vid="265"></i>
+                        <span vid="266">TRAINING ENVIRONMENT ≠ COMPETITION ENVIRONMENT</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        
+        <section class="max-w-7xl mx-auto mb-32" vid="267">
+            <div class="mb-12 flex flex-col gap-2" vid="268">
+                <div class="font-mono text-cyber-cyan text-sm tracking-widest flex items-center gap-4" vid="269">
+                    <span vid="270">04 // RESOURCE ARCHIVE</span>
+                    <div class="h-px bg-cyber-cyan/30 flex-grow" vid="271"></div>
+                </div>
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-white uppercase tracking-tight" vid="272">Training Materials</h2>
+                <p class="text-slate-400 text-sm mt-2" vid="273">Completed workshop resources, slides, and practice files will be archived here.</p>
+            </div>
+
+            
+            <div class="border border-dashed border-slate-700 bg-slate-900/20 py-24 px-6 flex flex-col items-center justify-center text-center" vid="274">
+                <div class="font-mono text-slate-500 mb-4 animate-pulse" vid="275">
+                    &gt; querying resource_archive...
+                </div>
+                <div class="bg-cyber-red/10 border border-cyber-red/30 text-cyber-red font-mono text-sm px-6 py-3 tracking-widest" vid="276">
+                    NO PUBLIC TRAINING FILES DETECTED
+                </div>
+                <p class="text-slate-500 text-sm mt-6 max-w-md font-mono" vid="277">
+                    Check back after the first workshop concludes. Materials will be unlocked and distributed post-session.
+                </p>
+            </div>
+            
+            
+        </section>
+
+        
+        <section class="max-w-4xl mx-auto mb-16 text-center" vid="278">
+            <div class="font-mono text-cyber-cyan text-sm mb-6 flex justify-center items-center gap-2" vid="279">
+                <span vid="280">&gt;</span>
+                <span class="typing-effect" vid="281">training protocol initialized_</span>
+            </div>
+            
+            <h2 class="font-display text-4xl md:text-5xl font-bold text-white uppercase tracking-tight mb-6" vid="282">
+                Ready to Test Your Skills?
+            </h2>
+            
+            <p class="text-slate-400 text-lg mb-10" vid="283">
+                Train now. Compete on November 7. Capture the flag.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center" vid="284">
+                <button class="w-full sm:w-auto font-mono text-sm border border-cyber-cyan bg-cyber-cyan text-black px-8 py-3 hover:bg-transparent hover:text-cyber-cyan transition-all duration-300 font-bold shadow-[0_0_15px_rgba(0,240,255,0.4)]" vid="285">
+                    [ REGISTER FOR CTF 3.0 ]
+                </button>
+                <button class="w-full sm:w-auto font-mono text-sm border border-slate-600 text-slate-300 px-8 py-3 hover:border-white hover:text-white transition-colors bg-slate-900/50" vid="286">
+                    [ EXPLORE CHALLENGES ]
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    
+    <footer class="border-t border-slate-800 bg-cyber-base relative z-10" vid="287">
+        <div class="max-w-7xl mx-auto px-6 py-12" vid="288">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12" vid="289">
+                
+                <div class="lg:col-span-2" vid="290">
+                    <div class="font-display font-bold text-2xl tracking-widest text-white mb-4" vid="291">
+                        ACM<span class="text-cyber-cyan text-lg align-top ml-1" vid="292">CTF</span>
+                    </div>
+                    <p class="text-slate-500 text-sm max-w-sm font-mono mb-4" vid="293">
+                        Hosted by the ACM Club.<br vid="294">
+                        College of Computer and Information Sciences.<br vid="295">
+                        Prince Sultan University, Riyadh.
+                    </p>
+                    <div class="flex gap-4" vid="296">
+                        <a href="#" class="w-8 h-8 rounded border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors" vid="297">
+                            <i class="ph ph-twitter-logo" vid="298"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors" vid="299">
+                            <i class="ph ph-discord-logo" vid="300"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyber-cyan hover:border-cyber-cyan transition-colors" vid="301">
+                            <i class="ph ph-github-logo" vid="302"></i>
+                        </a>
+                    </div>
+                </div>
+
+                
+                <div vid="303">
+                    <h4 class="text-white font-mono font-bold mb-4" vid="304">NAVIGATION</h4>
+                    <ul class="space-y-2 font-mono text-sm text-slate-400" vid="305">
+                        <li vid="306"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="307">&gt; Home</a></li>
+                        <li vid="308"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="309">&gt; Workshops</a></li>
+                        <li vid="310"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="311">&gt; Challenges</a></li>
+                        <li vid="312"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="313">&gt; Competition</a></li>
+                    </ul>
+                </div>
+
+                
+                <div vid="314">
+                    <h4 class="text-white font-mono font-bold mb-4" vid="315">INFORMATION</h4>
+                    <ul class="space-y-2 font-mono text-sm text-slate-400" vid="316">
+                        <li vid="317"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="318">&gt; Rules &amp; Policy</a></li>
+                        <li vid="319"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="320">&gt; FAQ</a></li>
+                        <li vid="321"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="322">&gt; Organizing Team</a></li>
+                        <li vid="323"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="324">&gt; Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="bg-cyber-green/10 border-t border-cyber-green/30 px-6 py-2" vid="325">
+            <div class="max-w-7xl mx-auto flex justify-between items-center font-mono text-[10px] sm:text-xs text-cyber-green" vid="326">
+                <div class="flex items-center gap-4" vid="327">
+                    <span vid="328">SYSTEM</span>
+                    <span class="hidden sm:inline" vid="329">//</span>
+                    <span class="hidden sm:inline" vid="330">ACM CTF 3.0</span>
+                    <span class="hidden sm:inline" vid="331">//</span>
+                    <span class="flex items-center gap-2" vid="332"><span class="w-2 h-2 bg-cyber-green rounded-full" vid="333"></span> CONNECTION SECURE</span>
+                </div>
+                <div class="text-cyber-green/50" vid="334">
+                    © 2026 ACM PSU
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+</body></html>

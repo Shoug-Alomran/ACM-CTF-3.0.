@@ -1,0 +1,1004 @@
+<html lang="en" class="scroll-smooth" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">ACM CTF 3.0 | Cyber Operations Center</title>
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet" vid="7">
+    
+    
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="8"></script>
+    
+    
+    <script vid="9">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#060a13',
+                            panel: '#0a1122',
+                            panelHover: '#0d1830',
+                            cyan: '#00f0ff',
+                            cyanHover: '#33f3ff',
+                            blue: '#0055ff',
+                            green: '#00ff41',
+                            red: '#ff2a2a',
+                            white: '#ffffff',
+                            gray: '#8b9bb4',
+                            border: 'rgba(0, 240, 255, 0.2)',
+                            grid: 'rgba(255, 255, 255, 0.03)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'blink': 'blink 1s step-end infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        },
+                        scanline: {
+                            '0%': { transform: 'translateY(-100vh)' },
+                            '100%': { transform: 'translateY(100vh)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    
+    <style vid="10">
+        body {
+            background-color: #060a13;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.3;
+        }
+        
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        
+        .bracket-box {
+            position: relative;
+            background-color: theme('colors.cyber.panel');
+            border: 1px solid theme('colors.cyber.border');
+            transition: all 0.3s ease;
+        }
+        
+        .bracket-box::before, .bracket-box::after,
+        .bracket-corners::before, .bracket-corners::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid theme('colors.cyber.cyan');
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        
+        .bracket-box::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+        
+        .bracket-box::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+        
+        
+        .interactive-box:hover {
+            border-color: theme('colors.cyber.cyan');
+            background-color: theme('colors.cyber.panelHover');
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1) inset, 0 0 10px rgba(0, 240, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .interactive-box:hover::before, .interactive-box:hover::after {
+            width: 16px;
+            height: 16px;
+            box-shadow: 0 0 8px theme('colors.cyber.cyan');
+        }
+
+        
+        .glitch-hover:hover {
+            animation: textGlitch 0.2s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: theme('colors.cyber.cyan');
+        }
+
+        @keyframes textGlitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 1px) }
+            40% { transform: translate(-1px, -1px) }
+            60% { transform: translate(2px, 1px) }
+            80% { transform: translate(1px, -1px) }
+            100% { transform: translate(0) }
+        }
+
+        
+        .caret {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: theme('colors.cyber.green');
+            vertical-align: middle;
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+        }
+        .caret.cyan { background-color: theme('colors.cyber.cyan'); }
+
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: theme('colors.cyber.bg'); border-left: 1px solid theme('colors.cyber.border'); }
+        ::-webkit-scrollbar-thumb { background: theme('colors.cyber.panelHover'); border: 1px solid theme('colors.cyber.border'); }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.cyber.cyan'); }
+
+        
+        body.locked { overflow: hidden; }
+
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1; transform: none; transition: none; }
+            body.locked { overflow: auto; }
+            #terminal-intro { display: none; }
+        }
+        
+        
+        .timeline-line {
+            position: absolute;
+            background-color: theme('colors.cyber.border');
+            z-index: 0;
+        }
+        @media (min-width: 1024px) {
+            .timeline-line { top: 24px; left: 0; width: 100%; height: 1px; }
+        }
+        @media (max-width: 1023px) {
+            .timeline-line { left: 24px; top: 0; width: 1px; height: 100%; }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-cyber-cyan selection:text-black locked" id="body" vid="11">
+
+    
+    <div class="scanlines" vid="12"></div>
+    <div class="bg-grid" vid="13"></div>
+
+    
+    <div id="terminal-intro" class="fixed inset-0 z-[100] bg-cyber-bg flex flex-col items-start justify-center p-8 md:p-24 font-mono text-sm md:text-base lg:text-lg" vid="14">
+        <div id="term-content" class="max-w-3xl w-full" vid="15">
+            <div id="term-line-1" class="text-cyber-gray opacity-0 mb-2" vid="16">ACM SECURITY NETWORK</div>
+            <div id="term-line-2" class="text-cyber-cyan opacity-0 mb-2" vid="17">&gt; establishing secure connection...</div>
+            <div id="term-line-3" class="text-cyber-cyan opacity-0 mb-4" vid="18">&gt; loading ctf_protocol...</div>
+            <div id="term-line-4" class="text-cyber-green opacity-0 text-xl md:text-2xl font-bold" vid="19">ACCESS GRANTED</div>
+            <div id="term-caret" class="inline-block w-3 h-5 bg-cyber-green ml-1 animate-blink mt-4" vid="20"></div>
+        </div>
+    </div>
+
+    
+    <header class="w-full relative z-50" vid="21">
+        
+        <div class="bg-black border-b border-cyber-border py-1 px-4 text-xs font-mono text-cyber-gray flex justify-between items-center hidden md:flex" vid="22">
+            <div class="flex items-center gap-2" vid="23">
+                <span class="w-2 h-2 rounded-full bg-cyber-green animate-pulse-fast" vid="24"></span>
+                <span class="text-cyber-green" vid="25">SYSTEM STATUS: REGISTRATION OPEN</span>
+            </div>
+            <div vid="26">
+                // ACM CTF 3.0 // 07 NOV 2026
+            </div>
+        </div>
+
+        
+        <nav class="sticky top-0 w-full bg-cyber-bg/90 backdrop-blur-md border-b border-cyber-border py-4 px-6 md:px-12 flex justify-between items-center transition-all duration-300" id="main-nav" vid="27">
+            <a href="#" class="font-sans font-bold text-xl tracking-tight flex items-center gap-2 group" vid="28">
+                <svg class="w-6 h-6 text-cyber-cyan group-hover:animate-spin" style="animation-duration: 3s;" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="29">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" vid="30"></path>
+                </svg>
+                <span class="text-white" vid="31">ACM CTF <span class="text-cyber-cyan" vid="32">3.0</span></span>
+            </a>
+
+            
+            <div id="nav-menu" class="hidden lg:flex flex-col lg:flex-row absolute lg:static top-full left-0 w-full lg:w-auto bg-cyber-panel lg:bg-transparent p-6 lg:p-0 border-b border-cyber-border lg:border-none items-start lg:items-center gap-6 font-mono text-sm z-50 shadow-2xl lg:shadow-none" vid="33">
+                <a href="#" class="text-cyber-cyan font-bold block" vid="34">&gt; HOME_</a>
+                <a href="#workshops" class="text-cyber-gray hover:text-white transition-colors block" vid="35">Workshops</a>
+                <a href="#challenges" class="text-cyber-gray hover:text-white transition-colors block" vid="36">Challenges</a>
+                <a href="#competition" class="text-cyber-gray hover:text-white transition-colors block" vid="37">Competition</a>
+                <a href="#" class="text-cyber-gray hover:text-white transition-colors block" vid="38">Rules</a>
+                <a href="#" class="text-cyber-gray hover:text-white transition-colors block" vid="39">FAQ</a>
+                <a href="#" class="text-cyber-gray hover:text-white transition-colors block" vid="40">Team</a>
+                <a href="#register" class="lg:ml-4 bracket-box px-6 py-2 text-cyber-cyan hover:bg-cyber-cyan hover:text-black transition-all font-bold group inline-block text-center w-full lg:w-auto" vid="41">
+                    [ REGISTER ]
+                </a>
+            </div>
+
+            
+            <button id="mobile-menu-btn" class="lg:hidden text-cyber-cyan p-2" vid="42">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="43">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" vid="44"></path>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main class="relative z-10" vid="45">
+        
+        <section class="min-h-[90vh] flex flex-col justify-center items-center text-center px-6 py-20 relative" vid="46">
+            <div class="max-w-5xl mx-auto w-full reveal delay-100" vid="47">
+                
+                
+                <div class="inline-flex items-center gap-2 border border-cyber-border bg-cyber-panel px-4 py-1.5 mb-10 font-mono text-xs" vid="48">
+                    <span class="w-2 h-2 bg-cyber-green rounded-full animate-pulse-fast" vid="49"></span>
+                    <span class="text-cyber-gray" vid="50">REGISTRATION:</span>
+                    <span class="text-cyber-green font-bold" vid="51">OPEN</span>
+                </div>
+
+                
+                <div class="mb-8 relative" vid="52">
+                    
+                    <div class="absolute inset-0 border border-cyber-border/30 w-full h-full -z-10 hidden md:block" vid="53">
+                        <div class="absolute top-0 left-0 w-8 h-8 border-t border-l border-cyber-cyan" vid="54"></div>
+                        <div class="absolute top-0 right-0 w-8 h-8 border-t border-r border-cyber-cyan" vid="55"></div>
+                        <div class="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-cyber-cyan" vid="56"></div>
+                        <div class="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-cyber-cyan" vid="57"></div>
+                    </div>
+                    
+                    <div class="py-8 md:py-16" vid="58">
+                        <h2 class="font-mono text-cyber-cyan text-lg md:text-2xl mb-4 tracking-widest uppercase glitch-hover inline-block" vid="59">Challenge 3.0</h2>
+                        <h1 class="font-sans font-bold text-6xl md:text-8xl lg:text-9xl text-white tracking-tighter leading-none mb-6" vid="60">
+                            CAPTURE<br vid="61">THE FLAG
+                        </h1>
+                        <p class="font-mono text-cyber-gray text-sm md:text-lg max-w-2xl mx-auto uppercase tracking-wide" vid="62">
+                            Hack the challenge. <span class="text-white" vid="63">Capture the flag.</span>
+                        </p>
+                    </div>
+                </div>
+
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto" vid="64">
+                    <div class="bracket-box p-4 text-left" vid="65">
+                        <div class="text-cyber-gray font-mono text-xs mb-1" vid="66">// DATE</div>
+                        <div class="font-sans text-white text-sm md:text-base font-bold" vid="67">Nov 7, 2026</div>
+                        <div class="text-cyber-gray text-xs" vid="68">Saturday</div>
+                    </div>
+                    <div class="bracket-box p-4 text-left" vid="69">
+                        <div class="text-cyber-gray font-mono text-xs mb-1" vid="70">// TIME</div>
+                        <div class="font-sans text-white text-sm md:text-base font-bold" vid="71">10:00 AM</div>
+                        <div class="text-cyber-gray text-xs" vid="72">to 1:00 PM</div>
+                    </div>
+                    <div class="bracket-box p-4 text-left" vid="73">
+                        <div class="text-cyber-gray font-mono text-xs mb-1" vid="74">// DURATION</div>
+                        <div class="font-sans text-white text-sm md:text-base font-bold" vid="75">3 Hours</div>
+                        <div class="text-cyber-gray text-xs" vid="76">Continuous</div>
+                    </div>
+                    <div class="bracket-box p-4 text-left" vid="77">
+                        <div class="text-cyber-gray font-mono text-xs mb-1" vid="78">// LOCATION</div>
+                        <div class="font-sans text-white text-sm md:text-base font-bold" vid="79">Auditorium B105</div>
+                        <div class="text-cyber-gray text-xs" vid="80">2nd Floor</div>
+                    </div>
+                </div>
+
+                
+                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center" vid="81">
+                    <a href="#register" class="bracket-box interactive-box px-8 py-4 bg-cyber-cyan/10 text-cyber-cyan font-mono font-bold text-lg w-full sm:w-auto text-center group" vid="82">
+                        <span class="group-hover:text-white transition-colors" vid="83">[ REGISTER NOW ]</span>
+                    </a>
+                    <a href="#competition" class="border border-cyber-gray/50 px-8 py-4 text-cyber-gray hover:text-white hover:border-white font-mono transition-all w-full sm:w-auto text-center" vid="84">
+                        [ VIEW COMPETITION ]
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="py-12 border-y border-cyber-border bg-cyber-panel/50 relative overflow-hidden" vid="85">
+            
+            <div class="absolute whitespace-nowrap text-[120px] font-mono font-bold text-cyber-border/10 top-1/2 -translate-y-1/2 select-none pointer-events-none" style="animation: scrollText 40s linear infinite;" vid="86">
+                SYSTEM OVERRIDE INITIATED // COUNTDOWN SEQUENCE // BREACH IMMINENT // 
+            </div>
+            
+            <div class="max-w-6xl mx-auto px-6 relative z-10 text-center reveal" vid="87">
+                <div class="font-mono text-cyber-cyan text-sm mb-6 flex justify-center items-center gap-4" vid="88">
+                    <span class="w-12 h-px bg-cyber-cyan/50" vid="89"></span>
+                    // TIME UNTIL BREACH
+                    <span class="w-12 h-px bg-cyber-cyan/50" vid="90"></span>
+                </div>
+                
+                <div id="countdown-container" class="flex justify-center gap-4 md:gap-8 font-mono" vid="91">
+                    <div class="flex flex-col items-center" vid="92">
+                        <div id="cd-days" class="text-4xl md:text-7xl font-bold text-white tracking-tighter" vid="93">00</div>
+                        <div class="text-cyber-gray text-xs mt-2 uppercase tracking-widest" vid="94">Days</div>
+                    </div>
+                    <div class="text-4xl md:text-7xl font-bold text-cyber-cyan/50 animate-pulse-fast" vid="95">:</div>
+                    <div class="flex flex-col items-center" vid="96">
+                        <div id="cd-hours" class="text-4xl md:text-7xl font-bold text-white tracking-tighter" vid="97">00</div>
+                        <div class="text-cyber-gray text-xs mt-2 uppercase tracking-widest" vid="98">Hours</div>
+                    </div>
+                    <div class="text-4xl md:text-7xl font-bold text-cyber-cyan/50 animate-pulse-fast" vid="99">:</div>
+                    <div class="flex flex-col items-center" vid="100">
+                        <div id="cd-mins" class="text-4xl md:text-7xl font-bold text-white tracking-tighter" vid="101">00</div>
+                        <div class="text-cyber-gray text-xs mt-2 uppercase tracking-widest" vid="102">Minutes</div>
+                    </div>
+                    <div class="text-4xl md:text-7xl font-bold text-cyber-cyan/50 animate-pulse-fast" vid="103">:</div>
+                    <div class="flex flex-col items-center" vid="104">
+                        <div id="cd-secs" class="text-4xl md:text-7xl font-bold text-cyber-cyan tracking-tighter" vid="105">00</div>
+                        <div class="text-cyber-gray text-xs mt-2 uppercase tracking-widest" vid="106">Seconds</div>
+                    </div>
+                </div>
+
+                <div id="countdown-complete" class="hidden text-3xl md:text-5xl font-mono font-bold text-cyber-green glitch-hover" vid="107">
+                    CTF NETWORK ONLINE <span class="caret" vid="108"></span>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="py-24 relative" vid="109">
+            <div class="max-w-6xl mx-auto px-6 reveal" vid="110">
+                
+                <div class="flex items-center gap-4 mb-12" vid="111">
+                    <div class="font-mono text-cyber-cyan text-sm whitespace-nowrap" vid="112">01 // MISSION BRIEF</div>
+                    <div class="h-px bg-cyber-border flex-grow" vid="113"></div>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-12 items-center" vid="114">
+                    <div class="lg:col-span-7" vid="115">
+                        <h2 class="font-sans font-bold text-4xl md:text-5xl text-white uppercase mb-6 leading-tight" vid="116">
+                            Enter The<br vid="117"><span class="text-cyber-cyan" vid="118">Cyber Range</span>
+                        </h2>
+                        <div class="prose prose-invert max-w-none" vid="119">
+                            <p class="text-cyber-gray text-lg leading-relaxed font-sans mb-6" vid="120">
+                                ACM CTF 3.0 is a premier cybersecurity Capture The Flag competition designed to push your technical limits. Connect to our secure network and engage in complex operations.
+                            </p>
+                            <p class="text-cyber-gray text-lg leading-relaxed font-sans" vid="121">
+                                Participants will act as operators, investigating diverse challenges across multiple vectors. Your mission: identify critical vulnerabilities, decode encrypted information, follow digital artifacts, and uncover hidden flags to earn points and secure your position on the leaderboard.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-5" vid="122">
+                        <div class="bracket-box p-6 md:p-8 bg-cyber-panel/80 backdrop-blur-sm" vid="123">
+                            <div class="border-b border-cyber-border pb-4 mb-4 flex justify-between items-center" vid="124">
+                                <span class="font-mono text-white text-sm" vid="125">SYSTEM_INFO.sys</span>
+                                <svg class="w-5 h-5 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="126">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" vid="127"></path>
+                                </svg>
+                            </div>
+                            <ul class="font-mono text-sm space-y-4" vid="128">
+                                <li class="flex justify-between border-b border-cyber-border/30 pb-2" vid="129">
+                                    <span class="text-cyber-gray" vid="130">OBJECTIVE</span>
+                                    <span class="text-cyber-cyan" vid="131">CAPTURE FLAGS</span>
+                                </li>
+                                <li class="flex justify-between border-b border-cyber-border/30 pb-2" vid="132">
+                                    <span class="text-cyber-gray" vid="133">ENVIRONMENT</span>
+                                    <span class="text-cyber-cyan" vid="134">CONTROLLED</span>
+                                </li>
+                                <li class="flex justify-between border-b border-cyber-border/30 pb-2" vid="135">
+                                    <span class="text-cyber-gray" vid="136">MISSION TIME</span>
+                                    <span class="text-white" vid="137">03:00:00</span>
+                                </li>
+                                <li class="flex justify-between border-b border-cyber-border/30 pb-2" vid="138">
+                                    <span class="text-cyber-gray" vid="139">DIFFICULTY</span>
+                                    <span class="text-white flex gap-1" vid="140">
+                                        <span class="w-1.5 h-3 bg-cyber-cyan block" vid="141"></span>
+                                        <span class="w-1.5 h-3 bg-cyber-cyan block" vid="142"></span>
+                                        <span class="w-1.5 h-3 bg-cyber-cyan block" vid="143"></span>
+                                        <span class="w-1.5 h-3 bg-cyber-border block" vid="144"></span>
+                                        <span class="w-1.5 h-3 bg-cyber-border block" vid="145"></span>
+                                    </span>
+                                </li>
+                                <li class="pt-2" vid="146">
+                                    <span class="text-cyber-green flex items-center gap-2" vid="147">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="148">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" vid="149"></path>
+                                        </svg>
+                                        ALL SYSTEMS NOMINAL
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="challenges" class="py-24 bg-cyber-panel/30 relative" vid="150">
+            <div class="max-w-6xl mx-auto px-6 reveal" vid="151">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16" vid="152">
+                    <div vid="153">
+                        <div class="flex items-center gap-4 mb-4" vid="154">
+                            <div class="font-mono text-cyber-cyan text-sm whitespace-nowrap" vid="155">02 // ATTACK VECTORS</div>
+                            <div class="h-px w-24 bg-cyber-border" vid="156"></div>
+                        </div>
+                        <h2 class="font-sans font-bold text-4xl text-white uppercase" vid="157">Choose Your Target</h2>
+                    </div>
+                    <a href="#" class="font-mono text-sm text-cyber-gray hover:text-cyber-cyan flex items-center gap-2 transition-colors group" vid="158">
+                        [ EXPLORE CHALLENGES ]
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="159">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" vid="160"></path>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" vid="161">
+                    
+                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer" vid="162">
+                        <div class="w-12 h-12 bg-cyber-bg border border-cyber-border flex items-center justify-center mb-6 group-hover:border-cyber-cyan group-hover:text-cyber-cyan transition-colors text-cyber-gray" vid="163">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="164">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" vid="165"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-mono font-bold text-white text-lg mb-2 group-hover:text-cyber-cyan transition-colors" vid="166">CRYPTOGRAPHY</h3>
+                        <p class="font-sans text-cyber-gray text-sm flex-grow" vid="167">Break the cipher. Decode the message. Unravel modern and historical encryption methods.</p>
+                        <div class="mt-4 font-mono text-xs text-cyber-cyan opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1" vid="168">
+                            &gt; initialize_decrypt <span class="caret cyan w-1.5 h-3" vid="169"></span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer" vid="170">
+                        <div class="w-12 h-12 bg-cyber-bg border border-cyber-border flex items-center justify-center mb-6 group-hover:border-cyber-cyan group-hover:text-cyber-cyan transition-colors text-cyber-gray" vid="171">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="172">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" vid="173"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-mono font-bold text-white text-lg mb-2 group-hover:text-cyber-cyan transition-colors" vid="174">WEB</h3>
+                        <p class="font-sans text-cyber-gray text-sm flex-grow" vid="175">Inspect the application. Find the vulnerability. Exploit bad configurations and insecure code.</p>
+                        <div class="mt-4 font-mono text-xs text-cyber-cyan opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1" vid="176">
+                            &gt; inspect_element <span class="caret cyan w-1.5 h-3" vid="177"></span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer" vid="178">
+                        <div class="w-12 h-12 bg-cyber-bg border border-cyber-border flex items-center justify-center mb-6 group-hover:border-cyber-cyan group-hover:text-cyber-cyan transition-colors text-cyber-gray" vid="179">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="180">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" vid="181"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-mono font-bold text-white text-lg mb-2 group-hover:text-cyber-cyan transition-colors" vid="182">FORENSICS</h3>
+                        <p class="font-sans text-cyber-gray text-sm flex-grow" vid="183">Follow the evidence. Analyze the artifacts. Recover deleted data and trace the attacker's steps.</p>
+                        <div class="mt-4 font-mono text-xs text-cyber-cyan opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1" vid="184">
+                            &gt; analyze_dump <span class="caret cyan w-1.5 h-3" vid="185"></span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="bracket-box interactive-box p-6 h-full flex flex-col group cursor-pointer" vid="186">
+                        <div class="w-12 h-12 bg-cyber-bg border border-cyber-border flex items-center justify-center mb-6 group-hover:border-cyber-cyan group-hover:text-cyber-cyan transition-colors text-cyber-gray" vid="187">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="188">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" vid="189"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-mono font-bold text-white text-lg mb-2 group-hover:text-cyber-cyan transition-colors" vid="190">OSINT</h3>
+                        <p class="font-sans text-cyber-gray text-sm flex-grow" vid="191">Search deeper. Connect the clues. Utilize public intelligence to uncover sensitive organizational data.</p>
+                        <div class="mt-4 font-mono text-xs text-cyber-cyan opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1" vid="192">
+                            &gt; search_intel <span class="caret cyan w-1.5 h-3" vid="193"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="py-24 relative overflow-hidden" vid="194">
+            <div class="max-w-6xl mx-auto px-6 reveal" vid="195">
+                
+                <div class="flex items-center gap-4 mb-16" vid="196">
+                    <div class="font-mono text-cyber-cyan text-sm whitespace-nowrap" vid="197">03 // OPERATION PROTOCOL</div>
+                    <div class="h-px bg-cyber-border flex-grow" vid="198"></div>
+                </div>
+
+                <div class="relative py-8" vid="199">
+                    
+                    <div class="timeline-line" vid="200"></div>
+                    
+                    <div class="flex flex-col lg:flex-row justify-between gap-8 lg:gap-4 relative z-10 pl-12 lg:pl-0" vid="201">
+                        
+                        
+                        <div class="relative group w-full lg:w-1/5" vid="202">
+                            <div class="absolute -left-[56px] top-0 lg:left-1/2 lg:-top-9 lg:-translate-x-1/2 w-4 h-4 bg-cyber-bg border-2 border-cyber-gray group-hover:border-cyber-cyan group-hover:bg-cyber-cyan transition-colors z-20" vid="203"></div>
+                            <div class="lg:text-center pt-2 lg:pt-8" vid="204">
+                                <div class="font-mono text-cyber-gray text-xs mb-2" vid="205">STEP 01</div>
+                                <h4 class="font-sans font-bold text-white text-lg mb-2" vid="206">FORM YOUR TEAM</h4>
+                                <p class="font-sans text-cyber-gray text-sm" vid="207">Gather up to 3 operators or run solo.</p>
+                            </div>
+                        </div>
+
+                        
+                        <div class="relative group w-full lg:w-1/5" vid="208">
+                            <div class="absolute -left-[56px] top-0 lg:left-1/2 lg:-top-9 lg:-translate-x-1/2 w-4 h-4 bg-cyber-bg border-2 border-cyber-gray group-hover:border-cyber-cyan group-hover:bg-cyber-cyan transition-colors z-20" vid="209"></div>
+                            <div class="lg:text-center pt-2 lg:pt-8" vid="210">
+                                <div class="font-mono text-cyber-gray text-xs mb-2" vid="211">STEP 02</div>
+                                <h4 class="font-sans font-bold text-white text-lg mb-2" vid="212">ACCESS PLATFORM</h4>
+                                <p class="font-sans text-cyber-gray text-sm" vid="213">Register and connect to the cyber range.</p>
+                            </div>
+                        </div>
+
+                        
+                        <div class="relative group w-full lg:w-1/5" vid="214">
+                            <div class="absolute -left-[56px] top-0 lg:left-1/2 lg:-top-9 lg:-translate-x-1/2 w-4 h-4 bg-cyber-bg border-2 border-cyber-gray group-hover:border-cyber-cyan group-hover:bg-cyber-cyan transition-colors z-20" vid="215"></div>
+                            <div class="lg:text-center pt-2 lg:pt-8" vid="216">
+                                <div class="font-mono text-cyber-gray text-xs mb-2" vid="217">STEP 03</div>
+                                <h4 class="font-sans font-bold text-white text-lg mb-2" vid="218">SOLVE CHALLENGES</h4>
+                                <p class="font-sans text-cyber-gray text-sm" vid="219">Investigate vectors and exploit flaws.</p>
+                            </div>
+                        </div>
+
+                        
+                        <div class="relative group w-full lg:w-1/5" vid="220">
+                            <div class="absolute -left-[56px] top-0 lg:left-1/2 lg:-top-9 lg:-translate-x-1/2 w-4 h-4 bg-cyber-bg border-2 border-cyber-gray group-hover:border-cyber-cyan group-hover:bg-cyber-cyan transition-colors z-20" vid="221"></div>
+                            <div class="lg:text-center pt-2 lg:pt-8" vid="222">
+                                <div class="font-mono text-cyber-gray text-xs mb-2" vid="223">STEP 04</div>
+                                <h4 class="font-sans font-bold text-white text-lg mb-2" vid="224">CAPTURE FLAGS</h4>
+                                <p class="font-sans text-cyber-gray text-sm" vid="225">Submit flag formats (ACM{...}) for points.</p>
+                            </div>
+                        </div>
+
+                        
+                        <div class="relative group w-full lg:w-1/5" vid="226">
+                            <div class="absolute -left-[56px] top-0 lg:left-1/2 lg:-top-9 lg:-translate-x-1/2 w-4 h-4 bg-cyber-bg border-2 border-cyber-cyan bg-cyber-cyan shadow-[0_0_10px_rgba(0,240,255,0.8)] z-20" vid="227"></div>
+                            <div class="lg:text-center pt-2 lg:pt-8" vid="228">
+                                <div class="font-mono text-cyber-cyan text-xs mb-2" vid="229">STEP 05</div>
+                                <h4 class="font-sans font-bold text-white text-lg mb-2" vid="230">CLIMB SCOREBOARD</h4>
+                                <p class="font-sans text-cyber-gray text-sm" vid="231">Secure top rank and claim victory.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="competition" class="py-24 relative bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyber-panel/40 via-cyber-bg to-cyber-bg" vid="232">
+            <div class="max-w-4xl mx-auto px-6 reveal" vid="233">
+                
+                <div class="bracket-box border border-cyber-border p-1 bg-cyber-bg relative overflow-hidden" vid="234">
+                    
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyber-cyan/5 blur-3xl rounded-full" vid="235"></div>
+                    
+                    <div class="border border-cyber-border/50 p-6 md:p-10 relative z-10" vid="236">
+                        <div class="flex items-center gap-4 mb-8" vid="237">
+                            <div class="font-mono text-cyber-cyan text-sm whitespace-nowrap" vid="238">04 // OPERATION INTEL</div>
+                            <div class="h-px w-full bg-cyber-border" vid="239"></div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8 mb-8" vid="240">
+                            <div vid="241">
+                                <h3 class="font-mono text-white text-xl mb-6 flex items-center gap-2" vid="242">
+                                    <svg class="w-5 h-5 text-cyber-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="243">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" vid="244"></path>
+                                    </svg>
+                                    EVENT PARAMETERS
+                                </h3>
+                                <ul class="font-mono text-sm space-y-4" vid="245">
+                                    <li class="flex gap-4" vid="246">
+                                        <span class="text-cyber-gray w-24" vid="247">DATE:</span>
+                                        <span class="text-white" vid="248">November 7, 2026</span>
+                                    </li>
+                                    <li class="flex gap-4" vid="249">
+                                        <span class="text-cyber-gray w-24" vid="250">TIME:</span>
+                                        <span class="text-white" vid="251">10:00 AM – 1:00 PM (AST)</span>
+                                    </li>
+                                    <li class="flex gap-4" vid="252">
+                                        <span class="text-cyber-gray w-24" vid="253">LOCATION:</span>
+                                        <span class="text-white" vid="254">Auditorium B105<br vid="255">2nd Floor</span>
+                                    </li>
+                                    <li class="flex gap-4" vid="256">
+                                        <span class="text-cyber-gray w-24" vid="257">VECTORS:</span>
+                                        <span class="text-white" vid="258">Cryptography / Web<br vid="259">Forensics / OSINT</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="flex flex-col justify-between" vid="260">
+                                
+                                <div class="border border-cyber-red/50 bg-cyber-red/5 p-4 mb-6 relative" vid="261">
+                                    <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyber-red" vid="262"></div>
+                                    <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyber-red" vid="263"></div>
+                                    
+                                    <div class="flex items-start gap-3" vid="264">
+                                        <svg class="w-5 h-5 text-cyber-red mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="265">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" vid="266"></path>
+                                        </svg>
+                                        <div vid="267">
+                                            <div class="font-mono text-cyber-red font-bold text-sm mb-1" vid="268">⚠ EQUIPMENT REQUIRED</div>
+                                            <p class="font-sans text-cyber-gray text-xs leading-relaxed" vid="269">
+                                                All operators must bring their own personal computing device (laptop) and required power supply (charger). Network access credentials will be provided on-site.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a href="#" class="w-full block border border-cyber-gray hover:border-cyber-cyan text-cyber-gray hover:text-cyber-cyan text-center py-3 font-mono text-sm transition-colors uppercase tracking-widest" vid="270">
+                                    [ View Competition Details ]
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="workshops" class="py-24 relative" vid="271">
+            <div class="max-w-6xl mx-auto px-6 reveal" vid="272">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12" vid="273">
+                    <div vid="274">
+                        <div class="flex items-center gap-4 mb-4" vid="275">
+                            <div class="font-mono text-cyber-cyan text-sm whitespace-nowrap" vid="276">05 // TRAINING PROTOCOL</div>
+                            <div class="h-px w-24 bg-cyber-border" vid="277"></div>
+                        </div>
+                        <h2 class="font-sans font-bold text-4xl text-white uppercase" vid="278">Prepare For The Breach</h2>
+                    </div>
+                    <a href="#" class="font-mono text-sm text-cyber-gray hover:text-white flex items-center gap-2 transition-colors border border-cyber-border px-4 py-2 hover:bg-cyber-panel" vid="279">
+                        [ VIEW ALL WORKSHOPS ]
+                    </a>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" vid="280">
+                    
+                    <div class="border border-cyber-border bg-cyber-panel/30 p-5 hover:border-cyber-gray transition-colors flex flex-col h-full" vid="281">
+                        <div class="flex justify-between items-start mb-4" vid="282">
+                            <span class="px-2 py-1 bg-cyber-cyan/10 text-cyber-cyan font-mono text-[10px] uppercase border border-cyber-cyan/30" vid="283">Category: Web</span>
+                            <span class="text-cyber-gray font-mono text-[10px] flex items-center gap-1" vid="284">
+                                <span class="w-1.5 h-1.5 rounded-full bg-cyber-gray" vid="285"></span>
+                                SCHEDULED
+                            </span>
+                        </div>
+                        <h3 class="font-mono text-white text-lg font-bold mb-2" vid="286">[ Workshop Title Alpha ]</h3>
+                        <div class="font-mono text-cyber-gray text-xs space-y-2 flex-grow mb-4" vid="287">
+                            <div class="flex items-center gap-2" vid="288">
+                                <svg class="w-4 h-4 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="289"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" vid="290"></path></svg> 
+                                TBD
+                            </div>
+                            <div class="flex items-center gap-2" vid="291">
+                                <svg class="w-4 h-4 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="292"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" vid="293"></path></svg> 
+                                TBD
+                            </div>
+                            <div class="flex items-center gap-2" vid="294">
+                                <svg class="w-4 h-4 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="295"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" vid="296"></path></svg> 
+                                Instructor Name
+                            </div>
+                        </div>
+                        <div class="h-px bg-cyber-border w-full mb-4" vid="297"></div>
+                        <button class="w-full text-left font-mono text-xs text-cyber-gray hover:text-cyber-cyan transition-colors" disabled="" vid="298">
+                            &gt; data_unavailable...
+                        </button>
+                    </div>
+
+                    
+                    <div class="border border-cyber-border bg-cyber-panel/30 p-5 hover:border-cyber-gray transition-colors flex flex-col h-full" vid="299">
+                        <div class="flex justify-between items-start mb-4" vid="300">
+                            <span class="px-2 py-1 bg-cyber-cyan/10 text-cyber-cyan font-mono text-[10px] uppercase border border-cyber-cyan/30" vid="301">Category: Crypto</span>
+                            <span class="text-cyber-gray font-mono text-[10px] flex items-center gap-1" vid="302">
+                                <span class="w-1.5 h-1.5 rounded-full bg-cyber-gray" vid="303"></span>
+                                SCHEDULED
+                            </span>
+                        </div>
+                        <h3 class="font-mono text-white text-lg font-bold mb-2" vid="304">[ Workshop Title Beta ]</h3>
+                        <div class="font-mono text-cyber-gray text-xs space-y-2 flex-grow mb-4" vid="305">
+                            <div class="flex items-center gap-2" vid="306">
+                                <svg class="w-4 h-4 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="307"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" vid="308"></path></svg> 
+                                TBD
+                            </div>
+                            <div class="flex items-center gap-2" vid="309">
+                                <svg class="w-4 h-4 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="310"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" vid="311"></path></svg> 
+                                TBD
+                            </div>
+                            <div class="flex items-center gap-2" vid="312">
+                                <svg class="w-4 h-4 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="313"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" vid="314"></path></svg> 
+                                Instructor Name
+                            </div>
+                        </div>
+                        <div class="h-px bg-cyber-border w-full mb-4" vid="315"></div>
+                        <button class="w-full text-left font-mono text-xs text-cyber-gray hover:text-cyber-cyan transition-colors" disabled="" vid="316">
+                            &gt; data_unavailable...
+                        </button>
+                    </div>
+
+                    
+                    <div class="border border-cyber-border bg-cyber-panel/30 p-5 hover:border-cyber-gray transition-colors flex flex-col h-full" vid="317">
+                        <div class="flex justify-between items-start mb-4" vid="318">
+                            <span class="px-2 py-1 bg-cyber-cyan/10 text-cyber-cyan font-mono text-[10px] uppercase border border-cyber-cyan/30" vid="319">Category: Forensics</span>
+                            <span class="text-cyber-gray font-mono text-[10px] flex items-center gap-1" vid="320">
+                                <span class="w-1.5 h-1.5 rounded-full bg-cyber-gray" vid="321"></span>
+                                SCHEDULED
+                            </span>
+                        </div>
+                        <h3 class="font-mono text-white text-lg font-bold mb-2" vid="322">[ Workshop Title Gamma ]</h3>
+                        <div class="font-mono text-cyber-gray text-xs space-y-2 flex-grow mb-4" vid="323">
+                            <div class="flex items-center gap-2" vid="324">
+                                <svg class="w-4 h-4 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="325"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" vid="326"></path></svg> 
+                                TBD
+                            </div>
+                            <div class="flex items-center gap-2" vid="327">
+                                <svg class="w-4 h-4 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="328"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" vid="329"></path></svg> 
+                                TBD
+                            </div>
+                            <div class="flex items-center gap-2" vid="330">
+                                <svg class="w-4 h-4 text-cyber-gray" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="331"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" vid="332"></path></svg> 
+                                Instructor Name
+                            </div>
+                        </div>
+                        <div class="h-px bg-cyber-border w-full mb-4" vid="333"></div>
+                        <button class="w-full text-left font-mono text-xs text-cyber-gray hover:text-cyber-cyan transition-colors" disabled="" vid="334">
+                            &gt; data_unavailable...
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="py-24 relative border-t border-cyber-border/30 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(0,240,255,0.02)_10px,rgba(0,240,255,0.02)_20px)]" vid="335">
+            <div class="max-w-4xl mx-auto px-6 reveal text-center" vid="336">
+                <div class="font-mono text-cyber-cyan text-sm mb-4 inline-block px-4 py-1 border border-cyber-cyan/30 bg-cyber-bg" vid="337">
+                    06 // LIVE NETWORK
+                </div>
+                <h2 class="font-sans font-bold text-4xl text-white uppercase mb-12" vid="338">Scoreboard</h2>
+
+                <div class="bracket-box p-12 md:p-24 flex flex-col items-center justify-center bg-cyber-bg relative overflow-hidden group cursor-not-allowed" vid="339">
+                    
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')]" vid="340"></div>
+                    
+                    <svg class="w-16 h-16 text-cyber-gray mb-6 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="341">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" vid="342"></path>
+                    </svg>
+                    
+                    <h3 class="font-mono font-bold text-2xl text-white mb-2 relative z-10 uppercase tracking-widest" vid="343">
+                        🔒 SCOREBOARD LOCKED
+                    </h3>
+                    <p class="font-mono text-cyber-cyan text-sm relative z-10" vid="344">
+                        ACCESS WILL BE GRANTED ON 07.11.2026
+                    </p>
+                    <div class="mt-8 font-mono text-xs text-cyber-gray relative z-10 flex items-center gap-2" vid="345">
+                        <span class="w-2 h-2 bg-cyber-red rounded-full animate-pulse" vid="346"></span>
+                        AWAITING COMPETITION START
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="register" class="py-32 relative border-t border-cyber-border bg-cyber-panel" vid="347">
+            <div class="max-w-4xl mx-auto px-6 text-center reveal" vid="348">
+                <div class="font-mono text-cyber-cyan text-sm md:text-base mb-8" vid="349">
+                    &gt; system awaiting new operator <span class="caret cyan" vid="350"></span>
+                </div>
+                
+                <h2 class="font-sans font-bold text-4xl md:text-6xl text-white uppercase tracking-tighter mb-6" vid="351">
+                    Think you can<br vid="352">capture the flag?
+                </h2>
+                
+                <p class="font-sans text-cyber-gray text-lg md:text-xl mb-12 max-w-2xl mx-auto" vid="353">
+                    Enter the cyber range. Test your skills. Capture the flag. Join ACM CTF 3.0 and prove your expertise.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center" vid="354">
+                    <button class="bracket-box interactive-box px-8 py-5 bg-cyber-cyan/10 text-cyber-cyan font-mono font-bold text-lg w-full sm:w-auto text-center hover:bg-cyber-cyan hover:text-black transition-all group" vid="355">
+                        [ INITIATE REGISTRATION ]
+                    </button>
+                    <button class="border border-cyber-gray/50 px-8 py-5 text-cyber-gray hover:text-white hover:border-white font-mono transition-all w-full sm:w-auto text-center uppercase tracking-widest" vid="356">
+                        [ READ THE RULES ]
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer class="bg-[#03060c] border-t border-cyber-border pt-16 relative z-10" vid="357">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16" vid="358">
+            
+            
+            <div class="col-span-1 md:col-span-2" vid="359">
+                <a href="#" class="font-sans font-bold text-2xl tracking-tight flex items-center gap-2 mb-4" vid="360">
+                    <span class="text-white" vid="361">ACM CTF <span class="text-cyber-cyan" vid="362">3.0</span></span>
+                </a>
+                <p class="font-sans text-cyber-gray text-sm mb-2 max-w-sm" vid="363">
+                    A premier cybersecurity competition designed to test technical skills in a controlled environment.
+                </p>
+                <div class="font-mono text-cyber-gray/70 text-xs mt-6 space-y-1" vid="364">
+                    <p vid="365">ACM Club · CCIS</p>
+                    <p vid="366">Prince Sultan University</p>
+                    <p vid="367">Riyadh, Saudi Arabia</p>
+                </div>
+            </div>
+
+            
+            <div class="col-span-1" vid="368">
+                <h4 class="font-mono text-white text-sm font-bold mb-4 uppercase tracking-widest" vid="369">// Navigation</h4>
+                <ul class="font-mono text-sm text-cyber-gray space-y-3" vid="370">
+                    <li vid="371"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="372">&gt; Home</a></li>
+                    <li vid="373"><a href="#workshops" class="hover:text-cyber-cyan transition-colors" vid="374">&gt; Workshops</a></li>
+                    <li vid="375"><a href="#challenges" class="hover:text-cyber-cyan transition-colors" vid="376">&gt; Challenges</a></li>
+                    <li vid="377"><a href="#competition" class="hover:text-cyber-cyan transition-colors" vid="378">&gt; Competition Info</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="col-span-1" vid="379">
+                <h4 class="font-mono text-white text-sm font-bold mb-4 uppercase tracking-widest" vid="380">// Resources</h4>
+                <ul class="font-mono text-sm text-cyber-gray space-y-3" vid="381">
+                    <li vid="382"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="383">&gt; Rules</a></li>
+                    <li vid="384"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="385">&gt; FAQ</a></li>
+                    <li vid="386"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="387">&gt; Team</a></li>
+                    <li vid="388"><a href="#" class="text-cyber-cyan hover:text-white transition-colors" vid="389">&gt; Register Now</a></li>
+                </ul>
+            </div>
+        </div>
+
+        
+        <div class="border-t border-cyber-border bg-black py-3 px-6 text-center md:text-left flex flex-col md:flex-row justify-between items-center font-mono text-xs text-cyber-gray" vid="390">
+            <div class="mb-2 md:mb-0" vid="391">
+                SYSTEM // ACM CTF 3.0 // <span class="text-cyber-green" vid="392">CONNECTION SECURE</span>
+            </div>
+            <div vid="393">
+                © 2026 ACM Club PSU. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    
+    <script vid="394">
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const navMenu = document.getElementById('nav-menu');
+            if(mobileBtn && navMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    navMenu.classList.toggle('hidden');
+                    navMenu.classList.toggle('flex');
+                });
+            }
+
+            
+            const body = document.getElementById('body');
+            const intro = document.getElementById('terminal-intro');
+            const l1 = document.getElementById('term-line-1');
+            const l2 = document.getElementById('term-line-2');
+            const l3 = document.getElementById('term-line-3');
+            const l4 = document.getElementById('term-line-4');
+            const caret = document.getElementById('term-caret');
+            
+            
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (!prefersReducedMotion && intro) {
+                setTimeout(() => { if(l1) l1.classList.remove('opacity-0'); }, 400);
+                setTimeout(() => { if(l2) l2.classList.remove('opacity-0'); }, 1200);
+                setTimeout(() => { if(l3) l3.classList.remove('opacity-0'); }, 2000);
+                setTimeout(() => { 
+                    if(l4) l4.classList.remove('opacity-0'); 
+                    if(caret) caret.style.display = 'none';
+                    
+                    
+                    intro.classList.add('bg-white');
+                    setTimeout(() => { intro.classList.remove('bg-white'); }, 50);
+                    
+                }, 3000);
+                
+                
+                setTimeout(() => {
+                    intro.style.transition = 'opacity 0.8s ease-out';
+                    intro.style.opacity = '0';
+                    setTimeout(() => {
+                        intro.style.display = 'none';
+                        body.classList.remove('locked');
+                        
+                        handleScroll();
+                    }, 800);
+                }, 4000);
+            } else {
+                if(intro) intro.style.display = 'none';
+                if(body) body.classList.remove('locked');
+                handleScroll();
+            }
+
+            
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            function handleScroll() {
+                const windowHeight = window.innerHeight;
+                const revealPoint = 100; 
+
+                revealElements.forEach(el => {
+                    const revealTop = el.getBoundingClientRect().top;
+                    if (revealTop < windowHeight - revealPoint) {
+                        el.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', handleScroll);
+            
+            
+            
+            const targetDateStr = "2026-11-07T10:00:00+03:00"; 
+            const targetDate = new Date(targetDateStr).getTime();
+            
+            const elDays = document.getElementById('cd-days');
+            const elHours = document.getElementById('cd-hours');
+            const elMins = document.getElementById('cd-mins');
+            const elSecs = document.getElementById('cd-secs');
+            const cdContainer = document.getElementById('countdown-container');
+            const cdComplete = document.getElementById('countdown-complete');
+
+            const updateCountdown = () => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    if (typeof timerInterval !== 'undefined') clearInterval(timerInterval);
+                    if(cdContainer) cdContainer.style.display = 'none';
+                    if(cdComplete) cdComplete.style.display = 'block';
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                if(elDays) elDays.textContent = days.toString().padStart(2, '0');
+                if(elHours) elHours.textContent = hours.toString().padStart(2, '0');
+                if(elMins) elMins.textContent = minutes.toString().padStart(2, '0');
+                if(elSecs) elSecs.textContent = seconds.toString().padStart(2, '0');
+            };
+
+            const timerInterval = setInterval(updateCountdown, 1000);
+            updateCountdown();
+        });
+    </script>
+
+</body></html>

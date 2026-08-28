@@ -1,0 +1,340 @@
+<html vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Operative Profile | ACM CTF 3.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet" vid="7">
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="8"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web" vid="9"></script>
+    <script vid="10">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            base: '#060a13',
+                            cyan: '#00f0ff',
+                            green: '#00ff41',
+                            red: '#ff003c',
+                            blue: '#1a2b4c',
+                            dark: '#0a1122',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'blink': 'blink 1s step-end infinite',
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style vid="11">
+        body { background-color: #060a13; color: #e2e8f0; overflow-x: hidden; }
+        .scanlines::before {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px; z-index: 50; pointer-events: none;
+        }
+        .cyber-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            z-index: -1;
+        }
+        .glow-text-cyan { text-shadow: 0 0 10px rgba(0, 240, 255, 0.7); }
+        .bracket-box { position: relative; }
+        .bracket-tl { position: absolute; top: -1px; left: -1px; width: 8px; height: 8px; border-top: 2px solid #00f0ff; border-left: 2px solid #00f0ff; }
+        .bracket-tr { position: absolute; top: -1px; right: -1px; width: 8px; height: 8px; border-top: 2px solid #00f0ff; border-right: 2px solid #00f0ff; }
+        .bracket-bl { position: absolute; bottom: -1px; left: -1px; width: 8px; height: 8px; border-bottom: 2px solid #00f0ff; border-left: 2px solid #00f0ff; }
+        .bracket-br { position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; border-bottom: 2px solid #00f0ff; border-right: 2px solid #00f0ff; }
+        
+        .hex-badge {
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .heatmap-cell { width: 12px; height: 12px; border-radius: 2px; }
+    </style>
+</head>
+<body class="font-display antialiased scanlines min-h-screen flex flex-col selection:bg-cyber-cyan selection:text-black" vid="12">
+    <div class="cyber-bg" vid="13"></div>
+
+    <header class="fixed top-0 w-full z-40 flex flex-col" vid="14">
+        <div class="bg-cyber-green/10 border-b border-cyber-green/30 px-4 py-1 flex justify-between items-center font-mono text-xs text-cyber-green" vid="15">
+            <div class="flex items-center gap-2" vid="16">
+                <span class="animate-pulse" vid="17">●</span>
+                <span vid="18">OPERATIVE SESSION: ACTIVE</span>
+            </div>
+            <div class="hidden sm:flex gap-4 opacity-80" vid="19">
+                <span vid="20">ENCRYPTION: AES-256</span>
+                <span vid="21">//</span>
+                <span vid="22">UID: 0x88F29A</span>
+            </div>
+        </div>
+        <nav class="bg-cyber-base/90 backdrop-blur-md border-b border-cyber-cyan/20 px-6 py-4" vid="23">
+            <div class="max-w-7xl mx-auto flex justify-between items-center" vid="24">
+                <div class="flex items-center gap-3" vid="25">
+                    <div class="w-8 h-8 border border-cyber-cyan flex items-center justify-center bg-cyber-cyan/10" vid="26">
+                        <span class="font-mono font-bold text-cyber-cyan" vid="27">_</span>
+                    </div>
+                    <div class="font-display font-bold text-xl tracking-widest text-white uppercase" vid="28">
+                        ACM<span class="text-cyber-cyan text-sm align-top ml-1" vid="29">CTF</span>
+                    </div>
+                </div>
+                <div class="hidden lg:flex items-center gap-8 font-mono text-sm tracking-wide" vid="30">
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="31">Home</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="32">Workshops</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="33">Challenges</a>
+                    <a href="#" class="text-cyber-cyan font-bold glow-text-cyan flex items-center gap-1" vid="34">
+                        <span class="text-cyber-cyan/70" vid="35">&gt;</span> DOSSIER<span class="animate-blink" vid="36">_</span>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="37">Team</a>
+                </div>
+                <button class="font-mono text-xs border border-cyber-red text-cyber-red px-4 py-1 bg-cyber-red/5 hover:bg-cyber-red hover:text-black transition-all" vid="38">
+                    [ DISCONNECT ]
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow pt-32 pb-24 px-6 max-w-7xl mx-auto w-full" vid="39">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8" vid="40">
+            <div class="lg:col-span-2 border border-cyber-cyan/20 bg-cyber-dark/40 p-8 bracket-box" vid="41">
+                <div class="bracket-tl" vid="42"></div><div class="bracket-tr" vid="43"></div><div class="bracket-bl" vid="44"></div><div class="bracket-br" vid="45"></div>
+                <div class="flex flex-col md:flex-row gap-8 items-center md:items-start" vid="46">
+                    <div class="relative" vid="47">
+                        <div class="w-32 h-32 border-2 border-cyber-cyan p-1 bg-cyber-base" vid="48">
+                            <img src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Felix&amp;backgroundColor=060a13" alt="Avatar" class="w-full h-full object-cover opacity-80 contrast-125 grayscale hover:grayscale-0 transition-all" vid="49">
+                        </div>
+                        <div class="absolute -bottom-2 -right-2 bg-cyber-green text-black font-mono text-[10px] font-bold px-2 py-0.5" vid="50">LVL 42</div>
+                    </div>
+                    <div class="flex-grow text-center md:text-left" vid="51">
+                        <div class="font-mono text-cyber-cyan/60 text-xs mb-1" vid="52">OPERATIVE IDENTITY //</div>
+                        <h1 class="font-display text-4xl font-bold text-white uppercase tracking-tight glow-text-cyan mb-2" vid="53">NEURO_MANCER</h1>
+                        <div class="flex flex-wrap gap-4 justify-center md:justify-start font-mono text-xs text-slate-400" vid="54">
+                            <div class="flex items-center gap-2" vid="55"><i class="ph ph-shield-check text-cyber-green" vid="56"></i> RANK: #14 / 1,204</div>
+                            <div class="flex items-center gap-2" vid="57"><i class="ph ph-users text-cyber-cyan" vid="58"></i> TEAM: <span class="text-white" vid="59">VOID_WALKERS</span></div>
+                            <div class="flex items-center gap-2" vid="60"><i class="ph ph-crosshair text-cyber-red" vid="61"></i> TOTAL FLAGS: 154</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2 min-w-[140px]" vid="62">
+                        <div class="bg-cyber-cyan/10 border border-cyber-cyan/30 p-3 text-center" vid="63">
+                            <div class="font-mono text-[10px] text-cyber-cyan/70 uppercase" vid="64">Score</div>
+                            <div class="font-display text-3xl font-bold text-cyber-cyan" vid="65">12,450</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="border border-slate-800 bg-cyber-dark/60 p-6 bracket-box" vid="66">
+                <div class="bracket-tl border-slate-700" vid="67"></div><div class="bracket-tr border-slate-700" vid="68"></div><div class="bracket-bl border-slate-700" vid="69"></div><div class="bracket-br border-slate-700" vid="70"></div>
+                <div class="font-mono text-xs text-slate-500 mb-4 uppercase tracking-widest" vid="71">Team Affiliation</div>
+                <div class="flex items-center gap-4 mb-6" vid="72">
+                    <div class="w-12 h-12 bg-cyber-blue border border-cyber-cyan/30 flex items-center justify-center text-cyber-cyan text-xl" vid="73">
+                        <i class="ph ph-ghost" vid="74"></i>
+                    </div>
+                    <div vid="75">
+                        <div class="text-white font-bold font-display" vid="76">VOID_WALKERS</div>
+                        <div class="text-cyber-green text-[10px] font-mono" vid="77">STATUS: SYNCED</div>
+                    </div>
+                </div>
+                <div class="space-y-3" vid="78">
+                    <div class="flex justify-between text-[10px] font-mono" vid="79">
+                        <span class="text-slate-500" vid="80">MEMBERS:</span>
+                        <span class="text-slate-300" vid="81">4 / 5</span>
+                    </div>
+                    <div class="h-1 bg-slate-800 w-full overflow-hidden" vid="82">
+                        <div class="h-full bg-cyber-cyan w-4/5 shadow-[0_0_8px_#00f0ff]" vid="83"></div>
+                    </div>
+                    <button class="w-full mt-4 py-2 border border-slate-700 font-mono text-[10px] text-slate-400 hover:text-white hover:border-white transition-all uppercase" vid="84">
+                        [ Manage Team ]
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" vid="85">
+            
+            
+            <div class="space-y-8" vid="86">
+                
+                <section vid="87">
+                    <div class="font-mono text-xs text-cyber-cyan mb-4 flex items-center gap-3" vid="88">
+                        <span vid="89">01 // COMMENDATIONS</span>
+                        <div class="h-px bg-cyber-cyan/20 flex-grow" vid="90"></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4" vid="91">
+                        <div class="flex flex-col items-center gap-2 group" vid="92">
+                            <div class="hex-badge w-16 h-18 text-cyber-cyan text-2xl group-hover:bg-cyber-cyan/20 transition-all" vid="93">
+                                <i class="ph ph-bug" vid="94"></i>
+                            </div>
+                            <span class="font-mono text-[9px] text-slate-500 uppercase" vid="95">Web Buster</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 group" vid="96">
+                            <div class="hex-badge w-16 h-18 text-purple-400 border-purple-500/30 text-2xl group-hover:bg-purple-500/20" vid="97">
+                                <i class="ph ph-key" vid="98"></i>
+                            </div>
+                            <span class="font-mono text-[9px] text-slate-500 uppercase" vid="99">Crypto King</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 group opacity-40 grayscale" vid="100">
+                            <div class="hex-badge w-16 h-18 text-slate-500 border-slate-500/30 text-2xl" vid="101">
+                                <i class="ph ph-detective" vid="102"></i>
+                            </div>
+                            <span class="font-mono text-[9px] text-slate-500 uppercase" vid="103">Ghost Init</span>
+                        </div>
+                    </div>
+                </section>
+
+                
+                <section vid="104">
+                    <div class="font-mono text-xs text-cyber-cyan mb-4 flex items-center gap-3" vid="105">
+                        <span vid="106">02 // CATEGORY MASTERY</span>
+                        <div class="h-px bg-cyber-cyan/20 flex-grow" vid="107"></div>
+                    </div>
+                    <div class="space-y-4" vid="108">
+                        <div vid="109">
+                            <div class="flex justify-between font-mono text-[10px] mb-1" vid="110">
+                                <span class="text-slate-400" vid="111">WEB EXPLOITATION</span>
+                                <span class="text-cyber-cyan" vid="112">85%</span>
+                            </div>
+                            <div class="flex gap-1" vid="113">
+                                <div class="heatmap-cell bg-cyber-cyan shadow-[0_0_5px_#00f0ff]" vid="114"></div>
+                                <div class="heatmap-cell bg-cyber-cyan" vid="115"></div>
+                                <div class="heatmap-cell bg-cyber-cyan/70" vid="116"></div>
+                                <div class="heatmap-cell bg-cyber-cyan/50" vid="117"></div>
+                                <div class="heatmap-cell bg-cyber-cyan/30" vid="118"></div>
+                                <div class="heatmap-cell bg-slate-800" vid="119"></div>
+                            </div>
+                        </div>
+                        <div vid="120">
+                            <div class="flex justify-between font-mono text-[10px] mb-1" vid="121">
+                                <span class="text-slate-400" vid="122">CRYPTOGRAPHY</span>
+                                <span class="text-purple-400" vid="123">42%</span>
+                            </div>
+                            <div class="flex gap-1" vid="124">
+                                <div class="heatmap-cell bg-purple-500" vid="125"></div>
+                                <div class="heatmap-cell bg-purple-500/70" vid="126"></div>
+                                <div class="heatmap-cell bg-purple-500/30" vid="127"></div>
+                                <div class="heatmap-cell bg-slate-800" vid="128"></div>
+                                <div class="heatmap-cell bg-slate-800" vid="129"></div>
+                                <div class="heatmap-cell bg-slate-800" vid="130"></div>
+                            </div>
+                        </div>
+                        <div vid="131">
+                            <div class="flex justify-between font-mono text-[10px] mb-1" vid="132">
+                                <span class="text-slate-400" vid="133">FORENSICS</span>
+                                <span class="text-orange-400" vid="134">18%</span>
+                            </div>
+                            <div class="flex gap-1" vid="135">
+                                <div class="heatmap-cell bg-orange-500" vid="136"></div>
+                                <div class="heatmap-cell bg-slate-800" vid="137"></div>
+                                <div class="heatmap-cell bg-slate-800" vid="138"></div>
+                                <div class="heatmap-cell bg-slate-800" vid="139"></div>
+                                <div class="heatmap-cell bg-slate-800" vid="140"></div>
+                                <div class="heatmap-cell bg-slate-800" vid="141"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            
+            <div class="lg:col-span-2" vid="142">
+                <section class="h-full flex flex-col" vid="143">
+                    <div class="font-mono text-xs text-cyber-cyan mb-4 flex items-center gap-3" vid="144">
+                        <span vid="145">03 // RECENT ACTIVITY LOG</span>
+                        <div class="h-px bg-cyber-cyan/20 flex-grow" vid="146"></div>
+                    </div>
+                    
+                    <div class="flex-grow border border-slate-800 bg-cyber-base overflow-hidden bracket-box" vid="147">
+                        <div class="bracket-tl border-slate-700" vid="148"></div><div class="bracket-tr border-slate-700" vid="149"></div><div class="bracket-bl border-slate-700" vid="150"></div><div class="bracket-br border-slate-700" vid="151"></div>
+                        
+                        <table class="w-full text-left font-mono text-[11px] border-collapse" vid="152">
+                            <thead class="bg-slate-900/50 text-slate-500 border-b border-slate-800" vid="153">
+                                <tr vid="154">
+                                    <th class="px-4 py-3 font-normal uppercase" vid="155">Timestamp</th>
+                                    <th class="px-4 py-3 font-normal uppercase" vid="156">Challenge</th>
+                                    <th class="px-4 py-3 font-normal uppercase" vid="157">Category</th>
+                                    <th class="px-4 py-3 font-normal uppercase" vid="158">Points</th>
+                                    <th class="px-4 py-3 font-normal uppercase text-right" vid="159">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/50" vid="160">
+                                <tr class="hover:bg-cyber-cyan/5 transition-colors" vid="161">
+                                    <td class="px-4 py-4 text-slate-500" vid="162">2026-11-02 14:22:10</td>
+                                    <td class="px-4 py-4 text-white font-bold" vid="163">SQL_INJECTION_V3</td>
+                                    <td class="px-4 py-4" vid="164"><span class="text-cyber-cyan bg-cyber-cyan/10 px-2 py-0.5 border border-cyber-cyan/20" vid="165">WEB</span></td>
+                                    <td class="px-4 py-4 text-cyber-green" vid="166">+500</td>
+                                    <td class="px-4 py-4 text-right" vid="167"><span class="text-cyber-green" vid="168">[ CAPTURED ]</span></td>
+                                </tr>
+                                <tr class="hover:bg-cyber-cyan/5 transition-colors" vid="169">
+                                    <td class="px-4 py-4 text-slate-500" vid="170">2026-11-01 09:15:45</td>
+                                    <td class="px-4 py-4 text-white font-bold" vid="171">RSA_FACTOR_01</td>
+                                    <td class="px-4 py-4" vid="172"><span class="text-purple-400 bg-purple-500/10 px-2 py-0.5 border border-purple-500/20" vid="173">CRYPTO</span></td>
+                                    <td class="px-4 py-4 text-cyber-green" vid="174">+250</td>
+                                    <td class="px-4 py-4 text-right" vid="175"><span class="text-cyber-green" vid="176">[ CAPTURED ]</span></td>
+                                </tr>
+                                <tr class="hover:bg-cyber-cyan/5 transition-colors" vid="177">
+                                    <td class="px-4 py-4 text-slate-500" vid="178">2026-10-30 22:11:02</td>
+                                    <td class="px-4 py-4 text-white font-bold" vid="179">BINARY_SEARCH_X</td>
+                                    <td class="px-4 py-4" vid="180"><span class="text-orange-400 bg-orange-500/10 px-2 py-0.5 border border-orange-500/20" vid="181">REVERSE</span></td>
+                                    <td class="px-4 py-4 text-slate-500" vid="182">---</td>
+                                    <td class="px-4 py-4 text-right" vid="183"><span class="text-cyber-red" vid="184">[ FAILED ]</span></td>
+                                </tr>
+                                <tr class="hover:bg-cyber-cyan/5 transition-colors" vid="185">
+                                    <td class="px-4 py-4 text-slate-500" vid="186">2026-10-28 11:04:33</td>
+                                    <td class="px-4 py-4 text-white font-bold" vid="187">PDF_METADATA_EXT</td>
+                                    <td class="px-4 py-4" vid="188"><span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20" vid="189">FORENSICS</span></td>
+                                    <td class="px-4 py-4 text-cyber-green" vid="190">+100</td>
+                                    <td class="px-4 py-4 text-right" vid="191"><span class="text-cyber-green" vid="192">[ CAPTURED ]</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        
+                        <div class="p-4 bg-black/40 border-t border-slate-800 font-mono text-[10px] text-cyber-green/50" vid="193">
+                            <div class="flex gap-2" vid="194">
+                                <span class="text-cyber-cyan" vid="195">&gt;</span>
+                                <span vid="196">fetching additional records... </span>
+                                <span class="animate-blink" vid="197">█</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-cyber-base mt-auto" vid="198">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4" vid="199">
+            <div class="font-mono text-[10px] text-slate-500 uppercase tracking-widest" vid="200">
+                System Time: <span class="text-cyber-cyan" vid="201">2026-11-07 13:42:01 UTC</span>
+            </div>
+            <div class="flex gap-6 font-mono text-[10px] text-slate-500 uppercase" vid="202">
+                <a href="#" class="hover:text-cyber-cyan transition-colors" vid="203">Security Policy</a>
+                <a href="#" class="hover:text-cyber-cyan transition-colors" vid="204">API Docs</a>
+                <a href="#" class="hover:text-cyber-cyan transition-colors" vid="205">Support</a>
+            </div>
+            <div class="bg-cyber-green/10 border border-cyber-green/30 px-3 py-1 text-cyber-green font-mono text-[10px]" vid="206">
+                CON_SECURE: AES_CTR_MODE
+            </div>
+        </div>
+    </footer>
+
+</body></html>

@@ -499,37 +499,70 @@
             const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[character]));
             document.title = `${team.name} Dossier | ACM/CyberTech CTF 3.0`;
             const summaryGrid = document.querySelector('main > .grid');
-            const members = team.members || [];
-            summaryGrid.className = 'grid grid-cols-1 gap-6 mb-8';
-            summaryGrid.innerHTML = `<div class="font-mono text-xs text-cyber-cyan flex items-center gap-3"><span>01 // OPERATIVE ROSTER${isArchive ? ' // CTF 2.0 ARCHIVE' : ''}</span><div class="h-px bg-cyber-cyan/20 flex-grow"></div><span class="text-slate-500">${members.length} / 3 MEMBERS</span></div>${members.map((member,index) => `
-                <article class="border border-cyber-cyan/20 bg-cyber-dark/40 p-6 md:p-8 bracket-box overflow-hidden">
+            const members = isArchive && Number(team.rank) > 3 ? [] : (team.members || []);
+            const verifiedSolves = isArchive ? (archive.challenges || []).filter(challenge => Number(challenge.solves) === Number(archive.teamCount)) : [];
+            summaryGrid.className = 'grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8';
+            summaryGrid.innerHTML = `
+                <div class="lg:col-span-2 border border-cyber-cyan/20 bg-cyber-dark/40 p-8 bracket-box">
                     <div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
-                    <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
+                    <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
                         <div class="relative shrink-0">
-                            <div class="w-28 h-28 md:w-32 md:h-32 border-2 border-cyber-cyan p-1 bg-cyber-base flex items-center justify-center">
-                                <img src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${encodeURIComponent(member.nameEn || member.name || `operator-${index + 1}`)}&amp;backgroundColor=060a13" alt="Avatar for ${escapeHtml(member.nameEn || member.name)}" class="w-full h-full object-cover opacity-80 contrast-125 grayscale hover:grayscale-0 transition-all">
+                            <div class="w-32 h-32 border-2 border-cyber-cyan p-1 bg-cyber-base flex items-center justify-center text-cyber-cyan text-5xl">
+                                <i class="ph ph-users-three"></i>
                             </div>
-                            <div class="absolute -bottom-2 -right-2 bg-cyber-green text-black font-mono text-[10px] font-bold px-2 py-0.5">OP ${String(index + 1).padStart(2,'0')}</div>
+                            <div class="absolute -bottom-2 -right-2 bg-cyber-green text-black font-mono text-[10px] font-bold px-2 py-0.5">RANK #${team.rank || '--'}</div>
                         </div>
                         <div class="flex-grow text-center md:text-left min-w-0">
-                            <div class="font-mono text-cyber-cyan/60 text-xs mb-1">OPERATIVE IDENTITY //</div>
-                            <h1 data-member-index="${index}" class="font-display text-3xl md:text-4xl font-bold text-white uppercase tracking-tight glow-text-cyan mb-3 break-words">${escapeHtml(document.documentElement.lang === 'ar' ? (member.nameAr || member.name) : (member.nameEn || member.name || `OPERATOR_${index + 1}`))}</h1>
+                            <div class="font-mono text-cyber-cyan/60 text-xs mb-1">OPERATIVE TEAM //</div>
+                            <h1 class="font-display text-4xl font-bold text-white uppercase tracking-tight glow-text-cyan mb-2 break-words" data-no-translate>${escapeHtml(team.name)}</h1>
                             <div class="flex flex-wrap gap-4 justify-center md:justify-start font-mono text-xs text-slate-400">
-                                <div class="flex items-center gap-2"><i class="ph ph-shield-check text-cyber-green"></i> ROLE: <span class="text-white">${escapeHtml(member.role || (index ? 'Member' : 'Captain'))}</span></div>
-                                <div class="flex items-center gap-2"><i class="ph ph-users text-cyber-cyan"></i> TEAM: <span class="text-white">${escapeHtml(team.name)}</span></div>
-                                <div class="flex items-center gap-2"><i class="ph ph-crosshair text-cyber-red"></i> TEAM FLAGS: ${team.flags == null ? 'NOT RECORDED' : Number(team.flags)}</div>
+                                <div class="flex items-center gap-2"><i class="ph ph-shield-check text-cyber-green"></i> FINAL RANK: <span class="text-white">#${team.rank || '--'}</span></div>
+                                <div class="flex items-center gap-2"><i class="ph ph-crosshair text-cyber-red"></i> VERIFIED CAPTURES: <span class="text-white">${verifiedSolves.length}</span></div>
                             </div>
                         </div>
-                        <div class="bg-cyber-cyan/10 border border-cyber-cyan/30 p-3 px-6 text-center min-w-[150px]">
-                            <div class="font-mono text-[10px] text-cyber-cyan/70 uppercase">Team Score</div>
-                            <div class="font-display text-3xl font-bold text-cyber-cyan">${Number(team.score || 0).toLocaleString()}</div>
-                            <div class="font-mono text-[10px] text-slate-500 mt-1">RANK #${team.rank || '--'}</div>
+                        <div class="flex flex-col gap-2 min-w-[140px]">
+                            <div class="bg-cyber-cyan/10 border border-cyber-cyan/30 p-3 text-center">
+                                <div class="font-mono text-[10px] text-cyber-cyan/70 uppercase">Score</div>
+                                <div class="font-display text-3xl font-bold text-cyber-cyan">${Number(team.score || 0).toLocaleString()}</div>
+                            </div>
                         </div>
                     </div>
-                </article>`).join('')}`;
+                </div>
+                <div class="border border-slate-800 bg-cyber-dark/60 p-6 bracket-box">
+                    <div class="bracket-tl border-slate-700"></div><div class="bracket-tr border-slate-700"></div><div class="bracket-bl border-slate-700"></div><div class="bracket-br border-slate-700"></div>
+                    <div class="font-mono text-xs text-slate-500 mb-4 uppercase tracking-widest">Team Affiliation</div>
+                    <div class="flex items-center gap-4 mb-5">
+                        <div class="w-12 h-12 bg-cyber-blue border border-cyber-cyan/30 flex items-center justify-center text-cyber-cyan text-xl"><i class="ph ph-ghost"></i></div>
+                        <div><div class="text-white font-bold font-display" data-no-translate>${escapeHtml(team.name)}</div><div class="text-cyber-green text-[10px] font-mono">STATUS: VERIFIED</div></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] font-mono mb-2"><span class="text-slate-500">MEMBERS:</span><span class="text-slate-300">${members.length} / 3</span></div>
+                    <div class="h-1 bg-slate-800 w-full overflow-hidden mb-4"><div class="h-full bg-cyber-cyan shadow-[0_0_8px_#00f0ff]" style="width:${Math.min(100, members.length / 3 * 100)}%"></div></div>
+                    ${members.length ? `<ul class="space-y-2">${members.map((member,index) => `<li class="flex items-center justify-between gap-3 border-t border-slate-800 pt-2"><span data-member-index="${index}" class="text-white text-xs" data-no-translate>${escapeHtml(document.documentElement.lang === 'ar' ? (member.nameAr || member.name) : (member.nameEn || member.name))}</span><span class="font-mono text-[9px] text-cyber-cyan uppercase">${escapeHtml(member.role || (index ? 'Member' : 'Captain'))}</span></li>`).join('')}</ul>` : `<div class="border border-dashed border-slate-700 p-3 font-mono text-[10px] leading-relaxed text-slate-500">ROSTER CLASSIFIED // TOP 3 ONLY</div>`}
+                </div>`;
             const analyticsGrid = document.querySelectorAll('main > .grid')[1];
-            analyticsGrid.className = 'grid grid-cols-1 gap-6';
-            analyticsGrid.innerHTML = `<section class="border border-cyber-cyan/20 bg-cyber-dark/40 p-6 md:p-8 bracket-box"><div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div><div class="font-mono text-xs text-cyber-cyan mb-4">02 // VERIFIED DATA NOTICE</div><p class="font-mono text-sm leading-7 text-slate-400">${isArchive ? 'The supplied competition reports verify this team’s final rank and score. They do not provide member-level commendations, category mastery, timestamps, challenge activity, or capture history, so unsupported values are not displayed.' : 'Individual commendations, category mastery, and activity logs will appear only after verified competition-platform data is available.'}</p></section>`;
+            analyticsGrid.className = 'grid grid-cols-1 lg:grid-cols-3 gap-8';
+            analyticsGrid.innerHTML = isArchive ? `
+                <div class="space-y-8">
+                    <section>
+                        <div class="font-mono text-xs text-cyber-cyan mb-4 flex items-center gap-3"><span>01 // VERIFIED INTEL</span><div class="h-px bg-cyber-cyan/20 flex-grow"></div></div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="flex flex-col items-center gap-2 group"><div class="hex-badge w-16 h-16 text-cyber-cyan text-2xl group-hover:bg-cyber-cyan/20 transition-all"><i class="ph ph-trophy"></i></div><span class="font-mono text-[9px] text-slate-500 uppercase">Rank #${team.rank || '--'}</span></div>
+                            <div class="flex flex-col items-center gap-2 group"><div class="hex-badge w-16 h-16 text-cyber-green border-cyber-green/30 text-2xl group-hover:bg-cyber-green/10 transition-all"><i class="ph ph-flag-banner"></i></div><span class="font-mono text-[9px] text-slate-500 uppercase">${verifiedSolves.length} Captures</span></div>
+                            <div class="flex flex-col items-center gap-2 group"><div class="hex-badge w-16 h-16 text-purple-400 border-purple-500/30 text-2xl group-hover:bg-purple-500/10 transition-all"><i class="ph ph-users-three"></i></div><span class="font-mono text-[9px] text-slate-500 uppercase">${members.length} Members</span></div>
+                        </div>
+                    </section>
+                    <section>
+                        <div class="font-mono text-xs text-cyber-cyan mb-4 flex items-center gap-3"><span>02 // ARCHIVE STATUS</span><div class="h-px bg-cyber-cyan/20 flex-grow"></div></div>
+                        <div class="space-y-4">
+                            <div><div class="flex justify-between font-mono text-[10px] mb-1"><span class="text-slate-400">SCORE VERIFIED</span><span class="text-cyber-cyan">100%</span></div><div class="flex gap-1">${Array.from({length:6},() => '<div class="heatmap-cell bg-cyber-cyan"></div>').join('')}</div></div>
+                            <div><div class="flex justify-between font-mono text-[10px] mb-1"><span class="text-slate-400">CHALLENGE ATTRIBUTION</span><span class="text-cyber-green">VERIFIED</span></div><div class="flex gap-1">${Array.from({length:verifiedSolves.length},() => '<div class="heatmap-cell bg-cyber-green shadow-[0_0_5px_#00ff66]"></div>').join('')}${Array.from({length:Math.max(0,6-verifiedSolves.length)},() => '<div class="heatmap-cell bg-slate-800"></div>').join('')}</div></div>
+                            <div><div class="flex justify-between font-mono text-[10px] mb-1"><span class="text-slate-400">ROSTER ACCESS</span><span class="${members.length ? 'text-purple-400' : 'text-slate-500'}">${members.length ? 'TOP 3' : 'CLASSIFIED'}</span></div><div class="flex gap-1">${Array.from({length:members.length},() => '<div class="heatmap-cell bg-purple-500"></div>').join('')}${Array.from({length:Math.max(0,6-members.length)},() => '<div class="heatmap-cell bg-slate-800"></div>').join('')}</div></div>
+                        </div>
+                    </section>
+                </div>
+                <div class="lg:col-span-2">
+                    <section class="h-full flex flex-col"><div class="font-mono text-xs text-cyber-cyan mb-4 flex items-center gap-3"><span>03 // CAPTURE LOG</span><div class="h-px bg-cyber-cyan/20 flex-grow"></div></div><div class="flex-grow border border-slate-800 bg-cyber-base overflow-hidden bracket-box"><div class="bracket-tl border-slate-700"></div><div class="bracket-tr border-slate-700"></div><div class="bracket-bl border-slate-700"></div><div class="bracket-br border-slate-700"></div><div class="overflow-x-auto"><table class="w-full text-left font-mono text-[11px] border-collapse"><thead class="bg-slate-900/50 text-slate-500 border-b border-slate-800"><tr><th class="px-4 py-3 font-normal uppercase">Record</th><th class="px-4 py-3 font-normal uppercase">Challenge</th><th class="px-4 py-3 font-normal uppercase">Coverage</th><th class="px-4 py-3 font-normal uppercase text-right">Status</th></tr></thead><tbody class="divide-y divide-slate-800/50">${verifiedSolves.map((challenge,index) => `<tr class="hover:bg-cyber-cyan/5 transition-colors"><td class="px-4 py-4 text-slate-500">CAP-${String(index + 1).padStart(3,'0')}</td><td class="px-4 py-4 text-white font-bold" data-no-translate>${escapeHtml(challenge.name)}</td><td class="px-4 py-4"><span class="text-cyber-cyan bg-cyber-cyan/10 px-2 py-0.5 border border-cyber-cyan/20">${challenge.solves} / ${archive.teamCount} TEAMS</span></td><td class="px-4 py-4 text-right"><span class="text-cyber-green">[ CAPTURED ]</span></td></tr>`).join('')}</tbody></table></div><div class="p-4 bg-black/40 border-t border-slate-800 font-mono text-[10px] text-cyber-green/50"><div class="flex gap-2"><span class="text-cyber-cyan">&gt;</span><span>showing completions verified for this team from the CTF 2.0 report</span><span class="animate-blink">█</span></div></div></div></section>
+                </div>` : `<section class="lg:col-span-3 border border-cyber-cyan/20 bg-cyber-dark/40 p-6 md:p-8 bracket-box"><div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div><div class="font-mono text-xs text-cyber-cyan mb-4">03 // CAPTURE LOG</div><p class="font-mono text-sm leading-7 text-slate-400">Individual challenge completions will appear after verified competition-platform data is available.</p></section>`;
             window.addEventListener('site-language-change', event => {
                 document.querySelectorAll('[data-member-index]').forEach(element => {
                     const member = members[Number(element.dataset.memberIndex)];

@@ -1,0 +1,810 @@
+<html lang="en" class="scroll-smooth" vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Competition | ACM CTF 3.0</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="5"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@100;400;700&amp;display=swap" rel="stylesheet" vid="6">
+    <script vid="7">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#060a13',
+                            cyan: '#00f0ff',
+                            green: '#00ff41',
+                            red: '#ff003c',
+                            blue_gray: '#8a9ab0',
+                            border: 'rgba(0, 240, 255, 0.3)',
+                        }
+                    },
+                    fontFamily: {
+                        space: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    },
+                    animation: {
+                        'blink': 'blink 1s step-end infinite',
+                        'scanline': 'scanline 4s linear infinite',
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        },
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style vid="8">
+        body {
+            background-color: #060a13;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+        }
+
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.15) 50%,
+                rgba(0,0,0,0.15)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.3;
+        }
+
+        .tech-border {
+            position: relative;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: rgba(6, 10, 19, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .tech-bracket-tl {
+            position: absolute; top: -1px; left: -1px; width: 12px; height: 12px;
+            border-top: 2px solid #00f0ff; border-left: 2px solid #00f0ff; z-index: 10;
+        }
+        .tech-bracket-tr {
+            position: absolute; top: -1px; right: -1px; width: 12px; height: 12px;
+            border-top: 2px solid #00f0ff; border-right: 2px solid #00f0ff; z-index: 10;
+        }
+        .tech-bracket-bl {
+            position: absolute; bottom: -1px; left: -1px; width: 12px; height: 12px;
+            border-bottom: 2px solid #00f0ff; border-left: 2px solid #00f0ff; z-index: 10;
+        }
+        .tech-bracket-br {
+            position: absolute; bottom: -1px; right: -1px; width: 12px; height: 12px;
+            border-bottom: 2px solid #00f0ff; border-right: 2px solid #00f0ff; z-index: 10;
+        }
+
+        .btn-cyber {
+            position: relative;
+            border: 1px solid #00f0ff;
+            background: transparent;
+            color: #00f0ff;
+            text-transform: uppercase;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-cyber:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+        }
+
+        .btn-cyber-primary {
+            background: #00f0ff;
+            color: #060a13;
+            border: 1px solid #00f0ff;
+            text-transform: uppercase;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-cyber-primary:hover {
+            background: transparent;
+            color: #00f0ff;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+
+        .terminal-block {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 2px solid #00f0ff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .process-arrow {
+            position: relative;
+        }
+        .process-arrow::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 25px;
+            color: #00f0ff;
+            opacity: 0.5;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        @media (max-width: 1024px) {
+            .process-arrow::after {
+                content: '↓';
+                right: auto;
+                bottom: -30px;
+                top: auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body class="font-space relative bg-cyber-bg text-gray-200" vid="9">
+    <div class="scanline-overlay" vid="10"></div>
+    <div class="fixed inset-0 z-0 bg-grid opacity-30 pointer-events-none" vid="11"></div>
+
+    
+    <div class="relative z-40 bg-cyber-bg border-b border-cyber-border/50 py-1 px-4 font-mono text-[10px] text-cyber-cyan tracking-widest uppercase flex justify-between items-center" vid="12">
+        <div class="flex items-center gap-2" vid="13">
+            <span class="w-2 h-2 rounded-full bg-cyber-cyan animate-pulse" vid="14"></span>
+            <span vid="15">SYSTEM STATUS: REGISTRATION OPEN</span>
+        </div>
+        <div class="hidden md:flex items-center gap-4 text-cyber-blue_gray" vid="16">
+            <span vid="17">// ACM CTF 3.0</span>
+            <span vid="18">// 07 NOV 2026</span>
+        </div>
+    </div>
+
+    
+    <nav class="relative z-40 bg-cyber-bg/90 backdrop-blur-md border-b border-cyber-border/50 sticky top-0" vid="19">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" vid="20">
+            <div class="flex items-center justify-between h-16" vid="21">
+                
+                <div class="flex-shrink-0 flex items-center gap-3" vid="22">
+                    <div class="w-8 h-8 border border-cyber-cyan bg-cyber-cyan/10 flex items-center justify-center" vid="23">
+                        <span class="font-mono text-cyber-cyan font-bold leading-none" vid="24">ACM</span>
+                    </div>
+                    <span class="font-mono text-xl font-bold tracking-wider text-white" vid="25">CTF<span class="text-cyber-cyan text-glow" vid="26">_</span></span>
+                </div>
+                
+                
+                <div class="hidden lg:block" vid="27">
+                    <div class="flex items-baseline space-x-6 font-mono text-sm" vid="28">
+                        <a href="#" class="text-cyber-blue_gray hover:text-cyber-cyan transition-colors px-3 py-2 uppercase tracking-wide" vid="29">Home</a>
+                        <a href="#" class="text-cyber-blue_gray hover:text-cyber-cyan transition-colors px-3 py-2 uppercase tracking-wide" vid="30">Workshops</a>
+                        <a href="#" class="text-cyber-blue_gray hover:text-cyber-cyan transition-colors px-3 py-2 uppercase tracking-wide" vid="31">Challenges</a>
+                        <a href="#" class="text-cyber-cyan text-glow px-3 py-2 relative flex items-center uppercase tracking-wide" vid="32">
+                            <span class="mr-1 opacity-70" vid="33">&gt;</span> COMPETITION<span class="animate-blink" vid="34">_</span>
+                            <div class="absolute inset-0 border border-cyber-cyan/30 bg-cyber-cyan/5 -z-10" vid="35"></div>
+                            <div class="absolute -top-[1px] -left-[1px] w-1.5 h-1.5 border-t border-l border-cyber-cyan" vid="36"></div>
+                            <div class="absolute -bottom-[1px] -right-[1px] w-1.5 h-1.5 border-b border-r border-cyber-cyan" vid="37"></div>
+                        </a>
+                        <a href="#" class="text-cyber-blue_gray hover:text-cyber-cyan transition-colors px-3 py-2 uppercase tracking-wide" vid="38">Rules</a>
+                        <a href="#" class="text-cyber-blue_gray hover:text-cyber-cyan transition-colors px-3 py-2 uppercase tracking-wide" vid="39">FAQ</a>
+                        <a href="#" class="text-cyber-blue_gray hover:text-cyber-cyan transition-colors px-3 py-2 uppercase tracking-wide" vid="40">Team</a>
+                    </div>
+                </div>
+                
+                
+                <div class="hidden lg:block" vid="41">
+                    <button class="btn-cyber-primary px-6 py-2 text-sm font-bold tracking-widest" vid="42">
+                        REGISTER
+                    </button>
+                </div>
+                
+                
+                <div class="lg:hidden flex items-center" vid="43">
+                    <button class="text-cyber-cyan hover:text-white p-2" vid="44">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="45">
+                            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" vid="46"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative z-10 w-full pt-12 pb-24 flex flex-col items-center" vid="47">
+        
+        
+        <section class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24 mt-8" vid="48">
+            <div class="flex flex-col items-start w-full" vid="49">
+                <div class="font-mono text-cyber-green text-sm mb-6 flex flex-col sm:flex-row gap-2 sm:gap-4 opacity-90 tracking-wide uppercase" vid="50">
+                    <span vid="51">ACM SECURITY NETWORK // OPERATION CONTROL</span>
+                    <span class="hidden sm:inline text-cyber-blue_gray" vid="52">|</span>
+                    <span vid="53">&gt; retrieving mission parameters<span class="animate-blink" vid="54">...</span></span>
+                </div>
+                
+                <div class="tech-border p-8 md:p-12 w-full relative overflow-hidden group bg-cyber-bg/80" vid="55">
+                    <div class="tech-bracket-tl" vid="56"></div>
+                    <div class="tech-bracket-tr" vid="57"></div>
+                    <div class="tech-bracket-bl" vid="58"></div>
+                    <div class="tech-bracket-br" vid="59"></div>
+                    
+                    <div class="absolute right-0 top-0 w-[500px] h-full bg-gradient-to-l from-cyber-cyan/5 to-transparent pointer-events-none" vid="60"></div>
+                    
+                    <div class="relative z-10" vid="61">
+                        <div class="inline-block px-3 py-1 border border-cyber-cyan/50 bg-cyber-cyan/10 font-mono text-cyber-cyan text-xs tracking-widest mb-8" vid="62">
+                            OPERATION INTEL // COMPETITION
+                        </div>
+                        
+                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 tracking-tighter uppercase leading-[0.9]" vid="63">
+                            Mission <br vid="64">
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-cyber-blue_gray" vid="65">Parameters</span>
+                        </h1>
+                        
+                        <p class="text-xl md:text-2xl text-cyber-blue_gray mb-12 max-w-2xl font-light" vid="66">
+                            Everything you need to know before entering the cyber range.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full border-t border-l border-cyber-border/30 bg-cyber-bg/50" vid="67">
+                            <div class="p-5 border-r border-b border-cyber-border/30 hover:bg-cyber-cyan/5 transition-colors" vid="68">
+                                <div class="font-mono text-cyber-blue_gray text-[10px] tracking-widest mb-2 uppercase" vid="69">DATE</div>
+                                <div class="font-mono text-cyber-cyan font-bold text-lg md:text-xl text-glow uppercase" vid="70">07 NOV 2026</div>
+                            </div>
+                            <div class="p-5 border-r border-b border-cyber-border/30 hover:bg-cyber-cyan/5 transition-colors" vid="71">
+                                <div class="font-mono text-cyber-blue_gray text-[10px] tracking-widest mb-2 uppercase" vid="72">TIME</div>
+                                <div class="font-mono text-white font-bold text-lg md:text-xl uppercase" vid="73">10:00 AM – 1:00 PM</div>
+                            </div>
+                            <div class="p-5 border-r border-b border-cyber-border/30 hover:bg-cyber-cyan/5 transition-colors" vid="74">
+                                <div class="font-mono text-cyber-blue_gray text-[10px] tracking-widest mb-2 uppercase" vid="75">DURATION</div>
+                                <div class="font-mono text-white font-bold text-lg md:text-xl uppercase" vid="76">03:00:00</div>
+                            </div>
+                            <div class="p-5 border-r border-b border-cyber-border/30 hover:bg-cyber-cyan/5 transition-colors" vid="77">
+                                <div class="font-mono text-cyber-blue_gray text-[10px] tracking-widest mb-2 uppercase" vid="78">LOCATION</div>
+                                <div class="font-mono text-white font-bold text-sm md:text-base uppercase truncate" title="AUDITORIUM B105 — 2ND FLOOR" vid="79">AUDITORIUM B105 — 2ND FL</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-32 relative" vid="80">
+            <div class="flex items-center gap-4 mb-6" vid="81">
+                <div class="font-mono text-cyber-cyan text-sm tracking-widest shrink-0" vid="82">01 // MISSION FORMAT</div>
+                <div class="h-[1px] flex-grow bg-gradient-to-r from-cyber-cyan/50 to-transparent" vid="83"></div>
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 uppercase tracking-wide" vid="84">How the Operation Works</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" vid="85">
+                <div class="lg:col-span-4 space-y-6 text-cyber-blue_gray leading-relaxed text-lg" vid="86">
+                    <p vid="87">Participants compete by solving cybersecurity challenges across various domains.</p>
+                    <div class="flex flex-wrap gap-2 font-mono text-xs" vid="88">
+                        <span class="px-3 py-1 border border-cyber-cyan/30 text-cyber-cyan bg-cyber-cyan/5" vid="89">CRYPTOGRAPHY</span>
+                        <span class="px-3 py-1 border border-cyber-cyan/30 text-cyber-cyan bg-cyber-cyan/5" vid="90">WEB</span>
+                        <span class="px-3 py-1 border border-cyber-cyan/30 text-cyber-cyan bg-cyber-cyan/5" vid="91">FORENSICS</span>
+                        <span class="px-3 py-1 border border-cyber-cyan/30 text-cyber-cyan bg-cyber-cyan/5" vid="92">OSINT</span>
+                    </div>
+                    <p vid="93">Teams investigate challenges, find hidden flags, and submit valid flags to earn points. The competition lasts 3 hours.</p>
+                </div>
+                
+                <div class="lg:col-span-8 flex items-center justify-center p-8 tech-border relative" vid="94">
+                    <div class="absolute top-0 right-0 p-2 font-mono text-[10px] text-cyber-border" vid="95">VISUAL_DIAGRAM_01</div>
+                    <div class="flex flex-col lg:flex-row items-center justify-between w-full font-mono text-sm tracking-widest relative z-10 py-8 lg:py-4" vid="96">
+                        
+                        <div class="process-arrow flex flex-col items-center mb-12 lg:mb-0 w-full lg:w-auto hover:text-cyber-cyan transition-colors" vid="97">
+                            <div class="w-14 h-14 border border-cyber-cyan/50 flex items-center justify-center mb-4 bg-cyber-bg" vid="98">
+                                <svg class="w-6 h-6 text-cyber-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="99"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" vid="100"></path></svg>
+                            </div>
+                            <span class="text-xs" vid="101">ACCESS</span>
+                        </div>
+                        
+                        <div class="process-arrow flex flex-col items-center mb-12 lg:mb-0 w-full lg:w-auto hover:text-cyber-cyan transition-colors" vid="102">
+                            <div class="w-14 h-14 border border-cyber-cyan/50 flex items-center justify-center mb-4 bg-cyber-bg" vid="103">
+                                <svg class="w-6 h-6 text-cyber-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="104"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" vid="105"></path></svg>
+                            </div>
+                            <span class="text-xs" vid="106">INVESTIGATE</span>
+                        </div>
+                        
+                        <div class="process-arrow flex flex-col items-center mb-12 lg:mb-0 w-full lg:w-auto hover:text-cyber-cyan transition-colors" vid="107">
+                            <div class="w-14 h-14 border border-cyber-cyan/50 flex items-center justify-center mb-4 bg-cyber-bg" vid="108">
+                                <svg class="w-6 h-6 text-cyber-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="109"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" vid="110"></path></svg>
+                            </div>
+                            <span class="text-xs" vid="111">SOLVE</span>
+                        </div>
+                        
+                        <div class="process-arrow flex flex-col items-center mb-12 lg:mb-0 w-full lg:w-auto hover:text-cyber-cyan transition-colors" vid="112">
+                            <div class="w-14 h-14 border border-cyber-cyan/50 flex items-center justify-center mb-4 bg-cyber-bg" vid="113">
+                                <svg class="w-6 h-6 text-cyber-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="114"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" vid="115"></path></svg>
+                            </div>
+                            <span class="text-xs" vid="116">CAPTURE</span>
+                        </div>
+                        
+                        <div class="process-arrow flex flex-col items-center mb-12 lg:mb-0 w-full lg:w-auto hover:text-cyber-cyan transition-colors" vid="117">
+                            <div class="w-14 h-14 border border-cyber-cyan/50 flex items-center justify-center mb-4 bg-cyber-bg" vid="118">
+                                <svg class="w-6 h-6 text-cyber-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="119"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" vid="120"></path></svg>
+                            </div>
+                            <span class="text-xs" vid="121">SUBMIT</span>
+                        </div>
+                        
+                        <div class="flex flex-col items-center w-full lg:w-auto text-white hover:text-cyber-cyan transition-colors text-glow" vid="122">
+                            <div class="w-14 h-14 border border-cyber-cyan bg-cyber-cyan/20 flex items-center justify-center mb-4 relative" vid="123">
+                                <div class="absolute inset-0 border border-cyber-cyan scale-110 animate-pulse opacity-50" vid="124"></div>
+                                <svg class="w-6 h-6 text-cyber-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="125"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" vid="126"></path></svg>
+                            </div>
+                            <span class="text-xs font-bold text-cyber-cyan" vid="127">SCORE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-32" vid="128">
+            <div class="flex items-center gap-4 mb-6" vid="129">
+                <div class="font-mono text-cyber-cyan text-sm tracking-widest shrink-0" vid="130">02 // TEAM CONFIGURATION</div>
+                <div class="h-[1px] flex-grow bg-gradient-to-r from-cyber-cyan/50 to-transparent" vid="131"></div>
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 uppercase tracking-wide" vid="132">Assemble Your Operators</h2>
+            
+            <div class="tech-border p-8 md:p-12 border-l-4 border-l-cyber-cyan relative overflow-hidden group" vid="133">
+                <div class="tech-bracket-tr" vid="134"></div>
+                <div class="tech-bracket-br" vid="135"></div>
+                
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20 pointer-events-none mix-blend-overlay" vid="136"></div>
+                
+                <div class="flex flex-col md:flex-row gap-10 items-start md:items-center relative z-10" vid="137">
+                    <div class="md:w-1/3 shrink-0" vid="138">
+                        <div class="font-mono border border-cyber-cyan/50 bg-cyber-cyan/10 px-6 py-5 inline-flex flex-col relative w-full" vid="139">
+                            <div class="absolute top-0 right-0 w-2 h-2 bg-cyber-cyan" vid="140"></div>
+                            <span class="text-cyber-blue_gray text-xs mb-2" vid="141">CONFIGURATION PARAMETER</span>
+                            <span class="text-cyber-cyan text-2xl font-bold tracking-widest text-glow mb-1" vid="142">TEAM SIZE: 1–3</span>
+                            <span class="text-white text-sm tracking-widest" vid="143">PARTICIPANTS</span>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-2/3 text-cyber-blue_gray text-lg leading-relaxed" vid="144">
+                        <p class="mb-6" vid="145">Participants may compete individually or as part of a team of up to <span class="text-white font-mono bg-cyber-bg px-2 py-0.5 border border-cyber-border/30" vid="146">3</span> members.</p>
+                        
+                        <div class="terminal-block p-5 text-sm bg-cyber-bg border-cyber-cyan/50 shadow-inner" vid="147">
+                            <p class="text-cyber-blue_gray mb-1" vid="148">&gt; <span class="text-white" vid="149">SYSTEM_NOTE:</span> Each team should register before the registration deadline.</p>
+                            <p class="text-cyber-blue_gray" vid="150">&gt; AWAITING_INPUT<span class="animate-blink" vid="151">_</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-32" vid="152">
+            <div class="flex items-center gap-4 mb-6" vid="153">
+                <div class="font-mono text-cyber-cyan text-sm tracking-widest shrink-0" vid="154">03 // OPERATION TIMELINE</div>
+                <div class="h-[1px] flex-grow bg-gradient-to-r from-cyber-cyan/50 to-transparent" vid="155"></div>
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-16 uppercase tracking-wide" vid="156">Mission Sequence</h2>
+            
+            <div class="relative py-8 lg:px-12" vid="157">
+                
+                <div class="absolute left-[27px] md:left-1/2 top-0 bottom-0 w-[1px] bg-cyber-border/30" vid="158"></div>
+                
+                <div class="space-y-16" vid="159">
+                    
+                    <div class="relative flex flex-col md:flex-row items-center justify-between w-full group" vid="160">
+                        <div class="order-1 md:w-1/2 md:pr-16 flex md:justify-end text-left md:text-right w-full pl-20 md:pl-0" vid="161">
+                            <div vid="162">
+                                <div class="font-mono text-cyber-blue_gray text-lg tracking-wider" vid="163">CHECK-IN</div>
+                                <div class="text-cyber-blue_gray text-[10px] font-mono mt-2 border border-cyber-border/30 px-2 py-1 inline-block bg-cyber-bg tracking-widest uppercase" vid="164">STATUS: PENDING</div>
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center w-14 h-14 rounded-none border border-cyber-border/50 bg-cyber-bg z-10 group-hover:border-cyber-cyan transition-colors" vid="165">
+                            <div class="w-2 h-2 bg-cyber-border/50 group-hover:bg-cyber-cyan transition-colors" vid="166"></div>
+                        </div>
+                        <div class="order-3 md:w-1/2 md:pl-16 flex text-left w-full pl-20 md:pl-0 mt-2 md:mt-0" vid="167">
+                            <div class="font-mono text-cyber-blue_gray text-2xl font-bold opacity-60" vid="168">TBD</div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="relative flex flex-col md:flex-row items-center justify-between w-full group" vid="169">
+                        <div class="order-1 md:w-1/2 md:pr-16 flex md:justify-end text-left md:text-right w-full pl-20 md:pl-0" vid="170">
+                            <div vid="171">
+                                <div class="font-mono text-cyber-blue_gray text-lg tracking-wider" vid="172">OPENING BRIEFING</div>
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center w-14 h-14 rounded-none border border-cyber-border/50 bg-cyber-bg z-10 group-hover:border-cyber-cyan transition-colors" vid="173">
+                            <div class="w-2 h-2 bg-cyber-border/50 group-hover:bg-cyber-cyan transition-colors" vid="174"></div>
+                        </div>
+                        <div class="order-3 md:w-1/2 md:pl-16 flex text-left w-full pl-20 md:pl-0 mt-2 md:mt-0" vid="175">
+                            <div class="font-mono text-cyber-blue_gray text-2xl font-bold opacity-60" vid="176">TBD</div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="relative flex flex-col md:flex-row items-center justify-between w-full group" vid="177">
+                        <div class="order-1 md:w-1/2 md:pr-16 flex md:justify-end text-left md:text-right w-full pl-20 md:pl-0" vid="178">
+                            <div vid="179">
+                                <div class="font-mono text-white text-xl md:text-2xl font-bold text-glow tracking-wide" vid="180">COMPETITION BEGINS</div>
+                                <div class="text-cyber-green font-mono text-[10px] mt-2 flex items-center gap-2 md:justify-end tracking-widest uppercase" vid="181">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-cyber-green animate-pulse" vid="182"></span>
+                                    SYSTEMS ONLINE
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center w-14 h-14 rounded-none border border-cyber-cyan bg-cyber-cyan/10 z-10 shadow-[0_0_15px_rgba(0,240,255,0.3)]" vid="183">
+                            <div class="w-3 h-3 bg-cyber-cyan" vid="184"></div>
+                        </div>
+                        <div class="order-3 md:w-1/2 md:pl-16 flex text-left w-full pl-20 md:pl-0 mt-2 md:mt-0" vid="185">
+                            <div class="font-mono text-cyber-cyan text-3xl md:text-4xl font-bold text-glow" vid="186">10:00 AM</div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="relative flex flex-col md:flex-row items-center justify-between w-full group" vid="187">
+                        <div class="order-1 md:w-1/2 md:pr-16 flex md:justify-end text-left md:text-right w-full pl-20 md:pl-0" vid="188">
+                            <div vid="189">
+                                <div class="font-mono text-white text-xl md:text-2xl font-bold tracking-wide" vid="190">COMPETITION ENDS</div>
+                                <div class="text-cyber-red font-mono text-[10px] mt-2 flex items-center gap-2 md:justify-end tracking-widest uppercase" vid="191">
+                                    <span class="w-1.5 h-1.5 rounded-none bg-cyber-red" vid="192"></span>
+                                    NETWORK LOCKDOWN
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center w-14 h-14 rounded-none border border-cyber-cyan bg-cyber-bg z-10 group-hover:bg-cyber-cyan/5 transition-colors" vid="193">
+                            <div class="w-3 h-3 bg-cyber-cyan" vid="194"></div>
+                        </div>
+                        <div class="order-3 md:w-1/2 md:pl-16 flex text-left w-full pl-20 md:pl-0 mt-2 md:mt-0" vid="195">
+                            <div class="font-mono text-cyber-cyan text-3xl md:text-4xl font-bold" vid="196">1:00 PM</div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="relative flex flex-col md:flex-row items-center justify-between w-full group" vid="197">
+                        <div class="order-1 md:w-1/2 md:pr-16 flex md:justify-end text-left md:text-right w-full pl-20 md:pl-0" vid="198">
+                            <div vid="199">
+                                <div class="font-mono text-cyber-blue_gray text-lg tracking-wider" vid="200">RESULTS / AWARDS</div>
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 flex items-center justify-center w-14 h-14 rounded-none border border-cyber-border/50 bg-cyber-bg z-10 group-hover:border-cyber-cyan transition-colors" vid="201">
+                            <div class="w-2 h-2 bg-cyber-border/50 group-hover:bg-cyber-cyan transition-colors" vid="202"></div>
+                        </div>
+                        <div class="order-3 md:w-1/2 md:pl-16 flex text-left w-full pl-20 md:pl-0 mt-2 md:mt-0" vid="203">
+                            <div class="font-mono text-cyber-blue_gray text-2xl font-bold opacity-60" vid="204">TBD</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-32" vid="205">
+            <div class="flex items-center gap-4 mb-6" vid="206">
+                <div class="font-mono text-cyber-cyan text-sm tracking-widest shrink-0" vid="207">04 // SCORING PROTOCOL</div>
+                <div class="h-[1px] flex-grow bg-gradient-to-r from-cyber-cyan/50 to-transparent" vid="208"></div>
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 uppercase tracking-wide" vid="209">Capture Flags. Earn Points.</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-8" vid="210">
+                <div class="space-y-6 text-cyber-blue_gray text-lg leading-relaxed" vid="211">
+                    <p class="flex items-start gap-4" vid="212">
+                        <span class="text-cyber-cyan mt-1 font-mono text-sm" vid="213">&gt;&nbsp;</span>
+                        <span vid="214">Each challenge contains a hidden flag.</span>
+                    </p>
+                    <p class="flex items-start gap-4" vid="215">
+                        <span class="text-cyber-cyan mt-1 font-mono text-sm" vid="216">&gt;&nbsp;</span>
+                        <span vid="217">Valid flag submissions award points.</span>
+                    </p>
+                    <p class="flex items-start gap-4" vid="218">
+                        <span class="text-cyber-cyan mt-1 font-mono text-sm" vid="219">&gt;&nbsp;</span>
+                        <span vid="220">Challenge difficulty may affect point value.</span>
+                    </p>
+                    <p class="flex items-start gap-4" vid="221">
+                        <span class="text-cyber-cyan mt-1 font-mono text-sm" vid="222">&gt;&nbsp;</span>
+                        <span vid="223">Team scores accumulate throughout the competition.</span>
+                    </p>
+                    <p class="flex items-start gap-4" vid="224">
+                        <span class="text-cyber-cyan mt-1 font-mono text-sm" vid="225">&gt;&nbsp;</span>
+                        <span class="text-white" vid="226">The teams with the highest final scores rank highest on the scoreboard.</span>
+                    </p>
+                </div>
+                
+                <div class="tech-border p-8 flex flex-col justify-center" vid="227">
+                    <div class="font-mono text-[10px] text-cyber-blue_gray mb-6 uppercase tracking-widest flex items-center justify-between" vid="228">
+                        <span vid="229">Difficulty Matrix</span>
+                        <span vid="230">// POINTS_VARIABLE</span>
+                    </div>
+                    
+                    <div class="space-y-4 font-mono text-sm" vid="231">
+                        <div class="flex justify-between items-center border-b border-cyber-border/20 pb-3 group hover:bg-cyber-cyan/5 px-2 transition-colors" vid="232">
+                            <span class="text-green-400" vid="233">VERY EASY</span>
+                            <div class="flex gap-1.5" vid="234"><div class="w-2.5 h-5 bg-green-400" vid="235"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="236"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="237"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="238"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="239"></div></div>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-cyber-border/20 pb-3 group hover:bg-cyber-cyan/5 px-2 transition-colors" vid="240">
+                            <span class="text-green-300" vid="241">EASY</span>
+                            <div class="flex gap-1.5" vid="242"><div class="w-2.5 h-5 bg-green-300" vid="243"></div><div class="w-2.5 h-5 bg-green-300" vid="244"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="245"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="246"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="247"></div></div>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-cyber-border/20 pb-3 group hover:bg-cyber-cyan/5 px-2 transition-colors" vid="248">
+                            <span class="text-yellow-400" vid="249">MEDIUM</span>
+                            <div class="flex gap-1.5" vid="250"><div class="w-2.5 h-5 bg-yellow-400" vid="251"></div><div class="w-2.5 h-5 bg-yellow-400" vid="252"></div><div class="w-2.5 h-5 bg-yellow-400" vid="253"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="254"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="255"></div></div>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-cyber-border/20 pb-3 group hover:bg-cyber-cyan/5 px-2 transition-colors" vid="256">
+                            <span class="text-orange-500" vid="257">HARD</span>
+                            <div class="flex gap-1.5" vid="258"><div class="w-2.5 h-5 bg-orange-500" vid="259"></div><div class="w-2.5 h-5 bg-orange-500" vid="260"></div><div class="w-2.5 h-5 bg-orange-500" vid="261"></div><div class="w-2.5 h-5 bg-orange-500" vid="262"></div><div class="w-2.5 h-5 bg-cyber-border/20" vid="263"></div></div>
+                        </div>
+                        <div class="flex justify-between items-center group hover:bg-cyber-cyan/5 px-2 py-1 transition-colors" vid="264">
+                            <span class="text-cyber-red animate-pulse font-bold" vid="265">INSANE</span>
+                            <div class="flex gap-1.5" vid="266"><div class="w-2.5 h-5 bg-cyber-red shadow-[0_0_8px_#ff003c]" vid="267"></div><div class="w-2.5 h-5 bg-cyber-red shadow-[0_0_8px_#ff003c]" vid="268"></div><div class="w-2.5 h-5 bg-cyber-red shadow-[0_0_8px_#ff003c]" vid="269"></div><div class="w-2.5 h-5 bg-cyber-red shadow-[0_0_8px_#ff003c]" vid="270"></div><div class="w-2.5 h-5 bg-cyber-red shadow-[0_0_8px_#ff003c]" vid="271"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border border-cyber-cyan/30 bg-cyber-cyan/5 p-5 flex flex-col sm:flex-row items-center justify-between font-mono text-sm relative overflow-hidden" vid="272">
+                <div class="absolute top-0 left-0 w-1 h-full bg-cyber-cyan" vid="273"></div>
+                <div class="flex items-center gap-3 mb-4 sm:mb-0 ml-2" vid="274">
+                    <span class="text-cyber-blue_gray tracking-widest" vid="275">SCOREBOARD STATUS:</span>
+                    <span class="text-cyber-red px-3 py-1 bg-cyber-red/10 border border-cyber-red/30 tracking-widest uppercase" vid="276">LOCKED</span>
+                </div>
+                <div class="flex items-center gap-3" vid="277">
+                    <span class="text-cyber-blue_gray tracking-widest" vid="278">ACTIVATION:</span>
+                    <span class="text-cyber-cyan text-glow tracking-widest uppercase font-bold" vid="279">COMPETITION DAY</span>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-32" vid="280">
+            <div class="flex items-center gap-4 mb-6" vid="281">
+                <div class="font-mono text-cyber-cyan text-sm tracking-widest shrink-0" vid="282">05 // EQUIPMENT PROTOCOL</div>
+                <div class="h-[1px] flex-grow bg-gradient-to-r from-cyber-cyan/50 to-transparent" vid="283"></div>
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 uppercase tracking-wide" vid="284">Prepare Your System</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" vid="285">
+                
+                <div class="tech-border p-8 flex flex-col hover:border-cyber-cyan transition-colors group" vid="286">
+                    <div class="tech-bracket-tl" vid="287"></div>
+                    <div class="w-12 h-12 border border-cyber-cyan/30 flex items-center justify-center mb-6 text-cyber-cyan bg-cyber-cyan/5 group-hover:bg-cyber-cyan/10 transition-colors" vid="288">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="289"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" vid="290"></path></svg>
+                    </div>
+                    <h3 class="font-mono text-white text-xl font-bold mb-3 tracking-wider" vid="291">LAPTOP</h3>
+                    <p class="text-cyber-blue_gray text-sm mb-6 flex-grow" vid="292">Primary workstation for the operation.</p>
+                    <div class="mt-auto pt-4 border-t border-cyber-border/20" vid="293">
+                        <span class="text-[10px] font-mono px-3 py-1.5 bg-cyber-red/20 text-cyber-red border border-cyber-red/30 uppercase tracking-widest font-bold" vid="294">Required</span>
+                    </div>
+                </div>
+
+                
+                <div class="tech-border p-8 flex flex-col hover:border-cyber-cyan transition-colors group" vid="295">
+                    <div class="tech-bracket-tr" vid="296"></div>
+                    <div class="w-12 h-12 border border-cyber-cyan/30 flex items-center justify-center mb-6 text-cyber-cyan bg-cyber-cyan/5 group-hover:bg-cyber-cyan/10 transition-colors" vid="297">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="298"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" vid="299"></path></svg>
+                    </div>
+                    <h3 class="font-mono text-white text-xl font-bold mb-3 tracking-wider" vid="300">CHARGER</h3>
+                    <p class="text-cyber-blue_gray text-sm mb-6 flex-grow" vid="301">Power supply to sustain operations for 3 hours.</p>
+                    <div class="mt-auto pt-4 border-t border-cyber-border/20" vid="302">
+                        <span class="text-[10px] font-mono px-3 py-1.5 bg-cyber-red/20 text-cyber-red border border-cyber-red/30 uppercase tracking-widest font-bold" vid="303">Required</span>
+                    </div>
+                </div>
+
+                
+                <div class="tech-border border-dashed p-8 flex flex-col opacity-50 bg-transparent" vid="304">
+                    <div class="w-12 h-12 border border-cyber-border/30 border-dashed flex items-center justify-center mb-6 text-cyber-blue_gray" vid="305">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="306"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" vid="307"></path></svg>
+                    </div>
+                    <h3 class="font-mono text-cyber-blue_gray text-xl font-bold mb-3 tracking-wider" vid="308">SOFTWARE</h3>
+                    <p class="text-cyber-blue_gray text-sm mb-6 flex-grow" vid="309">Additional tool requirements.</p>
+                    <div class="mt-auto pt-4 border-t border-cyber-border/20" vid="310">
+                        <span class="text-[10px] font-mono px-3 py-1.5 text-cyber-blue_gray border border-cyber-border/30 uppercase tracking-widest" vid="311">TBD</span>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="mt-8 terminal-block p-6 bg-cyber-bg/90 shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]" vid="312">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-sm" vid="313">
+                    <div class="flex items-center gap-3 border-b md:border-b-0 md:border-r border-cyber-border/20 pb-4 md:pb-0" vid="314">
+                        <span class="text-cyber-blue_gray" vid="315">PERSONAL DEVICE:</span>
+                        <span class="text-cyber-red font-bold" vid="316">REQUIRED</span>
+                    </div>
+                    <div class="flex items-center gap-3 border-b md:border-b-0 md:border-r border-cyber-border/20 pb-4 md:pb-0 md:pl-4" vid="317">
+                        <span class="text-cyber-blue_gray" vid="318">POWER SUPPLY:</span>
+                        <span class="text-cyber-red font-bold" vid="319">REQUIRED</span>
+                    </div>
+                    <div class="flex items-center gap-3 md:pl-4" vid="320">
+                        <span class="text-cyber-blue_gray" vid="321">NETWORK ACCESS:</span>
+                        <span class="text-cyber-green font-bold" vid="322">PROVIDED ON-SITE</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-32" vid="323">
+            <div class="flex items-center gap-4 mb-6" vid="324">
+                <div class="font-mono text-cyber-cyan text-sm tracking-widest shrink-0" vid="325">06 // OPERATION LOCATION</div>
+                <div class="h-[1px] flex-grow bg-gradient-to-r from-cyber-cyan/50 to-transparent" vid="326"></div>
+            </div>
+            
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 uppercase tracking-wide" vid="327">Target Location</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" vid="328">
+                <div class="tech-border p-10 md:p-14 flex flex-col justify-center relative bg-cyber-bg/70" vid="329">
+                    <div class="tech-bracket-bl" vid="330"></div>
+                    
+                    <div class="w-14 h-14 border border-cyber-cyan/50 bg-cyber-cyan/10 flex items-center justify-center mb-8" vid="331">
+                        <svg class="w-6 h-6 text-cyber-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="332"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" vid="333"></path><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" vid="334"></path></svg>
+                    </div>
+                    
+                    <h3 class="text-4xl font-bold text-white mb-4 uppercase tracking-wide" vid="335">Auditorium B105</h3>
+                    <div class="space-y-2 font-mono text-xl text-cyber-blue_gray" vid="336">
+                        <p vid="337">2nd Floor</p>
+                        <p class="text-cyber-cyan" vid="338">Prince Sultan University</p>
+                    </div>
+                    
+                    <div class="mt-12 flex items-center gap-4" vid="339">
+                        <div class="h-[1px] w-16 bg-cyber-cyan/50" vid="340"></div>
+                        <div class="font-mono text-[10px] text-cyber-blue_gray tracking-widest uppercase" vid="341">Coordinates verified</div>
+                    </div>
+                </div>
+
+                
+                <div class="tech-border p-2 min-h-[350px] flex items-center justify-center relative overflow-hidden group" vid="342">
+                    <div class="tech-bracket-tr" vid="343"></div>
+                    <div class="tech-bracket-br" vid="344"></div>
+                    
+                    <div class="absolute inset-0 bg-cyber-cyan/5 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyber-cyan/10 via-cyber-bg to-cyber-bg z-0" vid="345"></div>
+                    <div class="absolute inset-0 bg-grid opacity-20" vid="346"></div>
+                    
+                    <div class="relative z-10 flex flex-col items-center justify-center text-center p-8 border border-cyber-border/30 bg-cyber-bg/80 backdrop-blur-md" vid="347">
+                        <div class="relative mb-6" vid="348">
+                            <div class="absolute inset-0 bg-cyber-cyan/20 blur-xl rounded-full" vid="349"></div>
+                            <svg class="w-10 h-10 text-cyber-blue_gray relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="350"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" vid="351"></path></svg>
+                        </div>
+                        <span class="font-mono text-sm text-white tracking-widest uppercase mb-2" vid="352">Visual Intel</span>
+                        <span class="font-mono text-xs text-cyber-blue_gray bg-cyber-bg px-2 py-1 border border-cyber-border/20" vid="353">[ MAP DATALINK PENDING ]</span>
+                    </div>
+                    
+                    
+                    <div class="absolute top-0 left-0 w-full h-[1px] bg-cyber-cyan opacity-50 animate-scanline shadow-[0_0_15px_#00f0ff] z-20 pointer-events-none" vid="354"></div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-32" vid="355">
+            <div class="border border-cyber-red/80 bg-cyber-bg relative overflow-hidden group" vid="356">
+                <div class="absolute top-0 left-0 w-full h-1 bg-cyber-red shadow-[0_0_10px_#ff003c]" vid="357"></div>
+                
+                <div class="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(255,0,60,0.05)_10px,rgba(255,0,60,0.05)_20px)] pointer-events-none" vid="358"></div>
+                
+                <div class="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center gap-8" vid="359">
+                    <div class="shrink-0 flex items-center justify-center w-16 h-16 border-2 border-cyber-red bg-cyber-red/10 text-cyber-red" vid="360">
+                        <svg class="w-8 h-8 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" vid="361"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" vid="362"></path></svg>
+                    </div>
+                    
+                    <div class="flex-grow" vid="363">
+                        <h3 class="font-mono text-cyber-red text-xl font-bold mb-3 uppercase tracking-wide" vid="364">⚠ Operation Notice</h3>
+                        <p class="text-cyber-blue_gray text-base leading-relaxed" vid="365">
+                            Participants must follow the official CTF rules and <span class="text-white font-medium border-b border-cyber-red/50 pb-0.5" vid="366">only interact with systems, files, and targets explicitly provided</span> as part of the competition. Unauthorized aggressive scanning or attacks on out-of-scope infrastructure will result in immediate disqualification.
+                        </p>
+                    </div>
+                    
+                    <div class="shrink-0 w-full md:w-auto mt-4 md:mt-0" vid="367">
+                        <button class="w-full md:w-auto px-8 py-4 border border-cyber-red text-cyber-red font-mono text-sm hover:bg-cyber-red hover:text-white transition-all uppercase tracking-widest bg-cyber-bg font-bold shadow-[0_0_10px_rgba(255,0,60,0.2)] hover:shadow-[0_0_20px_rgba(255,0,60,0.5)]" vid="368">
+                            [ READ COMPETITION RULES ]
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center" vid="369">
+            <div class="font-mono text-cyber-green text-sm mb-8 flex items-center justify-center gap-3" vid="370">
+                <span class="w-2 h-2 rounded-full bg-cyber-green animate-pulse shadow-[0_0_8px_#00ff41]" vid="371"></span>
+                <span class="tracking-widest uppercase" vid="372">&gt; mission parameters confirmed</span>
+            </div>
+            
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 uppercase tracking-tighter" vid="373">
+                Ready to enter the cyber range?
+            </h2>
+            
+            <p class="text-xl md:text-2xl text-cyber-blue_gray mb-12 font-mono font-light" vid="374">
+                Assemble your team. Prepare your system. Capture the flag.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6" vid="375">
+                <button class="btn-cyber-primary px-10 py-5 text-lg font-bold tracking-widest w-full sm:w-auto shadow-[0_0_15px_rgba(0,240,255,0.4)]" vid="376">
+                    [ INITIATE REGISTRATION ]
+                </button>
+                <button class="btn-cyber px-10 py-5 text-lg font-bold tracking-widest w-full sm:w-auto bg-cyber-bg" vid="377">
+                    [ VIEW CHALLENGES ]
+                </button>
+            </div>
+        </section>
+    </main>
+
+    
+    <footer class="relative z-40 border-t border-cyber-border/50 bg-[#04070d] pt-16 pb-20" vid="378">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" vid="379">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16" vid="380">
+                <div class="col-span-1 md:col-span-2" vid="381">
+                    <div class="flex items-center gap-3 mb-6" vid="382">
+                        <div class="w-8 h-8 border border-cyber-cyan bg-cyber-cyan/10 flex items-center justify-center" vid="383">
+                            <span class="font-mono text-cyber-cyan font-bold leading-none" vid="384">ACM</span>
+                        </div>
+                        <span class="font-mono text-xl font-bold tracking-wider text-white" vid="385">CTF<span class="text-cyber-cyan" vid="386">_</span></span>
+                    </div>
+                    <div class="space-y-2 text-cyber-blue_gray text-sm" vid="387">
+                        <p class="font-mono text-white mb-4" vid="388">ACM CTF 3.0</p>
+                        <p vid="389">ACM Club · CCIS · Prince Sultan University</p>
+                        <p vid="390">Riyadh, Saudi Arabia</p>
+                    </div>
+                </div>
+                
+                <div class="col-span-1" vid="391">
+                    <h4 class="font-mono text-white mb-6 uppercase tracking-widest text-xs border-b border-cyber-border/30 pb-2 inline-block" vid="392">Navigation</h4>
+                    <ul class="space-y-3 text-sm text-cyber-blue_gray" vid="393">
+                        <li vid="394"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="395">Home</a></li>
+                        <li vid="396"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="397">Workshops</a></li>
+                        <li vid="398"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="399">Challenges</a></li>
+                        <li vid="400"><a href="#" class="text-cyber-cyan font-bold" vid="401">Competition</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-span-1" vid="402">
+                    <h4 class="font-mono text-white mb-6 uppercase tracking-widest text-xs opacity-0 select-none hidden md:block border-b border-transparent pb-2" vid="403">Links</h4>
+                    <ul class="space-y-3 text-sm text-cyber-blue_gray mt-0 md:-mt-[42px]" vid="404">
+                        <li vid="405"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="406">Rules</a></li>
+                        <li vid="407"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="408">FAQ</a></li>
+                        <li vid="409"><a href="#" class="hover:text-cyber-cyan transition-colors" vid="410">Team</a></li>
+                        <li vid="411"><a href="#" class="hover:text-cyber-cyan transition-colors font-bold text-white" vid="412">Register</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="absolute bottom-0 w-full border-t border-cyber-border/30 bg-cyber-bg/90 py-3 backdrop-blur-sm" vid="413">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center" vid="414">
+                <div class="font-mono text-[10px] text-cyber-green tracking-widest flex items-center gap-4 flex-wrap justify-center" vid="415">
+                    <span vid="416">SYSTEM</span>
+                    <span class="opacity-50" vid="417">//</span>
+                    <span vid="418">ACM CTF 3.0</span>
+                    <span class="opacity-50" vid="419">//</span>
+                    <span class="flex items-center gap-2" vid="420">CONNECTION SECURE <div class="w-1.5 h-1.5 bg-cyber-green rounded-none animate-pulse shadow-[0_0_5px_#00ff41]" vid="421"></div></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body></html>

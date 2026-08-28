@@ -1,0 +1,364 @@
+<html vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Live Scoreboard | ACM CTF 3.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet" vid="7">
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="8"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web" vid="9"></script>
+
+    <script vid="10">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            base: '#060a13',
+                            cyan: '#00f0ff',
+                            green: '#00ff41',
+                            red: '#ff003c',
+                            blue: '#1a2b4c',
+                            dark: '#0a1122',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                        'blink': 'blink 1s step-end infinite',
+                        'row-update': 'rowUpdate 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        rowUpdate: {
+                            '0%': { backgroundColor: 'rgba(0, 240, 255, 0.1)' },
+                            '100%': { backgroundColor: 'transparent' }
+                        },
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style vid="11">
+        body { background-color: #060a13; color: #e2e8f0; overflow-x: hidden; }
+        .scanlines::before {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px; z-index: 50; pointer-events: none;
+        }
+        .cyber-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px; z-index: -1;
+        }
+        .glow-text-cyan { text-shadow: 0 0 10px rgba(0, 240, 255, 0.7); }
+        .glow-text-green { text-shadow: 0 0 10px rgba(0, 255, 65, 0.5); }
+        .bracket-box { position: relative; }
+        .bracket-tl { position: absolute; top: -1px; left: -1px; width: 8px; height: 8px; border-top: 2px solid #00f0ff; border-left: 2px solid #00f0ff; }
+        .bracket-tr { position: absolute; top: -1px; right: -1px; width: 8px; height: 8px; border-top: 2px solid #00f0ff; border-right: 2px solid #00f0ff; }
+        .bracket-bl { position: absolute; bottom: -1px; left: -1px; width: 8px; height: 8px; border-bottom: 2px solid #00f0ff; border-left: 2px solid #00f0ff; }
+        .bracket-br { position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; border-bottom: 2px solid #00f0ff; border-right: 2px solid #00f0ff; }
+        
+        .rank-up { color: #00ff41; animation: blink 0.5s 3; }
+        .rank-down { color: #ff003c; }
+        
+        .terminal-scroll::-webkit-scrollbar { width: 4px; }
+        .terminal-scroll::-webkit-scrollbar-track { background: transparent; }
+        .terminal-scroll::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.2); }
+    </style>
+</head>
+<body class="font-display antialiased scanlines min-h-screen flex flex-col selection:bg-cyber-cyan selection:text-black" vid="12">
+
+    <div class="cyber-bg" vid="13"></div>
+
+    
+    <div class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-sm border-b border-cyber-cyan/20" vid="14">
+        <div class="max-w-[1440px] mx-auto px-6 py-2 flex justify-between items-center font-mono text-[11px] tracking-widest" vid="15">
+            <div class="flex items-center gap-6" vid="16">
+                <div class="flex items-center gap-2 text-cyber-red" vid="17">
+                    <span class="w-2 h-2 bg-cyber-red rounded-full animate-pulse-fast" vid="18"></span>
+                    <span vid="19">LIVE COMPETITION FEED</span>
+                </div>
+                <div class="hidden md:flex gap-4 text-slate-500" vid="20">
+                    <span vid="21">UPTIME: 04:22:18</span>
+                    <span vid="22">//</span>
+                    <span vid="23">PACKETS_RECV: 14,209</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 text-cyber-cyan" vid="24">
+                <span class="opacity-50" vid="25">ENCRYPTION: AES-256</span>
+                <span class="w-px h-3 bg-cyber-cyan/30" vid="26"></span>
+                <span vid="27">SERVER_ID: NODE_03_RYD</span>
+            </div>
+        </div>
+    </div>
+
+    <header class="pt-16 pb-8 px-6 border-b border-cyber-cyan/10" vid="28">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end gap-6" vid="29">
+            <div class="flex flex-col gap-2" vid="30">
+                <div class="font-mono text-cyber-cyan/70 text-xs tracking-widest uppercase" vid="31">
+                    Tactical Overview // Global Leaderboard
+                </div>
+                <h1 class="font-display text-4xl md:text-6xl font-bold text-white tracking-tighter glow-text-cyan" vid="32">
+                    SCOREBOARD<span class="animate-blink text-cyber-cyan" vid="33">_</span>
+                </h1>
+            </div>
+            
+            <div class="flex gap-4 font-mono" vid="34">
+                <div class="bg-cyber-dark border border-slate-800 p-3 px-6 flex flex-col items-end" vid="35">
+                    <span class="text-[10px] text-slate-500" vid="36">TOTAL FLAGS CAPTURED</span>
+                    <span class="text-2xl text-cyber-green glow-text-green font-bold" vid="37">1,402</span>
+                </div>
+                <div class="bg-cyber-dark border border-slate-800 p-3 px-6 flex flex-col items-end" vid="38">
+                    <span class="text-[10px] text-slate-500" vid="39">ACTIVE OPERATIVES</span>
+                    <span class="text-2xl text-white font-bold" vid="40">342</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-6 py-12 grid grid-cols-12 gap-8 relative z-10" vid="41">
+        
+        
+        <div class="col-span-12 lg:col-span-8" vid="42">
+            <div class="bracket-box bg-cyber-dark/40 border border-slate-800 overflow-hidden" vid="43">
+                <div class="bracket-tl" vid="44"></div><div class="bracket-tr" vid="45"></div><div class="bracket-bl" vid="46"></div><div class="bracket-br" vid="47"></div>
+                
+                <table class="w-full text-left font-mono text-sm" vid="48">
+                    <thead vid="49">
+                        <tr class="border-b border-slate-800 bg-slate-900/50 text-slate-500 uppercase text-[10px] tracking-widest" vid="50">
+                            <th class="py-4 px-6 w-16 text-center" vid="51">Rank</th>
+                            <th class="py-4 px-6" vid="52">Operative / Team</th>
+                            <th class="py-4 px-6" vid="53">Solved</th>
+                            <th class="py-4 px-6 text-right" vid="54">Points</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/50" vid="55">
+                        
+                        <tr class="hover:bg-cyber-cyan/5 transition-colors group" vid="56">
+                            <td class="py-5 px-6 text-center font-bold text-cyber-cyan text-lg" vid="57">01</td>
+                            <td class="py-5 px-6" vid="58">
+                                <div class="flex flex-col" vid="59">
+                                    <span class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors" vid="60">NULL_POINTER_EXC</span>
+                                    <span class="text-[10px] text-slate-500 uppercase" vid="61">Sector: Alpha-9</span>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6" vid="62">
+                                <div class="flex gap-1" vid="63">
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="64"></div>
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="65"></div>
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="66"></div>
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="67"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="68"></div>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg glow-text-green" vid="69">4,850</td>
+                        </tr>
+                        
+                        <tr class="hover:bg-cyber-cyan/5 transition-colors group animate-row-update" vid="70">
+                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg" vid="71">02</td>
+                            <td class="py-5 px-6" vid="72">
+                                <div class="flex flex-col" vid="73">
+                                    <div class="flex items-center gap-2" vid="74">
+                                        <span class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors" vid="75">SYN_FLOODERS</span>
+                                        <i class="ph ph-caret-up text-cyber-green text-xs" vid="76"></i>
+                                    </div>
+                                    <span class="text-[10px] text-slate-500 uppercase" vid="77">Sector: Delta-4</span>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6" vid="78">
+                                <div class="flex gap-1" vid="79">
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="80"></div>
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="81"></div>
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="82"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="83"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="84"></div>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg" vid="85">4,200</td>
+                        </tr>
+                        
+                        <tr class="hover:bg-cyber-cyan/5 transition-colors group" vid="86">
+                            <td class="py-5 px-6 text-center font-bold text-slate-300 text-lg" vid="87">03</td>
+                            <td class="py-5 px-6" vid="88">
+                                <div class="flex flex-col" vid="89">
+                                    <div class="flex items-center gap-2" vid="90">
+                                        <span class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors" vid="91">CYBER_KRAKEN</span>
+                                        <i class="ph ph-caret-down text-cyber-red text-xs" vid="92"></i>
+                                    </div>
+                                    <span class="text-[10px] text-slate-500 uppercase" vid="93">Sector: Sigma-1</span>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6" vid="94">
+                                <div class="flex gap-1" vid="95">
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="96"></div>
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="97"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="98"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="99"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="100"></div>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg" vid="101">4,150</td>
+                        </tr>
+                        
+                        <tr class="hover:bg-cyber-cyan/5 transition-colors group" vid="102">
+                            <td class="py-5 px-6 text-center font-bold text-slate-500 text-lg" vid="103">04</td>
+                            <td class="py-5 px-6" vid="104">
+                                <div class="flex flex-col" vid="105">
+                                    <span class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors" vid="106">VOID_RUNNERS</span>
+                                    <span class="text-[10px] text-slate-500 uppercase" vid="107">Sector: Epsilon-2</span>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6" vid="108">
+                                <div class="flex gap-1" vid="109">
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="110"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="111"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="112"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="113"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="114"></div>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg" vid="115">3,900</td>
+                        </tr>
+                        
+                        <tr class="hover:bg-cyber-cyan/5 transition-colors group" vid="116">
+                            <td class="py-5 px-6 text-center font-bold text-slate-500 text-lg" vid="117">05</td>
+                            <td class="py-5 px-6" vid="118">
+                                <div class="flex flex-col" vid="119">
+                                    <span class="text-white font-bold tracking-tight group-hover:text-cyber-cyan transition-colors" vid="120">BINARY_BEASTS</span>
+                                    <span class="text-[10px] text-slate-500 uppercase" vid="121">Sector: Omega-0</span>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6" vid="122">
+                                <div class="flex gap-1" vid="123">
+                                    <div class="w-2 h-4 bg-cyber-green/40 border border-cyber-green/20" vid="124"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="125"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="126"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="127"></div>
+                                    <div class="w-2 h-4 bg-slate-800 border border-slate-700" vid="128"></div>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6 text-right text-cyber-green font-bold text-lg" vid="129">3,650</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="bg-slate-900/30 p-4 border-t border-slate-800 flex justify-center" vid="130">
+                    <button class="font-mono text-xs text-cyber-cyan border border-cyber-cyan/30 px-4 py-2 hover:bg-cyber-cyan/10 transition-colors" vid="131">
+                        [ LOAD MORE ENTRIES ]
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-span-12 lg:col-span-4 flex flex-col gap-6" vid="132">
+            <div class="border border-slate-800 bg-cyber-dark p-4 flex flex-col h-[600px] bracket-box" vid="133">
+                <div class="bracket-tl" vid="134"></div><div class="bracket-tr" vid="135"></div><div class="bracket-bl" vid="136"></div><div class="bracket-br" vid="137"></div>
+                
+                <div class="flex items-center gap-3 mb-6 border-b border-slate-800 pb-3" vid="138">
+                    <div class="w-2 h-2 bg-cyber-green rounded-full animate-pulse" vid="139"></div>
+                    <h3 class="font-display font-bold text-white uppercase text-sm tracking-widest" vid="140">Live Activity</h3>
+                </div>
+
+                <div class="flex-grow overflow-y-auto terminal-scroll space-y-4 pr-2 font-mono text-[11px]" vid="141">
+                    
+                    <div class="border-l-2 border-cyber-green pl-3 py-1" vid="142">
+                        <div class="text-slate-500 mb-1" vid="143">14:42:01 // CHALLENGE_SOLVED</div>
+                        <div class="text-white uppercase" vid="144"><span class="text-cyber-cyan" vid="145">SYN_FLOODERS</span> captured flag in [WEB_02]</div>
+                        <div class="text-cyber-green" vid="146">+400 PTS</div>
+                    </div>
+                    
+                    <div class="border-l-2 border-cyber-red pl-3 py-1" vid="147">
+                        <div class="text-slate-500 mb-1" vid="148">14:41:45 // FAILED_ATTEMPT</div>
+                        <div class="text-white uppercase" vid="149"><span class="text-cyber-cyan" vid="150">VOID_RUNNERS</span> invalid flag submission [CRYP_01]</div>
+                        <div class="text-cyber-red" vid="151">PENALTY: -25 PTS</div>
+                    </div>
+                    
+                    <div class="border-l-2 border-cyber-cyan pl-3 py-1" vid="152">
+                        <div class="text-slate-500 mb-1" vid="153">14:40:12 // RANK_SHIFT</div>
+                        <div class="text-white uppercase" vid="154">User <span class="text-cyber-cyan" vid="155">CYBER_KRAKEN</span> dropped to pos #3</div>
+                    </div>
+                    
+                    <div class="border-l-2 border-cyber-green pl-3 py-1" vid="156">
+                        <div class="text-slate-500 mb-1" vid="157">14:38:59 // CHALLENGE_SOLVED</div>
+                        <div class="text-white uppercase" vid="158"><span class="text-cyber-cyan" vid="159">NULL_POINTER_EXC</span> captured flag in [OSINT_04]</div>
+                        <div class="text-cyber-green" vid="160">+150 PTS</div>
+                    </div>
+                    
+                    <div class="border-l-2 border-slate-700 pl-3 py-1 opacity-60" vid="161">
+                        <div class="text-slate-500 mb-1" vid="162">14:35:22 // SYSTEM_MSG</div>
+                        <div class="text-slate-400 italic" vid="163">Hint for 'Mirror Maze' has been unlocked by 50% of teams.</div>
+                    </div>
+                    
+                    <div class="border-l-2 border-cyber-green pl-3 py-1" vid="164">
+                        <div class="text-slate-500 mb-1" vid="165">14:32:01 // CHALLENGE_SOLVED</div>
+                        <div class="text-white uppercase" vid="166"><span class="text-cyber-cyan" vid="167">BINARY_BEASTS</span> captured flag in [FOR_01]</div>
+                        <div class="text-cyber-green" vid="168">+200 PTS</div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-800" vid="169">
+                    <div class="flex items-center gap-2 text-cyber-cyan" vid="170">
+                        <span class="animate-pulse" vid="171">&gt;</span>
+                        <span class="text-[10px] tracking-widest" vid="172">LISTENING FOR EVENTS...</span>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="border border-slate-800 bg-cyber-dark/40 p-6 flex flex-col gap-4" vid="173">
+                <h4 class="font-mono text-xs text-slate-500 uppercase tracking-widest" vid="174">Category Distribution</h4>
+                <div class="space-y-3" vid="175">
+                    <div vid="176">
+                        <div class="flex justify-between font-mono text-[10px] mb-1" vid="177">
+                            <span class="text-white" vid="178">WEB EXPLOITATION</span>
+                            <span class="text-cyber-cyan" vid="179">72%</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-1.5 border border-slate-800" vid="180">
+                            <div class="bg-cyber-cyan h-full shadow-[0_0_8px_rgba(0,240,255,0.4)]" style="width: 72%" vid="181"></div>
+                        </div>
+                    </div>
+                    <div vid="182">
+                        <div class="flex justify-between font-mono text-[10px] mb-1" vid="183">
+                            <span class="text-white" vid="184">CRYPTOGRAPHY</span>
+                            <span class="text-cyber-cyan" vid="185">45%</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-1.5 border border-slate-800" vid="186">
+                            <div class="bg-purple-500 h-full" style="width: 45%" vid="187"></div>
+                        </div>
+                    </div>
+                    <div vid="188">
+                        <div class="flex justify-between font-mono text-[10px] mb-1" vid="189">
+                            <span class="text-white" vid="190">FORENSICS</span>
+                            <span class="text-cyber-cyan" vid="191">30%</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-1.5 border border-slate-800" vid="192">
+                            <div class="bg-orange-500 h-full" style="width: 30%" vid="193"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-auto border-t border-slate-800 bg-cyber-base px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4" vid="194">
+        <div class="font-mono text-[10px] text-slate-500 tracking-wider" vid="195">
+            SYSTEM_LOC: CORE_FRAME_01 // ACCESS_STAMP: 2026.11.07_14:42:15
+        </div>
+        <div class="flex gap-6 font-mono text-[10px] text-cyber-green" vid="196">
+            <span class="flex items-center gap-1" vid="197"><i class="ph ph-shield-check text-sm" vid="198"></i> ANTI-CHEAT: ACTIVE</span>
+            <span class="flex items-center gap-1" vid="199"><i class="ph ph-broadcast text-sm" vid="200"></i> BROADCAST: STABLE</span>
+        </div>
+    </footer>
+
+
+</body></html>

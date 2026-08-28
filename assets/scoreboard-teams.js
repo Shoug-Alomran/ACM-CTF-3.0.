@@ -83,24 +83,24 @@
                 <ul class="space-y-2">${items}</ul>
             </div>`;
         }
-        // The CTF 2.0 report records solve counts per challenge, not which team solved
-        // what, so the dossier shows the board this team played rather than inventing
-        // a per-team solve list.
+        // The report does not publish a team-by-team solve table. A challenge solved
+        // by all 11 teams is the only completion that can be attributed to any one
+        // team with certainty.
+        const verifiedSolves = (data.challenges || []).filter(challenge =>
+            Number(challenge.solves) === Number(data.teamCount));
         const note = isArabic()
-            ? 'لا يسجّل تقرير CTF 2.0 التحديات التي حلّها كل فريق على حدة، بل عدد الفرق التي حلّت كل تحدٍ. في ما يلي لوحة التحديات التي خاضها هذا الفريق.'
-            : 'The CTF 2.0 report records how many teams solved each challenge, not which challenges a given team solved. Below is the board this team played.';
-        const board = (data.challenges || []).map(challenge => {
-            const rate = Number(challenge.solveRate || 0);
-            const tone = challenge.solves === 0 ? 'text-cyber-red' : (rate >= 90 ? 'text-cyber-green' : 'text-cyber-cyan');
+            ? 'يعرض التقرير عدد الفرق التي حلّت كل تحدٍ، ولا ينشر سجلًا منفصلًا لكل فريق. لذلك نعرض فقط التحديات التي أكد التقرير أن جميع الفرق الـ١١ أنجزتها.'
+            : 'The report publishes challenge-wide solve counts, not a separate solve log for each team. Only challenges confirmed as completed by all 11 teams are shown here.';
+        const board = verifiedSolves.map(challenge => {
             return `
             <li class="flex items-center justify-between gap-4 border border-slate-800 bg-cyber-base/60 px-4 py-2.5">
                 <span class="font-display text-[14px] text-white min-w-0 truncate" data-no-translate>${escapeHtml(challenge.name)}</span>
-                <span class="font-mono text-[11px] ${tone} shrink-0">${pad(challenge.solves)} / ${pad(data.teamCount)} <span class="text-slate-600">· ${rate}%</span></span>
+                <span class="font-mono text-[11px] text-cyber-green shrink-0">[ VERIFIED COMPLETE ]</span>
             </li>`;
         }).join('');
         return `
         <div>
-            <div class="font-mono text-[10px] uppercase tracking-widest text-slate-500 mb-3">${escapeHtml(isArabic() ? 'لوحة التحديات' : 'Challenge board')} // ${pad((data.challenges || []).length)}</div>
+            <div class="font-mono text-[10px] uppercase tracking-widest text-slate-500 mb-3">${escapeHtml(heading)} // ${pad(verifiedSolves.length)}</div>
             <p class="font-display text-[13px] leading-relaxed text-slate-400 mb-4" data-no-translate>${escapeHtml(note)}</p>
             <ul class="space-y-2">${board}</ul>
         </div>`;

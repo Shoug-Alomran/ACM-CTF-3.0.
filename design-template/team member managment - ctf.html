@@ -1,0 +1,346 @@
+<html vid="0"><head vid="1">
+    <meta charset="UTF-8" vid="2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" vid="3">
+    <title vid="4">Squad Management | ACM CTF 3.0</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" vid="5">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" vid="6">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet" vid="7">
+    
+    <script src="https://cdn.tailwindcss.com/3.4.17" vid="8"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web" vid="9"></script>
+
+    <script vid="10">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            base: '#060a13',
+                            cyan: '#00f0ff',
+                            green: '#00ff41',
+                            red: '#ff003c',
+                            blue: '#1a2b4c',
+                            dark: '#0a1122',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    backgroundImage: {
+                        'cyber-grid': 'linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px)',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                        'blink': 'blink 1s step-end infinite',
+                    },
+                    keyframes: {
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100vh)' }
+                        },
+                        blink: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style vid="11">
+        body {
+            background-color: #060a13;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            z-index: 50;
+            pointer-events: none;
+        }
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            z-index: -1;
+        }
+        .glow-text-cyan { text-shadow: 0 0 10px rgba(0, 240, 255, 0.7); }
+        .bracket-box { position: relative; }
+        .bracket-tl { position: absolute; top: -1px; left: -1px; width: 8px; height: 8px; border-top: 2px solid #00f0ff; border-left: 2px solid #00f0ff; }
+        .bracket-tr { position: absolute; top: -1px; right: -1px; width: 8px; height: 8px; border-top: 2px solid #00f0ff; border-right: 2px solid #00f0ff; }
+        .bracket-bl { position: absolute; bottom: -1px; left: -1px; width: 8px; height: 8px; border-bottom: 2px solid #00f0ff; border-left: 2px solid #00f0ff; }
+        .bracket-br { position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; border-bottom: 2px solid #00f0ff; border-right: 2px solid #00f0ff; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #060a13; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.3); }
+    </style>
+</head>
+<body class="font-display antialiased scanlines min-h-screen flex flex-col selection:bg-cyber-cyan selection:text-black" vid="12">
+    <div class="cyber-bg" vid="13"></div>
+
+    <header class="fixed top-0 w-full z-40 flex flex-col" vid="14">
+        <div class="bg-cyber-green/10 border-b border-cyber-green/30 px-4 py-1 flex justify-between items-center font-mono text-xs text-cyber-green" vid="15">
+            <div class="flex items-center gap-2" vid="16">
+                <span class="animate-pulse" vid="17">●</span>
+                <span vid="18">AUTHENTICATED SESSION: SQUAD_MGMT_V2</span>
+            </div>
+            <div class="flex gap-4 opacity-80" vid="19">
+                <span vid="20">ENCRYPTION: AES-256</span>
+                <span vid="21">//</span>
+                <span vid="22">07 NOV 2026</span>
+            </div>
+        </div>
+        <nav class="bg-cyber-base/90 backdrop-blur-md border-b border-cyber-cyan/20 px-6 py-4" vid="23">
+            <div class="max-w-7xl mx-auto flex justify-between items-center" vid="24">
+                <div class="flex items-center gap-3" vid="25">
+                    <div class="w-8 h-8 border border-cyber-cyan flex items-center justify-center bg-cyber-cyan/10" vid="26">
+                        <span class="font-mono font-bold text-cyber-cyan" vid="27">_</span>
+                    </div>
+                    <div class="font-display font-bold text-xl tracking-widest text-white uppercase" vid="28">
+                        ACM<span class="text-cyber-cyan text-sm align-top ml-1" vid="29">CTF</span>
+                    </div>
+                </div>
+                <div class="hidden lg:flex items-center gap-8 font-mono text-sm tracking-wide" vid="30">
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="31">Home</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="32">Workshops</a>
+                    <a href="#" class="text-cyber-cyan font-bold glow-text-cyan flex items-center gap-1" vid="33">
+                        <span class="text-cyber-cyan/70" vid="34">&gt;</span> SQUAD_PORTAL<span class="animate-blink" vid="35">_</span>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="36">Challenges</a>
+                    <a href="#" class="text-slate-400 hover:text-white transition-colors" vid="37">Rules</a>
+                </div>
+                <div vid="38">
+                    <button class="font-mono text-xs border border-cyber-red/50 text-cyber-red px-4 py-2 bg-cyber-red/5 hover:bg-cyber-red hover:text-white transition-all" vid="39">
+                        [ DISCONNECT ]
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow pt-32 pb-24 px-6 relative z-10" vid="40">
+        <section class="max-w-7xl mx-auto" vid="41">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-slate-800 pb-8" vid="42">
+                <div vid="43">
+                    <div class="font-mono text-cyber-cyan/70 text-xs tracking-widest mb-2" vid="44">OPERATIONAL OVERVIEW // COMMAND CENTER</div>
+                    <h1 class="font-display text-4xl md:text-5xl font-bold text-white uppercase glow-text-cyan tracking-tight" vid="45">Squad Management</h1>
+                </div>
+                <div class="flex gap-4" vid="46">
+                    <div class="bracket-box bg-cyber-dark/80 border border-slate-800 p-4 flex items-center gap-4" vid="47">
+                        <div class="bracket-tl" vid="48"></div><div class="bracket-tr" vid="49"></div><div class="bracket-bl" vid="50"></div><div class="bracket-br" vid="51"></div>
+                        <div class="text-right" vid="52">
+                            <div class="font-mono text-[10px] text-slate-500" vid="53">CURRENT SQUAD</div>
+                            <div class="font-display font-bold text-white uppercase tracking-wider" vid="54">NULL_POINTER_REAPERS</div>
+                        </div>
+                        <div class="w-10 h-10 bg-cyber-cyan/20 border border-cyber-cyan/50 flex items-center justify-center" vid="55">
+                            <i class="ph ph-shield-checkered text-cyber-cyan text-xl" vid="56"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" vid="57">
+                
+                <div class="lg:col-span-4 space-y-8" vid="58">
+                    
+                    <div class="border border-slate-800 bg-cyber-dark/60 p-6 bracket-box" vid="59">
+                        <div class="bracket-tl" vid="60"></div><div class="bracket-tr" vid="61"></div><div class="bracket-bl" vid="62"></div><div class="bracket-br" vid="63"></div>
+                        <h2 class="font-mono text-cyber-cyan text-sm mb-6 flex items-center gap-2" vid="64">
+                            <i class="ph ph-info" vid="65"></i> SQUAD_INTEL
+                        </h2>
+                        <div class="space-y-4" vid="66">
+                            <div class="flex justify-between border-b border-slate-800/50 pb-2" vid="67">
+                                <span class="font-mono text-xs text-slate-500 uppercase" vid="68">Status:</span>
+                                <span class="font-mono text-xs text-cyber-green uppercase" vid="69">Verified / Active</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800/50 pb-2" vid="70">
+                                <span class="font-mono text-xs text-slate-500 uppercase" vid="71">Rank:</span>
+                                <span class="font-mono text-xs text-white" vid="72">#12 (Tier 1)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800/50 pb-2" vid="73">
+                                <span class="font-mono text-xs text-slate-500 uppercase" vid="74">Region:</span>
+                                <span class="font-mono text-xs text-white uppercase" vid="75">Central_HUB</span>
+                            </div>
+                            <div class="flex justify-between" vid="76">
+                                <span class="font-mono text-xs text-slate-500 uppercase" vid="77">Capacity:</span>
+                                <span class="font-mono text-xs text-white" vid="78">3 / 5 Operatives</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="border border-cyber-cyan/20 bg-cyber-cyan/5 p-6 bracket-box" vid="79">
+                        <div class="bracket-tl" vid="80"></div><div class="bracket-tr" vid="81"></div><div class="bracket-bl" vid="82"></div><div class="bracket-br" vid="83"></div>
+                        <h2 class="font-mono text-cyber-cyan text-sm mb-4 flex items-center gap-2 uppercase" vid="84">
+                            <i class="ph ph-key" vid="85"></i> Recruitment_Token
+                        </h2>
+                        <p class="text-slate-400 text-xs font-mono leading-relaxed mb-6" vid="86">
+                            Generate an encrypted one-time access token for new squad recruits.
+                        </p>
+                        
+                        <div class="bg-black/80 border border-slate-800 p-3 mb-4 font-mono text-[10px] text-cyber-cyan break-all" vid="87">
+                            ACM3-SQ-9X2-K9L-RR42-P00X
+                        </div>
+                        
+                        <button class="w-full font-mono text-xs border border-cyber-cyan text-cyber-cyan py-3 hover:bg-cyber-cyan hover:text-black transition-all group" vid="88">
+                            [ GENERATE NEW TOKEN ]
+                        </button>
+                        <div class="mt-4 text-[10px] font-mono text-slate-500 text-center" vid="89">
+                            TOKENS EXPIRE AFTER 24 HOURS
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="lg:col-span-8" vid="90">
+                    <div class="mb-6 flex items-center justify-between" vid="91">
+                        <div class="font-mono text-cyber-cyan text-sm tracking-widest flex items-center gap-4 flex-grow" vid="92">
+                            <span vid="93">SQUAD_ROSTER</span>
+                            <div class="h-px bg-cyber-cyan/20 flex-grow" vid="94"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" vid="95">
+                        
+                        <div class="border border-slate-800 bg-cyber-dark/80 p-6 bracket-box group hover:border-cyber-cyan/40 transition-all" vid="96">
+                            <div class="bracket-tl" vid="97"></div><div class="bracket-tr" vid="98"></div><div class="bracket-bl" vid="99"></div><div class="bracket-br" vid="100"></div>
+                            <div class="flex items-start gap-4 mb-6" vid="101">
+                                <div class="w-16 h-16 border border-slate-700 bg-slate-800 flex items-center justify-center relative" vid="102">
+                                    <i class="ph ph-user-focus text-3xl text-slate-500" vid="103"></i>
+                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-cyber-green border border-black rounded-full" vid="104"></div>
+                                </div>
+                                <div class="flex-grow" vid="105">
+                                    <div class="font-mono text-[10px] text-cyber-cyan uppercase" vid="106">Squad_Lead</div>
+                                    <h3 class="font-display font-bold text-xl text-white" vid="107">Ghost_Kernel</h3>
+                                    <div class="font-mono text-[10px] text-slate-500" vid="108">ID: 0x8892-A</div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3" vid="109">
+                                <div class="font-mono text-[10px] text-slate-500 mb-1 uppercase tracking-widest" vid="110">Specializations:</div>
+                                <div class="flex flex-wrap gap-2" vid="111">
+                                    <span class="bg-blue-500/10 text-blue-400 border border-blue-500/30 px-2 py-0.5 text-[10px] font-mono uppercase" vid="112">Web Exploitation</span>
+                                    <span class="bg-purple-500/10 text-purple-400 border border-purple-500/30 px-2 py-0.5 text-[10px] font-mono uppercase" vid="113">Reverse Eng</span>
+                                </div>
+                                <div class="w-full bg-slate-800/50 h-1 mt-4" vid="114">
+                                    <div class="bg-cyber-cyan h-full w-[85%]" vid="115"></div>
+                                </div>
+                                <div class="flex justify-between font-mono text-[9px] text-slate-500" vid="116">
+                                    <span vid="117">OPERATIONAL READINESS</span>
+                                    <span vid="118">85%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="border border-slate-800 bg-cyber-dark/80 p-6 bracket-box group hover:border-cyber-cyan/40 transition-all" vid="119">
+                            <div class="bracket-tl" vid="120"></div><div class="bracket-tr" vid="121"></div><div class="bracket-bl" vid="122"></div><div class="bracket-br" vid="123"></div>
+                            <div class="flex items-start gap-4 mb-6" vid="124">
+                                <div class="w-16 h-16 border border-slate-700 bg-slate-800 flex items-center justify-center relative" vid="125">
+                                    <i class="ph ph-user-focus text-3xl text-slate-500" vid="126"></i>
+                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-cyber-green border border-black rounded-full" vid="127"></div>
+                                </div>
+                                <div class="flex-grow" vid="128">
+                                    <div class="font-mono text-[10px] text-slate-500 uppercase" vid="129">Operative</div>
+                                    <h3 class="font-display font-bold text-xl text-white" vid="130">Entropy_Max</h3>
+                                    <div class="font-mono text-[10px] text-slate-500" vid="131">ID: 0x4421-B</div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3" vid="132">
+                                <div class="font-mono text-[10px] text-slate-500 mb-1 uppercase tracking-widest" vid="133">Specializations:</div>
+                                <div class="flex flex-wrap gap-2" vid="134">
+                                    <span class="bg-orange-500/10 text-orange-400 border border-orange-500/30 px-2 py-0.5 text-[10px] font-mono uppercase" vid="135">Cryptography</span>
+                                    <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono uppercase" vid="136">OSINT</span>
+                                </div>
+                                <div class="w-full bg-slate-800/50 h-1 mt-4" vid="137">
+                                    <div class="bg-cyber-cyan h-full w-[92%]" vid="138"></div>
+                                </div>
+                                <div class="flex justify-between font-mono text-[9px] text-slate-500" vid="139">
+                                    <span vid="140">OPERATIONAL READINESS</span>
+                                    <span vid="141">92%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="border border-slate-800 bg-cyber-dark/80 p-6 bracket-box group hover:border-cyber-cyan/40 transition-all" vid="142">
+                            <div class="bracket-tl" vid="143"></div><div class="bracket-tr" vid="144"></div><div class="bracket-bl" vid="145"></div><div class="bracket-br" vid="146"></div>
+                            <div class="flex items-start gap-4 mb-6" vid="147">
+                                <div class="w-16 h-16 border border-slate-700 bg-slate-800 flex items-center justify-center relative" vid="148">
+                                    <i class="ph ph-user-focus text-3xl text-slate-500" vid="149"></i>
+                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-cyber-green border border-black rounded-full" vid="150"></div>
+                                </div>
+                                <div class="flex-grow" vid="151">
+                                    <div class="font-mono text-[10px] text-slate-500 uppercase" vid="152">Operative</div>
+                                    <h3 class="font-display font-bold text-xl text-white" vid="153">Zero_Day_Z</h3>
+                                    <div class="font-mono text-[10px] text-slate-500" vid="154">ID: 0x9001-C</div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-3" vid="155">
+                                <div class="font-mono text-[10px] text-slate-500 mb-1 uppercase tracking-widest" vid="156">Specializations:</div>
+                                <div class="flex flex-wrap gap-2" vid="157">
+                                    <span class="bg-red-500/10 text-red-400 border border-red-500/30 px-2 py-0.5 text-[10px] font-mono uppercase" vid="158">Forensics</span>
+                                    <span class="bg-slate-700/10 text-slate-400 border border-slate-700/30 px-2 py-0.5 text-[10px] font-mono uppercase" vid="159">Pwn</span>
+                                </div>
+                                <div class="w-full bg-slate-800/50 h-1 mt-4" vid="160">
+                                    <div class="bg-cyber-cyan h-full w-[64%]" vid="161"></div>
+                                </div>
+                                <div class="flex justify-between font-mono text-[9px] text-slate-500" vid="162">
+                                    <span vid="163">OPERATIONAL READINESS</span>
+                                    <span vid="164">64%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="border border-dashed border-slate-800 bg-slate-900/10 p-6 flex flex-col items-center justify-center text-center group hover:bg-cyber-cyan/5 hover:border-cyber-cyan/30 transition-all cursor-pointer" vid="165">
+                            <i class="ph ph-user-plus text-4xl text-slate-700 group-hover:text-cyber-cyan mb-3" vid="166"></i>
+                            <div class="font-mono text-xs text-slate-600 group-hover:text-slate-300 uppercase" vid="167">Slot_Available</div>
+                            <div class="font-display font-bold text-slate-500 group-hover:text-white mt-1" vid="168">RECRUIT OPERATIVE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-cyber-base relative z-10" vid="169">
+        <div class="max-w-7xl mx-auto px-6 py-8" vid="170">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6" vid="171">
+                <div class="font-display font-bold text-xl tracking-widest text-white uppercase" vid="172">
+                    ACM<span class="text-cyber-cyan text-sm align-top ml-1" vid="173">CTF</span>
+                </div>
+                <div class="flex items-center gap-8 font-mono text-xs text-slate-500" vid="174">
+                    <span vid="175">LATENCY: 24MS</span>
+                    <span vid="176">PKT_LOSS: 0%</span>
+                    <span class="text-cyber-green" vid="177">UPLINK_STABLE</span>
+                </div>
+                <div class="text-cyber-green/50 font-mono text-[10px]" vid="178">
+                    © 2026 ACM PSU // SQUAD_MOD_ACTIVE
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body></html>
