@@ -1,4 +1,10 @@
-document.addEventListener('DOMContentLoaded', () => {
+/* interactions.js injects this file dynamically, so DOMContentLoaded may have
+ * already fired by the time it runs. Check readyState instead of assuming the
+ * event is still to come, otherwise the header, footer and i18n never render. */
+(function ready(run) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
+    else run();
+}(() => {
     if (!document.querySelector('link[href="assets/site-shell.css"]')) {
         const shellStyles = document.createElement('link'); shellStyles.rel = 'stylesheet'; shellStyles.href = 'assets/site-shell.css'; document.head.appendChild(shellStyles);
     }
@@ -9,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     const siteHeader = document.createElement('header');
     siteHeader.className = 'site-header';
-    const navItems = [['index.html','HOME'],['workshops.html','Workshops'],['challenges.html','Challenges'],['competition.html','Competition'],['scoreboard.html','Scoreboard'],['rules.html','Rules'],['faq.html','FAQ'],['teams.html','Teams'],['organizers.html','Organizers']];
-    siteHeader.innerHTML = `<div class="site-header__inner"><a class="site-header__brand" href="index.html"><svg viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="none" stroke="#00f0ff" stroke-width="3"/><path d="M24 17v30M24 19l22 7-22 7z" fill="none" stroke="#00f0ff" stroke-width="3"/></svg><span>ACM/CyberTech CTF <em>3.0</em></span></a><button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-header-nav">MENU</button><nav id="site-header-nav" class="site-header__nav" aria-label="Main navigation">${navItems.map(([href,label])=>`<a href="${href}"${pageName===href?' aria-current="page"':''}>${label}${pageName===href?'_':''}</a>`).join('')}<button class="site-header__language" type="button" data-language-toggle aria-label="Switch to Arabic">AR</button><a class="site-header__cta" href="index.html#register">[ REGISTER ]</a></nav></div>`;
+    const navItems = [['index.html', 'HOME'], ['workshops.html', 'Workshops'], ['challenges.html', 'Challenges'], ['competition.html', 'Competition'], ['scoreboard.html', 'Scoreboard'], ['rules.html', 'Rules'], ['faq.html', 'FAQ'], ['teams.html', 'Teams'], ['organizers.html', 'Organizers']];
+    siteHeader.innerHTML = `<div class="site-header__inner"><a class="site-header__brand" href="index.html"><svg viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="none" stroke="#00f0ff" stroke-width="3"/><path d="M24 17v30M24 19l22 7-22 7z" fill="none" stroke="#00f0ff" stroke-width="3"/></svg><span>ACM/CyberTech CTF <em>3.0</em></span></a><button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-header-nav">MENU</button><nav id="site-header-nav" class="site-header__nav" aria-label="Main navigation">${navItems.map(([href, label]) => `<a href="${href}"${pageName === href ? ' aria-current="page"' : ''}>${label}${pageName === href ? '_' : ''}</a>`).join('')}<button class="site-header__language" type="button" data-language-toggle aria-label="Switch to Arabic">AR</button><a class="site-header__cta" href="register.html">[ REGISTER ]</a></nav></div>`;
     document.body.prepend(siteHeader);
-    const shellToggle=siteHeader.querySelector('.site-header__toggle'),shellNav=siteHeader.querySelector('nav');
-    shellToggle.addEventListener('click',()=>{const open=shellNav.classList.toggle('is-open');shellToggle.setAttribute('aria-expanded',String(open))});
+    const shellToggle = siteHeader.querySelector('.site-header__toggle'), shellNav = siteHeader.querySelector('nav');
+    shellToggle.addEventListener('click', () => { const open = shellNav.classList.toggle('is-open'); shellToggle.setAttribute('aria-expanded', String(open)) });
 
     let siteFooter = document.querySelector('footer');
     if (!siteFooter) {
@@ -26,12 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
         credit.className = 'site-blueprint-credit';
         credit.innerHTML = `Made by <a href="https://blueprint.shoug-tech.com/" target="_blank" rel="noopener noreferrer">Blueprint</a>`;
         siteFooter.appendChild(credit);
-    }
-    if (!document.querySelector('link[href="assets/registration.css"]')) {
-        const styles = document.createElement('link');
-        styles.rel = 'stylesheet';
-        styles.href = 'assets/registration.css';
-        document.head.appendChild(styles);
     }
 
     const showToast = (message) => {
@@ -121,83 +121,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const modal = document.createElement('div');
-    modal.className = 'registration-modal';
-    modal.hidden = true;
-    modal.innerHTML = `
-        <section class="registration-dialog" role="dialog" aria-modal="true" aria-labelledby="registration-title">
-            <header class="registration-head">
-                <div><p class="registration-kicker">// OPERATOR ENROLLMENT</p><h2 id="registration-title">Register for ACM/CyberTech CTF 3.0</h2></div>
-                <button class="registration-close" type="button" aria-label="Close registration form">×</button>
-            </header>
-            <form class="registration-form">
-                <div class="registration-grid">
-                    <div class="registration-field full"><label for="reg-team">Team name *</label><input id="reg-team" name="teamName" placeholder="Choose a unique team name" required></div>
-                    <div class="registration-field full"><label for="reg-name">Team captain — full name *</label><input id="reg-name" name="captainName" autocomplete="name" required></div>
-                    <div class="registration-field"><label for="reg-id">Captain — PSU student ID *</label><input id="reg-id" name="captainId" inputmode="numeric" required></div>
-                    <div class="registration-field"><label for="reg-email">Captain — PSU email *</label><input id="reg-email" name="captainEmail" type="email" autocomplete="email" placeholder="name@psu.edu.sa" required></div>
-                    <div class="registration-field"><label for="reg-member2">Member 2 — full name *</label><input id="reg-member2" name="member2Name" required></div>
-                    <div class="registration-field"><label for="reg-member2-email">Member 2 — PSU email *</label><input id="reg-member2-email" name="member2Email" type="email" placeholder="name@psu.edu.sa" required></div>
-                    <div class="registration-field"><label for="reg-member3">Member 3 — full name</label><input id="reg-member3" name="member3Name" placeholder="Optional"></div>
-                    <div class="registration-field"><label for="reg-member3-email">Member 3 — PSU email</label><input id="reg-member3-email" name="member3Email" type="email" placeholder="Optional"></div>
-                    <div class="registration-field full"><label for="reg-level">Team experience level *</label><select id="reg-level" name="experience" required><option value="">Select level</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></div>
-                </div>
-                <label class="registration-check"><input type="checkbox" name="rules" required><span>I have read the competition rules and agree to stay within the authorized CTF environment.</span></label>
-                <div class="registration-note">STATUS: The form interface is connected. Final submission storage will activate when the organizer provides the registration endpoint.</div>
-                <div class="registration-result" role="status" hidden></div>
-                <div class="registration-actions"><button class="registration-cancel" type="button">Cancel</button><button class="registration-submit" type="submit">[ REVIEW REGISTRATION ]</button></div>
-            </form>
-        </section>`;
-    document.body.appendChild(modal);
-
-    const form = modal.querySelector('form');
-    const closeButton = modal.querySelector('.registration-close');
-    const cancelButton = modal.querySelector('.registration-cancel');
-    const result = modal.querySelector('.registration-result');
-    let returnFocus = null;
-
-    const closeRegistration = () => {
-        modal.hidden = true;
-        document.body.classList.remove('registration-open');
-        returnFocus?.focus();
-    };
-    const openRegistration = trigger => {
-        returnFocus = trigger || document.activeElement;
-        modal.hidden = false;
-        document.body.classList.add('registration-open');
-        result.hidden = true;
-        requestAnimationFrame(() => modal.querySelector('input')?.focus());
-    };
-
+    // Registration is handled by the real, ACM-backed form at register.html.
+    // Every CTA routes there; there is no client-side registration store.
+    const REGISTRATION_PAGE = 'register.html';
     document.querySelectorAll('[data-register], a[href$="#register"]').forEach(control => {
+        if (control.tagName === 'A') control.setAttribute('href', REGISTRATION_PAGE);
         control.addEventListener('click', event => {
             event.preventDefault();
-            openRegistration(control);
+            window.location.href = REGISTRATION_PAGE;
         });
-    });
-    closeButton.addEventListener('click', closeRegistration);
-    cancelButton.addEventListener('click', closeRegistration);
-    modal.addEventListener('click', event => { if (event.target === modal) closeRegistration(); });
-    document.addEventListener('keydown', event => { if (event.key === 'Escape' && !modal.hidden) closeRegistration(); });
-    form.addEventListener('submit', event => {
-        event.preventDefault();
-        const member3Name = form.elements.member3Name;
-        const member3Email = form.elements.member3Email;
-        member3Name.setCustomValidity(member3Email.value && !member3Name.value ? 'Enter the third member’s name.' : '');
-        member3Email.setCustomValidity(member3Name.value && !member3Email.value ? 'Enter the third member’s PSU email.' : '');
-        if (!form.reportValidity()) return;
-        const teams = JSON.parse(localStorage.getItem('acm-ctf-teams-v2') || '[]');
-        const name = form.elements.teamName.value.trim();
-        const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        const record = {id,name,status:'pending',experience:form.elements.experience.value,score:0,rank:0,flags:0,members:[{name:form.elements.captainName.value,role:'Captain',studentId:form.elements.captainId.value,email:form.elements.captainEmail.value},{name:form.elements.member2Name.value,role:'Member',email:form.elements.member2Email.value},...(member3Name.value?[{name:member3Name.value,role:'Member',email:member3Email.value}]:[])]};
-        localStorage.setItem('acm-ctf-teams-v2', JSON.stringify(teams.filter(team=>team.id!==id).concat(record)));
-        result.textContent = 'REGISTRATION SAVED // STATUS: PENDING ADMIN REVIEW.';
-        result.hidden = false;
-        result.scrollIntoView({block:'nearest'});
     });
 
     if (location.hash === '#register' || new URLSearchParams(location.search).has('register')) {
-        openRegistration(null);
+        window.location.replace(REGISTRATION_PAGE);
+        return;
     }
+
     import('./i18n.js').then(module => module.initI18n());
-});
+}));

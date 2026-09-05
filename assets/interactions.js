@@ -20,7 +20,7 @@
   }
 
   var core = document.createElement('script');
-  core.src = 'assets/interactions-core.js?v=20260905-1';
+  core.src = 'assets/interactions-core.js?v=20260905-3';
   core.async = false;
   core.onload = function () {
     if (document.readyState === 'loading') {

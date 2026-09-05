@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="robots" content="noindex,nofollow">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Team Admin | ACM/CyberTech CTF 3.0</title>
     <link rel="stylesheet" href="assets/styles.css">
-    <link rel="stylesheet" href="assets/registration.css">
     <style>
         .admin-grid {
             display: grid;
@@ -73,8 +73,13 @@
         <div class="wrap">
             <p class="eyebrow">ADMIN CONSOLE</p>
             <h2>Team management</h2>
-            <p class="notice warning">Local admin workspace: export the JSON and commit it to
-                <code>data/teams.json</code> to publish changes. Do not put a CTFd token in this page.</p>
+            <p class="notice warning">Local admin workspace &mdash; this page only edits a draft in your own browser and
+                is
+                <strong>not</strong> the registration system. Real registrations arrive in the <code>ctf30</code> tab of
+                the
+                ACM PSU Club Records workbook. Export the JSON and commit it to <code>data/teams.json</code> to publish
+                changes. Do not put a CTFd token in this page.
+            </p>
             <div class="admin-grid">
                 <section class="admin-panel">
                     <form id="team-form" class="admin-form"><input type="hidden" name="id"><label>Team name<input
