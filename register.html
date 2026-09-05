@@ -242,7 +242,7 @@
       <form id="ctfForm" class="reg-form" novalidate>
         <input type="text" name="website" id="website" tabindex="-1" autocomplete="off"
           style="position:absolute;left:-10000px" aria-hidden="true">
-        <input type="hidden" name="eventType" value="ctf30">
+        <input type="hidden" name="event" value="ctf30">
 
         <section class="reg-section">
           <h2>01 // TEAM</h2>
@@ -330,6 +330,7 @@
       var sink = document.getElementById('ctfSink');
       var endpoint = window.ACM_EVENT_REGISTRATION_ENDPOINT || '';
       var MEMBER3 = ['member3Name', 'member3Id', 'member3Email', 'member3Major'];
+    var GOOGLE_ORIGIN = /^https:\/\/([a-z0-9-]+\.)*(googleusercontent\.com|google\.com)$/;
       var busy = false;
 
       function show(message, ok) {
@@ -416,8 +417,11 @@
         var completed = false;
 
         function receive(message) {
-          if (message.source !== sink.contentWindow) return;
-          if (!message.data || message.data.source !== 'ctf30') return;
+          // The reply is posted from Apps Script's nested sandbox frame, so it is
+          // never sink.contentWindow. Trust it on the Google origin plus our own
+          // tag instead, and ignore anything else the page might receive.
+          if (!GOOGLE_ORIGIN.test(message.origin)) return;
+          if (!message.data || message.data.source !== 'acm-event-registration') return;
           completed = true;
           window.removeEventListener('message', receive);
           if (message.data.message === 'OK') {
