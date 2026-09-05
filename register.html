@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Register | ACM/CyberTech CTF 3.0</title>
+  <meta name="description" content="Register a team for ACM/CyberTech CTF 3.0 at Prince Sultan University.">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/registration.css">
+  <script src="config.js"></script>
+  <style>
+    body{min-height:100vh;background:#02060d;color:#e8f8ff;font-family:Inter,system-ui,sans-serif}
+    .reg-page{max-width:980px;margin:0 auto;padding:40px 20px 70px}
+    .reg-top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:28px}
+    .reg-back{color:#00f0ff;text-decoration:none;font-family:"JetBrains Mono",monospace;font-size:.8rem;letter-spacing:.08em}
+    .reg-shell{border:1px solid rgba(0,240,255,.35);background:linear-gradient(180deg,rgba(5,16,28,.94),rgba(2,6,13,.98));box-shadow:0 0 40px rgba(0,240,255,.08)}
+    .reg-head{padding:22px 24px;border-bottom:1px solid rgba(0,240,255,.24)}
+    .reg-kicker{margin:0 0 8px;color:#00f0ff;font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.12em}
+    .reg-head h1{margin:0;font-size:clamp(1.8rem,4vw,3rem)}
+    .reg-head p{color:#9eb0c3;max-width:70ch;line-height:1.65}
+    .reg-form{padding:24px;display:grid;gap:22px}
+    .reg-section{border:1px solid rgba(255,255,255,.1);padding:18px;background:rgba(255,255,255,.018)}
+    .reg-section h2{margin:0 0 16px;font-size:1rem;color:#00f0ff;font-family:"JetBrains Mono",monospace;letter-spacing:.08em}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .full{grid-column:1/-1}
+    label{display:grid;gap:7px;color:#a9bacb;font-size:.8rem;font-family:"JetBrains Mono",monospace}
+    input,select{width:100%;box-sizing:border-box;background:#040a13;color:#f5fbff;border:1px solid rgba(0,240,255,.28);padding:11px 12px;font:inherit}
+    input:focus,select:focus{outline:none;border-color:#00f0ff;box-shadow:0 0 0 2px rgba(0,240,255,.08)}
+    .note{color:#7f92a7;font-size:.78rem;line-height:1.55}
+    .agree{display:flex;align-items:flex-start;gap:10px;color:#b9c8d6;font-size:.85rem}
+    .agree input{width:auto;margin-top:3px}
+    .actions{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border:1px solid rgba(0,240,255,.45);font-family:"JetBrains Mono",monospace;font-weight:700;letter-spacing:.06em;text-decoration:none;cursor:pointer}
+    .btn-primary{background:#00f0ff;color:#021018}
+    .btn-ghost{background:transparent;color:#d9faff}
+    .result{display:none;padding:14px 16px;border:1px solid rgba(0,240,255,.35);font-family:"JetBrains Mono",monospace;font-size:.82rem}
+    .result.ok{display:block;color:#6dffb3;border-color:rgba(109,255,179,.45)}
+    .result.error{display:block;color:#ff8a8a;border-color:rgba(255,138,138,.45)}
+    @media(max-width:700px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.reg-page{padding-inline:14px}.reg-form,.reg-head{padding:18px}}
+  </style>
+</head>
+<body>
+  <main class="reg-page">
+    <div class="reg-top">
+      <a class="reg-back" href="index.html">← BACK TO CTF 3.0</a>
+      <span class="reg-kicker">REGISTRATION // CTF_3.0</span>
+    </div>
+
+    <section class="reg-shell">
+      <header class="reg-head">
+        <p class="reg-kicker">// TEAM ENROLLMENT</p>
+        <h1>Register for ACM/CyberTech CTF 3.0</h1>
+        <p>Register one team of two or three students. We only collect the details needed to identify participants, contact the team, and organize the competition.</p>
+      </header>
+
+      <form id="ctfForm" class="reg-form" novalidate>
+        <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-10000px" aria-hidden="true">
+        <input type="hidden" name="event" value="ctf30">
+
+        <section class="reg-section">
+          <h2>01 // TEAM</h2>
+          <div class="grid">
+            <label class="full">Team name *
+              <input name="teamName" id="teamName" maxlength="120" required>
+            </label>
+            <label class="full">Experience level *
+              <select name="experience" id="experience" required>
+                <option value="">Select level</option>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <section class="reg-section">
+          <h2>02 // CAPTAIN</h2>
+          <div class="grid">
+            <label class="full">Full name *<input name="captainName" id="captainName" maxlength="120" required></label>
+            <label>University ID *<input name="captainId" id="captainId" maxlength="40" inputmode="numeric" required></label>
+            <label>PSU email *<input name="captainEmail" id="captainEmail" type="email" maxlength="254" placeholder="name@psu.edu.sa" required></label>
+            <label>Phone number *<input name="captainPhone" id="captainPhone" type="tel" maxlength="40" placeholder="05XXXXXXXX" required></label>
+            <label>Major *<input name="captainMajor" id="captainMajor" maxlength="120" required></label>
+          </div>
+        </section>
+
+        <section class="reg-section">
+          <h2>03 // MEMBER 2</h2>
+          <div class="grid">
+            <label class="full">Full name *<input name="member2Name" id="member2Name" maxlength="120" required></label>
+            <label>University ID *<input name="member2Id" id="member2Id" maxlength="40" inputmode="numeric" required></label>
+            <label>PSU email *<input name="member2Email" id="member2Email" type="email" maxlength="254" placeholder="name@psu.edu.sa" required></label>
+            <label class="full">Major *<input name="member2Major" id="member2Major" maxlength="120" required></label>
+          </div>
+        </section>
+
+        <section class="reg-section">
+          <h2>04 // MEMBER 3 — OPTIONAL</h2>
+          <div class="grid">
+            <label class="full">Full name<input name="member3Name" id="member3Name" maxlength="120"></label>
+            <label>University ID<input name="member3Id" id="member3Id" maxlength="40" inputmode="numeric"></label>
+            <label>PSU email<input name="member3Email" id="member3Email" type="email" maxlength="254" placeholder="name@psu.edu.sa"></label>
+            <label class="full">Major<input name="member3Major" id="member3Major" maxlength="120"></label>
+          </div>
+          <p class="note">If you add a third member, complete all four fields for that participant.</p>
+        </section>
+
+        <label class="agree">
+          <input type="checkbox" id="rules" required>
+          <span>I have read the competition rules and agree to stay within the authorized CTF environment.</span>
+        </label>
+
+        <p class="note">These details are used only for registration, participant verification, team coordination, and event communication.</p>
+        <div id="result" class="result" role="status"></div>
+
+        <div class="actions">
+          <a class="btn btn-ghost" href="index.html">CANCEL</a>
+          <button id="submitBtn" class="btn btn-primary" type="submit">REGISTER TEAM →</button>
+        </div>
+
+        <iframe id="ctfSink" name="ctfSink" title="registration response" hidden></iframe>
+      </form>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    'use strict';
+    var form = document.getElementById('ctfForm');
+    var result = document.getElementById('result');
+    var button = document.getElementById('submitBtn');
+    var sink = document.getElementById('ctfSink');
+    var endpoint = window.ACM_EVENT_REGISTRATION_ENDPOINT || '';
+
+    function show(message, ok) {
+      result.textContent = message;
+      result.className = 'result ' + (ok ? 'ok' : 'error');
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      result.className = 'result';
+
+      var third = ['member3Name','member3Id','member3Email','member3Major'];
+      var anyThird = third.some(function (name) { return form.elements[name].value.trim(); });
+      third.forEach(function (name) { form.elements[name].required = anyThird; });
+
+      if (!form.reportValidity()) return;
+      if (!endpoint) return show('Registration is not available yet. Please contact the organizers.', false);
+
+      var relay = document.createElement('form');
+      relay.action = endpoint;
+      relay.method = 'POST';
+      relay.target = 'ctfSink';
+
+      new FormData(form).forEach(function (value, name) {
+        if (name === 'rules') return;
+        var field = document.createElement('input');
+        field.type = 'hidden';
+        field.name = name;
+        field.value = value;
+        relay.appendChild(field);
+      });
+      document.body.appendChild(relay);
+
+      button.disabled = true;
+      button.textContent = 'SUBMITTING...';
+      var completed = false;
+
+      function receive(event) {
+        if (event.source !== sink.contentWindow || !event.data || event.data.source !== 'acm-event-registration') return;
+        completed = true;
+        window.removeEventListener('message', receive);
+        if (event.data.message === 'OK') {
+          show('REGISTRATION SAVED // Your team has been recorded.', true);
+          form.reset();
+        } else {
+          show(String(event.data.message || 'Registration failed.').replace(/^Error:\s*/i, ''), false);
+        }
+        button.disabled = false;
+        button.textContent = 'REGISTER TEAM →';
+      }
+
+      window.addEventListener('message', receive);
+      relay.submit();
+      relay.remove();
+
+      window.setTimeout(function () {
+        if (completed) return;
+        window.removeEventListener('message', receive);
+        button.disabled = false;
+        button.textContent = 'REGISTER TEAM →';
+        show('The registration service did not respond. Please try again or contact the organizers.', false);
+      }, 20000);
+    });
+  }());
+  </script>
+</body>
+</html>
